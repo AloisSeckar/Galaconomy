@@ -11,9 +11,10 @@ public class UniverseManager {
     private static UniverseManager INSTANCE;
     private final List<IEngineSubscriber> subscribers = new ArrayList<>();
     
-    private final Timeline universeEngine;
+    private Timeline universeEngine;
     
-    private long stellarTime;
+    private long stellarTime = 100000;
+    private double engineDuration = 1;
     
     private final List<StarSystem> starSystems = new ArrayList<>();
     private final List<Ship> ships = new ArrayList<>();
@@ -21,8 +22,7 @@ public class UniverseManager {
     private final List<ShipRoute> shipRoutesHistory = new ArrayList<>();
     
     private UniverseManager() {
-        universeEngine = getEngineInstance();
-        universeEngine.setCycleCount(Timeline.INDEFINITE);
+        initEngineInstance();
     }
     
     public static UniverseManager getInstance() {
@@ -65,23 +65,46 @@ public class UniverseManager {
     }
     
     public void resetUniverse() {
+        stopEngine();
+        
         starSystems.clear();
         ships.clear();
         shipRoutes.clear();
         shipRoutesHistory.clear();
         
         stellarTime = 100000;
+        engineDuration = 1;
     }
     
     public void startEngine() {
-        if (universeEngine.getStatus() == Animation.Status.RUNNING) {
+        if (isEngineRunning()) {
             universeEngine.stop();
         }
         universeEngine.play();
     }
     
+    public void pauseEngine() {
+        if (isEngineRunning()) {
+            universeEngine.pause();
+        } else {
+            universeEngine.play();
+        }
+    }
+    
     public void stopEngine() {
-        universeEngine.stop();
+        if (isEngineRunning()) {
+            universeEngine.stop();
+        }
+    }
+
+    public double getEngineDuration() {
+        return engineDuration;
+    }
+
+    public void setEngineDuration(double engineDuration) {
+        this.engineDuration = engineDuration;
+        initEngineInstance();
+        System.out.println("GalaconomyEngine: engine duration changed to " + engineDuration);
     }
     
     public void registerSubscriber(IEngineSubscriber newSubscriber) {
@@ -95,11 +118,24 @@ public class UniverseManager {
         return stellarTime;
     }
     
+    public boolean isEngineRunning() {
+        return universeEngine != null && universeEngine.getStatus() == Animation.Status.RUNNING;
+    }
+    
+    public boolean isEnginePaused() {
+        return universeEngine != null && universeEngine.getStatus() == Animation.Status.PAUSED;
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     
-    private Timeline getEngineInstance() {
-        return new Timeline(
-            new KeyFrame(Duration.seconds(1), e -> {
+    private void initEngineInstance() {
+        boolean running = isEngineRunning();
+        if (running) {
+            universeEngine.stop();
+        }
+        
+        universeEngine = new Timeline(
+            new KeyFrame(Duration.seconds(engineDuration), e -> {
                 stellarTime++;
                 
                 recalcRoutes();
@@ -111,6 +147,11 @@ public class UniverseManager {
                 System.out.println("GalaconomyEngine: engine tick finished");
             })
         );
+        universeEngine.setCycleCount(Timeline.INDEFINITE);
+        
+        if (running) {
+            universeEngine.play();
+        }
     }
     
     private void recalcRoutes() {

@@ -9,6 +9,7 @@ import galaconomy.utils.DisplayUtils;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -18,6 +19,8 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
     private final TextArea dscrText;
     private final ImageView imgView;
     private final Label stellarTimeText;
+    
+    private final EngineSpeedPane engineSpeed;
     
     public InfoPane(int width) {
         super.setMinWidth(width + 20);
@@ -56,6 +59,11 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
         super.getChildren().add(stellarTimeText);
         AnchorPane.setLeftAnchor(stellarTimeText, 5d);
         AnchorPane.setBottomAnchor(stellarTimeText, 10d);
+        
+        engineSpeed = new EngineSpeedPane();
+        super.getChildren().add(engineSpeed);
+        AnchorPane.setLeftAnchor(engineSpeed, 5d);
+        AnchorPane.setBottomAnchor(engineSpeed, 45d);
         
         resetMapInfo();
     }
