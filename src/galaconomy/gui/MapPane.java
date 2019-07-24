@@ -2,8 +2,8 @@ package galaconomy.gui;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
-import galaconomy.universe.systems.StarSystem;
-import galaconomy.universe.traffic.ShipRoute;
+import galaconomy.universe.systems.Star;
+import galaconomy.universe.traffic.Route;
 import java.util.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -33,11 +33,11 @@ public class MapPane extends AnchorPane implements IEngineSubscriber {
         super.setBackground(new Background(bgImage));  
     }
     
-    public void paintUniverseMap(List<StarSystem> stars) {
+    public void paintUniverseMap(List<Star> stars) {
         this.getChildren().removeAll(activeStars);
         activeStars.clear();
                 
-        for (StarSystem system : stars) {
+        for (Star system : stars) {
             Circle star = new Circle(zoomMultiplier);
             star.setCenterX(fitCoordIntoDisplay(system.getX()));
             star.setCenterY(fitCoordIntoDisplay(system.getY()));
@@ -52,18 +52,18 @@ public class MapPane extends AnchorPane implements IEngineSubscriber {
         }
     }
     
-    public void paintShipRoutes(List<ShipRoute> routes) {
+    public void paintShipRoutes(List<Route> routes) {
         this.getChildren().removeAll(activeRoutes);
         activeRoutes.clear();
         this.getChildren().removeAll(activeShips);
         activeShips.clear();
         
-        for (ShipRoute route : routes) {
+        for (Route route : routes) {
             Line routeLine = new Line();
             routeLine.getStyleClass().add("ship-route");
             
-            StarSystem departure = route.getDeparture();
-            StarSystem arrival = route.getArrival();
+            Star departure = route.getDeparture();
+            Star arrival = route.getArrival();
             double total = route.getDistanceTotal();
             double elapsed = route.getDistanceElapsed();
             double distance = elapsed / total;
@@ -108,7 +108,7 @@ public class MapPane extends AnchorPane implements IEngineSubscriber {
 
     @Override
     public void engineTaskFinished(long stellarTime) {
-        paintShipRoutes(UniverseManager.getInstance().getShipRoutes());
+        paintShipRoutes(UniverseManager.getInstance().getRoutes());
     }
     
     ////////////////////////////////////////////////////////////////////////////

@@ -1,16 +1,16 @@
 package galaconomy.universe.traffic;
 
-import galaconomy.universe.systems.StarSystem;
+import galaconomy.universe.systems.Star;
 
-public class ShipRoute {
+public class Route {
     
     private final Ship ship;
-    private final StarSystem departure;
-    private final StarSystem arrival;
+    private final Star departure;
+    private final Star arrival;
     private final double distanceTotal;
     private double distanceElapsed;
 
-    public ShipRoute(Ship ship, StarSystem departure, StarSystem arrival, double distanceTotal, double distanceElapsed) {
+    public Route(Ship ship, Star departure, Star arrival, double distanceTotal, double distanceElapsed) {
         this.ship = ship;
         this.departure = departure;
         this.arrival = arrival;
@@ -21,12 +21,12 @@ public class ShipRoute {
     public Ship getShip() {
         return ship;
     }
-
-    public StarSystem getDeparture() {
+    
+    public Star getDeparture() {
         return departure;
     }
 
-    public StarSystem getArrival() {
+    public Star getArrival() {
         return arrival;
     }
 

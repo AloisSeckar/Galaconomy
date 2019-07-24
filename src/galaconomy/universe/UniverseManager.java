@@ -1,5 +1,6 @@
 package galaconomy.universe;
 
+import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
 import java.util.*;
@@ -16,10 +17,9 @@ public class UniverseManager {
     private long stellarTime = 100000;
     private double engineDuration = 1;
     
-    private final Map<String, StarSystem> starSystems = new HashMap<>();
-    private final List<Ship> ships = new ArrayList<>();
-    private final List<ShipRoute> shipRoutes = new ArrayList<>();
-    private final List<ShipRoute> shipRoutesHistory = new ArrayList<>();
+    private final Map<String, Star> stars = new HashMap<>();
+    private final Map<String, Player> players = new HashMap<>();
+    private final List<Route> routes = new ArrayList<>();
     
     private UniverseManager() {
         initEngineInstance();
@@ -32,49 +32,44 @@ public class UniverseManager {
         return INSTANCE;
     }
     
-    public Map<String, StarSystem> getStarSystems() {
-        return Collections.unmodifiableMap(starSystems);
+    public Map<String, Star> getStars() {
+        return Collections.unmodifiableMap(stars);
     }
     
-    public StarSystem findStarSystem(String systemName) {
-        return starSystems.get(systemName);
+    public Star findStar(String starName) {
+        return stars.get(starName);
     }
     
-    public void addStarSystem(StarSystem newSystem) {
-        starSystems.put(newSystem.getName(), newSystem);
+    public void addStar(Star newStar) {
+        stars.put(newStar.getName(), newStar);
+    }
+    
+    public Map<String, Player> getPlayers() {
+        return Collections.unmodifiableMap(players);
+    }
+    
+    public Player findPlayer(String playerName) {
+        return players.get(playerName);
+    }
+    
+    public void addPlayer(Player newPlayer) {
+        players.put(newPlayer.getName(), newPlayer);
     }
 
-    public List<Ship> getShips() {
-        return Collections.unmodifiableList(ships);
+    public List<Route> getRoutes() {
+        return Collections.unmodifiableList(routes);
     }
     
-    public boolean addShip(Ship newShip) {
-        return ships.add(newShip);
-    }
-
-    public List<ShipRoute> getShipRoutes() {
-        return Collections.unmodifiableList(shipRoutes);
-    }
-    
-    public boolean addShipRoute(ShipRoute newRoute) {
-        return shipRoutes.add(newRoute);
-    }
-
-    public List<ShipRoute> getShipRoutesHistory() {
-        return Collections.unmodifiableList(shipRoutesHistory);
-    }
-    
-    public boolean addShipRouteHistory(ShipRoute newRoute) {
-        return shipRoutesHistory.add(newRoute);
+    public boolean addRoute(Route newRoute) {
+        return routes.add(newRoute);
     }
     
     public void resetUniverse() {
         stopEngine();
         
-        starSystems.clear();
-        ships.clear();
-        shipRoutes.clear();
-        shipRoutesHistory.clear();
+        stars.clear();
+        players.clear();
+        routes.clear();
         
         stellarTime = 100000;
         engineDuration = 1;
@@ -159,17 +154,17 @@ public class UniverseManager {
     }
     
     private void recalcRoutes() {
-        List<ShipRoute> finishedRoutes = new ArrayList<>();
-        for (ShipRoute route : getShipRoutes()) {
+        List<Route> finishedRoutes = new ArrayList<>();
+        for (Route route : routes) {
             route.progress();
             if (route.isFinished()) {
                 finishedRoutes.add(route);
+                route.getShip().addRoute(route);
                 System.out.println(route.getShip().getName() + " arrived in " + route.getArrival().getName() + " system");
             }
         }
-        for (ShipRoute finishedRoute : finishedRoutes) {
-            shipRoutes.remove(finishedRoute);
-            shipRoutesHistory.add(finishedRoute);
+        for (Route finishedRoute : finishedRoutes) {
+            routes.remove(finishedRoute);
         }
     }
 }

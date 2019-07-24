@@ -1,5 +1,6 @@
 package galaconomy.universe.traffic;
 
+import galaconomy.universe.player.Player;
 import java.util.*;
 
 public class Ship {
@@ -9,8 +10,8 @@ public class Ship {
     private final String img; 
     private final double speed; 
     
-    private final List<String> owners = new ArrayList<>();
-    private final List<ShipRoute> routes = new ArrayList<>();
+    private final List<Player> owners = new ArrayList<>();
+    private final List<Route> routes = new ArrayList<>();
 
     public Ship(String name, String dscr, String img, double speed) {
         this.name = name;
@@ -35,19 +36,19 @@ public class Ship {
         return speed;
     }
 
-    public List<String> getOwners() {
+    public List<Player> getOwners() {
         return Collections.unmodifiableList(owners);
     }
+    
+    public void addOwner(Player newOwner) {
+        owners.add(newOwner);
+    }
 
-    public List<ShipRoute> getRoutes() {
+    public List<Route> getRoutes() {
         return Collections.unmodifiableList(routes);
     }
     
-    public void addOwner(String newOwner) {
-        owners.add(newOwner);
-    }
-    
-    public void addRoute(ShipRoute newRoute) {
+    public void addRoute(Route newRoute) {
         routes.add(newRoute);
     }
 }

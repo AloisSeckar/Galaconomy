@@ -2,6 +2,7 @@ package galaconomy.universe;
 
 import galaconomy.constants.Constants;
 import galaconomy.db.DBManager;
+import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.MathUtils;
@@ -14,71 +15,69 @@ public class UniverseGenerator {
     private static final int PLANETS = 42;
     
     public static boolean generate(UniverseManager universeManager) {
-        universeManager.resetUniverse();
-        
         try {
-            StarSystem sicopiaSystem = new StarSystem("Sicopia", "Home world", Constants.STARS_FOLDER + "sicopia.jpg", Color.ORANGE, 45, 45);
-            universeManager.addStarSystem(sicopiaSystem);
-        } catch (Exception ex) {
-            System.out.println("UniverseGenerator - systems: " + ex.getMessage());
-        }
+            universeManager.resetUniverse();
         
-        Random rand = new Random(8472); 
+            Player centralAI = new Player("GLS AI", Constants.PLAYERS_FOLDER + "player00.jpg", Color.CYAN);
+            universeManager.addPlayer(centralAI);
+            
+            centralAI.addShip(new Ship("GLS Alpha", "Test ship 1", Constants.SHIPS_FOLDER + "ship01.jpg", 2d));
+            centralAI.addShip(new Ship("GLS Beta", "Test ship 2",  Constants.SHIPS_FOLDER + "ship02.jpg", 1.7d));
+            centralAI.addShip(new Ship("GLS Gama", "Test ship 3",  Constants.SHIPS_FOLDER + "ship03.jpg", 4d));
+            centralAI.addShip(new Ship("GLS Delta", "Test ship 4",  Constants.SHIPS_FOLDER + "ship04.jpg", 2.25d));
+            centralAI.addShip(new Ship("GLS Epsilon", "Test ship 5",  Constants.SHIPS_FOLDER + "ship05.jpg", 1.85d));
+            
+            Player player = new Player("Human player", Constants.PLAYERS_FOLDER + "player01.jpg", Color.GREEN);
+            universeManager.addPlayer(player);
+            
+            Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "sicopia.jpg", Color.ORANGE, 45, 45);
+            universeManager.addStar(sicopiaSystem);
         
-        List<String> names = DBManager.getInstance().getAvailableStarNames();
-        
-        int numberOfStars = Math.max(rand.nextInt(names.size() / 2), 15);
-        
-        for (int i = 0; i < numberOfStars; i++) {
-            try {
+            Random rand = new Random(8472); 
+
+            List<String> names = DBManager.getInstance().getAvailableStarNames();
+
+            int numberOfStars = Math.max(rand.nextInt(names.size() / 2), 15);
+
+            for (int i = 0; i < numberOfStars; i++) {
                 rand.setSeed(System.currentTimeMillis());
                 Thread.sleep((long) 1);
-                
+
                 String starName = names.get(rand.nextInt(names.size()));
                 String starImg = Constants.STARS_FOLDER + "star" + getRandomImageOrder(rand, STARS) + ".jpg";
 
-                StarSystem newStar = new StarSystem(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y));
-                
+                Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y));
+
                 int numberOfPlanets = rand.nextInt(13);
                 for (int j = 1; j <= numberOfPlanets; j++) {
                     String planetName = newStar.getName() + " " + getPlanetOrder(j);
                     String planetImg = Constants.PLANETS_FOLDER + "planet" + getRandomImageOrder(rand, PLANETS) + ".jpg";
-                    
+
                     newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y)));
                 }
-                
-                universeManager.addStarSystem(newStar);
+
+                universeManager.addStar(newStar);
                 names.remove(starName);
-            } catch (Exception ex) {
-                System.out.println("UniverseGenerator - systems: " + ex.getMessage());
             }
-        }
         
-        universeManager.addShip(new Ship("GLS Alpha", "Test ship 1", Constants.SHIPS_FOLDER + "ship01.jpg", 2d));
-        universeManager.addShip(new Ship("GLS Beta", "Test ship 2",  Constants.SHIPS_FOLDER + "ship02.jpg", 1.7d));
-        universeManager.addShip(new Ship("GLS Gama", "Test ship 3",  Constants.SHIPS_FOLDER + "ship03.jpg", 4d));
-        universeManager.addShip(new Ship("GLS Delta", "Test ship 4",  Constants.SHIPS_FOLDER + "ship04.jpg", 2.25d));
-        universeManager.addShip(new Ship("GLS Epsilon", "Test ship 5",  Constants.SHIPS_FOLDER + "ship05.jpg", 1.85d));
-        
-        List<Ship> ships = universeManager.getShips();
-        List<StarSystem> systems = new ArrayList<>(universeManager.getStarSystems().values());
-        int maxInt = systems.size();
-        for (int i = 0; i < ships.size() ; i++) {
-            try {
-                rand.setSeed(System.currentTimeMillis());
-                Thread.sleep((long) 1);
-                
-                StarSystem departure = systems.get(rand.nextInt(maxInt));
-                StarSystem arrival = systems.get(rand.nextInt(maxInt));
-                
-                double distance = MathUtils.getDistance(departure.getX(), departure.getY(), arrival.getX(), arrival.getY());
-                
-                ShipRoute newRoute = new ShipRoute(ships.get(i), departure, arrival, distance, 0);
-                universeManager.addShipRoute(newRoute);
-                
-            } catch (Exception ex) {
-                System.out.println("UniverseGenerator - ships: " + ex.getMessage());
+            List<Ship> ships = centralAI.getShips();
+            List<Star> systems = new ArrayList<>(universeManager.getStars().values());
+            int maxInt = systems.size();
+            for (int i = 0; i < ships.size() ; i++) {
+                    rand.setSeed(System.currentTimeMillis());
+                    Thread.sleep((long) 1);
+
+                    Star departure = systems.get(rand.nextInt(maxInt));
+                    Star arrival = systems.get(rand.nextInt(maxInt));
+
+                    double distance = MathUtils.getDistance(departure.getX(), departure.getY(), arrival.getX(), arrival.getY());
+
+                    Route newRoute = new Route(ships.get(i), departure, arrival, distance, 0);
+                    universeManager.addRoute(newRoute);
             }
+        
+        } catch (Exception ex) {
+            System.out.println("UniverseGenerator - systems: " + ex.getMessage());
         }
         
         return true;

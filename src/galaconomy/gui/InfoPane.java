@@ -3,7 +3,7 @@ package galaconomy.gui;
 import galaconomy.constants.Constants;
 import galaconomy.universe.IEngineSubscriber;
 import galaconomy.universe.UniverseManager;
-import galaconomy.universe.systems.StarSystem;
+import galaconomy.universe.systems.Star;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.DisplayUtils;
 import javafx.geometry.Insets;
@@ -37,7 +37,7 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
         
         dscrText = new TextArea();
         dscrText.setMaxWidth(width);
-        dscrText.setPrefRowCount(4);
+        dscrText.setPrefRowCount(7);
         dscrText.setWrapText(true);
         dscrText.setEditable(false);
         dscrText.getStyleClass().add("pane-info-dscr");
@@ -51,7 +51,7 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
         imgView.getStyleClass().add("pane-info-img");
         super.getChildren().add(imgView);
         AnchorPane.setLeftAnchor(imgView, 5d);
-        AnchorPane.setTopAnchor(imgView, 150d);
+        AnchorPane.setTopAnchor(imgView, 205d);
         
         stellarTimeText = new Label();
         stellarTimeText.setMaxWidth(width);
@@ -68,7 +68,7 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
         resetMapInfo();
     }
     
-    public void loadSystemInfo(StarSystem system) {
+    public void loadSystemInfo(Star system) {
         if (system != null) {
             nameText.setText(system.getName());
             dscrText.setText(system.getDscr());
@@ -80,13 +80,14 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
         }
     }
 
-    public void loadRouteInfo(ShipRoute route) {
+    public void loadRouteInfo(Route route) {
         if (route != null) {
             Ship ship = route.getShip();
-            StarSystem deparature = route.getDeparture();
-            StarSystem arrival = route.getArrival();
+            Star deparature = route.getDeparture();
+            Star arrival = route.getArrival();
             
             StringBuilder routeDscr = new StringBuilder();
+            routeDscr.append("Owner: ").append(ship.getOwners().get(ship.getOwners().size() - 1).getName()).append("\n");
             routeDscr.append("Speed: ").append(ship.getSpeed()).append("\n");
             routeDscr.append("Dep: ").append(deparature.getName()).append(DisplayUtils.getCoordinates(deparature.getX(), deparature.getY())).append("\n");
             routeDscr.append("Arr: ").append(arrival.getName()).append(DisplayUtils.getCoordinates(arrival.getX(), arrival.getY())).append("\n");

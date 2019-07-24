@@ -32,8 +32,8 @@ public class Galaconomy extends Application {
             UniverseManager universe = UniverseManager.getInstance();
             UniverseGenerator.generate(universe);
             
-            map.paintUniverseMap(new ArrayList<>(universe.getStarSystems().values()));
-            map.paintShipRoutes(universe.getShipRoutes());
+            map.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
+            map.paintShipRoutes(universe.getRoutes());
             
             universe.registerSubscriber(info);
             universe.registerSubscriber(map);
