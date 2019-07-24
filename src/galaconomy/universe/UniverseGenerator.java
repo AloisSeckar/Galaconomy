@@ -16,6 +16,13 @@ public class UniverseGenerator {
     public static boolean generate(UniverseManager universeManager) {
         universeManager.resetUniverse();
         
+        try {
+            StarSystem sicopiaSystem = new StarSystem("Sicopia", "Home world", Constants.STARS_FOLDER + "sicopia.jpg", Color.ORANGE, 45, 45);
+            universeManager.addStarSystem(sicopiaSystem);
+        } catch (Exception ex) {
+            System.out.println("UniverseGenerator - systems: " + ex.getMessage());
+        }
+        
         Random rand = new Random(8472); 
         
         List<String> names = DBManager.getInstance().getAvailableStarNames();
