@@ -16,7 +16,7 @@ public class UniverseManager {
     private long stellarTime = 100000;
     private double engineDuration = 1;
     
-    private final List<StarSystem> starSystems = new ArrayList<>();
+    private final Map<String, StarSystem> starSystems = new HashMap<>();
     private final List<Ship> ships = new ArrayList<>();
     private final List<ShipRoute> shipRoutes = new ArrayList<>();
     private final List<ShipRoute> shipRoutesHistory = new ArrayList<>();
@@ -32,12 +32,16 @@ public class UniverseManager {
         return INSTANCE;
     }
     
-    public List<StarSystem> getStarSystems() {
-        return Collections.unmodifiableList(starSystems);
+    public Map<String, StarSystem> getStarSystems() {
+        return Collections.unmodifiableMap(starSystems);
     }
     
-    public boolean addStarSystem(StarSystem newSystem) {
-        return starSystems.add(newSystem);
+    public StarSystem findStarSystem(String systemName) {
+        return starSystems.get(systemName);
+    }
+    
+    public void addStarSystem(StarSystem newSystem) {
+        starSystems.put(newSystem.getName(), newSystem);
     }
 
     public List<Ship> getShips() {

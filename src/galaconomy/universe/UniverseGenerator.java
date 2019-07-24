@@ -61,7 +61,7 @@ public class UniverseGenerator {
         universeManager.addShip(new Ship("GLS Epsilon", "Test ship 5",  Constants.SHIPS_FOLDER + "ship05.jpg", 1.85d));
         
         List<Ship> ships = universeManager.getShips();
-        List<StarSystem> systems = universeManager.getStarSystems();
+        List<StarSystem> systems = new ArrayList<>(universeManager.getStarSystems().values());
         int maxInt = systems.size();
         for (int i = 0; i < ships.size() ; i++) {
             try {

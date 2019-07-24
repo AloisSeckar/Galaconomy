@@ -3,6 +3,7 @@ package galaconomy;
 import galaconomy.constants.Constants;
 import galaconomy.gui.*;
 import galaconomy.universe.*;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.*;
 import javafx.scene.*;
@@ -31,7 +32,7 @@ public class Galaconomy extends Application {
             UniverseManager universe = UniverseManager.getInstance();
             UniverseGenerator.generate(universe);
             
-            map.paintUniverseMap(universe.getStarSystems());
+            map.paintUniverseMap(new ArrayList<>(universe.getStarSystems().values()));
             map.paintShipRoutes(universe.getShipRoutes());
             
             universe.registerSubscriber(info);
