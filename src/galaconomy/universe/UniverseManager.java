@@ -1,9 +1,11 @@
 package galaconomy.universe;
 
+import galaconomy.constants.Constants;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.player.PlayerManager;
 import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
+import java.awt.Color;
 import java.util.*;
 import javafx.animation.*;
 import javafx.util.Duration;
@@ -18,11 +20,16 @@ public class UniverseManager {
     private long stellarTime = 100000;
     private double engineDuration = 1;
     
+    private Player player;
+    private final Map<String, Player> aiPlayers = new HashMap<>();
+    
     private final Map<String, Star> stars = new HashMap<>();
-    private final Map<String, Player> players = new HashMap<>();
     private final List<Route> routes = new ArrayList<>();
     
     private UniverseManager() {
+        
+        player = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, false);
+            
         initEngineInstance();
     }
     
@@ -44,17 +51,25 @@ public class UniverseManager {
     public void addStar(Star newStar) {
         stars.put(newStar.displayName(), newStar);
     }
-    
-    public Map<String, Player> getPlayers() {
-        return players;
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void updatePlayer(Player player) {
+        this.player = player;
     }
     
-    public Player findPlayer(String playerName) {
-        return players.get(playerName);
+    public Map<String, Player> getAIPlayers() {
+        return aiPlayers;
     }
     
-    public void addPlayer(Player newPlayer) {
-        players.put(newPlayer.displayName(), newPlayer);
+    public Player findAIPlayer(String playerName) {
+        return aiPlayers.get(playerName);
+    }
+    
+    public void addAIPlayer(Player newPlayer) {
+        aiPlayers.put(newPlayer.displayName(), newPlayer);
     }
 
     public List<Route> getRoutes() {
@@ -65,7 +80,7 @@ public class UniverseManager {
         stopEngine();
         
         stars.clear();
-        players.clear();
+        aiPlayers.clear();
         routes.clear();
         
         stellarTime = 100000;
@@ -159,7 +174,7 @@ public class UniverseManager {
     }
     
     private void rethinkRoutes() {
-        List<Route> newRoutes = PlayerManager.rethinkRoutes(players);
+        List<Route> newRoutes = PlayerManager.rethinkRoutes(aiPlayers);
         for (Route newRoute : newRoutes) {
             routes.add(newRoute);
         }

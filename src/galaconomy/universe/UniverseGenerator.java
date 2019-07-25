@@ -17,11 +17,8 @@ public class UniverseGenerator {
         try {
             universeManager.resetUniverse();
         
-            Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.jpg", Color.CYAN, true);
-            universeManager.addPlayer(centralAI);
-            
-            Player player = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.jpg", Color.GREEN, false);
-            universeManager.addPlayer(player);
+            Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, true);
+            universeManager.addAIPlayer(centralAI);
             
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "sicopia.jpg", Color.ORANGE, 45, 45);
             universeManager.addStar(sicopiaSystem);

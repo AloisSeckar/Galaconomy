@@ -24,6 +24,7 @@ public class Galaconomy extends Application {
         
         InfoPane info = new InfoPane(SIDE_PANEL_X);
         MapPane map = new MapPane(SCREEN_X, SCREEN_Y, info);
+        PlayerPane player = new PlayerPane();
         
         HBox menu = new HBox();
         
@@ -35,6 +36,8 @@ public class Galaconomy extends Application {
             map.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
             map.paintShipRoutes(universe.getRoutes());
             
+            player.displayPlayer();
+            
             universe.registerSubscriber(info);
             universe.registerSubscriber(map);
             universe.startEngine();
@@ -43,8 +46,9 @@ public class Galaconomy extends Application {
         gameLayout.setTop(menu);
         gameLayout.setCenter(map);
         gameLayout.setRight(info);
+        gameLayout.setBottom(player);
 
-        Scene scene = new Scene(gameLayout, SCREEN_X + SIDE_PANEL_X + 20, SCREEN_Y + 50);
+        Scene scene = new Scene(gameLayout, SCREEN_X + SIDE_PANEL_X + 20, SCREEN_Y + 50 + 135);
         scene.getStylesheets().add(getClass().getResource(Constants.FOLDER_CSS + "galaconomy.css").toExternalForm());
         
         primaryStage.setTitle("Galaconomy 0.1");
