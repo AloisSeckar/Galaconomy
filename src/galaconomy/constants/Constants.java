@@ -2,6 +2,8 @@ package galaconomy.constants;
 
 public class Constants {
     
+    public static final long PLAYER_MONEY = 10000;
+    
     public static final int MAX_X = 98;
     public static final int MAX_Y = 78;
     

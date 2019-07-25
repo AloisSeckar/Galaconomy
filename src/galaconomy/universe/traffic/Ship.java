@@ -1,15 +1,18 @@
 package galaconomy.universe.traffic;
 
+import galaconomy.universe.IDisplayable;
 import galaconomy.universe.player.Player;
+import galaconomy.utils.DisplayUtils;
 import java.util.*;
 
-public class Ship {
+public class Ship implements IDisplayable {
     
     private final String name;
     private final String dscr; 
     private final String img; 
     private final double speed; 
     
+    private Player currentOwner = null;
     private final List<Player> owners = new ArrayList<>();
     private final List<Route> routes = new ArrayList<>();
 
@@ -19,16 +22,33 @@ public class Ship {
         this.img = img;
         this.speed = speed;
     }
-
-    public String getName() {
+    
+    @Override
+    public String displayName() {
         return name;
     }
 
-    public String getDscr() {
-        return dscr;
+    @Override
+    public String displayDscr() {
+        StringBuilder shipDscr = new StringBuilder();
+        
+        shipDscr.append(dscr).append("\n\n");
+                
+        shipDscr.append("Owner: ");
+        if (currentOwner != null) {
+            shipDscr.append(currentOwner.displayName());
+        } else {
+            shipDscr.append("N/A");
+        }
+        shipDscr.append("\n");
+        
+        shipDscr.append("Speed: ").append(DisplayUtils.formatDouble(speed)).append("\n");
+        
+        return shipDscr.toString();
     }
 
-    public String getImg() {
+    @Override
+    public String getImage() {
         return img;
     }
 
@@ -41,7 +61,8 @@ public class Ship {
     }
     
     public void addOwner(Player newOwner) {
-        owners.add(newOwner);
+        owners.add(0, newOwner);
+        currentOwner = newOwner;
     }
 
     public List<Route> getRoutes() {
@@ -49,6 +70,7 @@ public class Ship {
     }
     
     public void addRoute(Route newRoute) {
-        routes.add(newRoute);
+        routes.add(0, newRoute);
     }
+
 }

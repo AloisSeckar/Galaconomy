@@ -41,7 +41,7 @@ public class UniverseManager {
     }
     
     public void addStar(Star newStar) {
-        stars.put(newStar.getName(), newStar);
+        stars.put(newStar.displayName(), newStar);
     }
     
     public Map<String, Player> getPlayers() {
@@ -53,7 +53,7 @@ public class UniverseManager {
     }
     
     public void addPlayer(Player newPlayer) {
-        players.put(newPlayer.getName(), newPlayer);
+        players.put(newPlayer.displayName(), newPlayer);
     }
 
     public List<Route> getRoutes() {
@@ -160,7 +160,7 @@ public class UniverseManager {
             if (route.isFinished()) {
                 finishedRoutes.add(route);
                 route.getShip().addRoute(route);
-                System.out.println(route.getShip().getName() + " arrived in " + route.getArrival().getName() + " system");
+                System.out.println(route.getShip().displayName() + " arrived in " + route.getArrival().displayName() + " system");
             }
         }
         for (Route finishedRoute : finishedRoutes) {

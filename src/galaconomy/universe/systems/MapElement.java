@@ -1,10 +1,11 @@
 package galaconomy.universe.systems;
 
 import galaconomy.constants.Constants;
+import galaconomy.universe.IDisplayable;
 import java.awt.Color;
 import javafx.scene.paint.Paint;
 
-public abstract class MapElement {
+public abstract class MapElement implements IDisplayable {
     
     private final String name;
     private final String dscr; 
@@ -51,20 +52,19 @@ public abstract class MapElement {
         }
     }
 
-    public String getName() {
+    @Override
+    public String displayName() {
         return name;
     }
 
-    public String getDscr() {
+    @Override
+    public String displayDscr() {
         return dscr;
     }
 
-    public String getImg() {
+    @Override
+    public String getImage() {
         return img;
-    }
-
-    public Color getColor() {
-        return color;
     }
     
     public Paint getFXColor() {

@@ -1,15 +1,10 @@
 package galaconomy.gui;
 
 import galaconomy.constants.Constants;
-import galaconomy.universe.IEngineSubscriber;
-import galaconomy.universe.UniverseManager;
-import galaconomy.universe.systems.Star;
-import galaconomy.universe.traffic.*;
-import galaconomy.utils.DisplayUtils;
+import galaconomy.universe.*;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -21,6 +16,8 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
     private final Label stellarTimeText;
     
     private final EngineSpeedPane engineSpeed;
+    
+    private IDisplayable elementToDisplay;
     
     public InfoPane(int width) {
         super.setMinWidth(width + 20);
@@ -65,55 +62,49 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
         AnchorPane.setLeftAnchor(engineSpeed, 5d);
         AnchorPane.setBottomAnchor(engineSpeed, 45d);
         
-        resetMapInfo();
-    }
-    
-    public void loadSystemInfo(Star system) {
-        if (system != null) {
-            nameText.setText(system.getName());
-            dscrText.setText(system.getDscr());
-            
-            Image systemImg = new Image(getClass().getResourceAsStream(system.getImg()));
-            imgView.setImage(systemImg);     
-        } else {
-            resetMapInfo();
-        }
+        setElementToDisplay(new VoidElement());
     }
 
-    public void loadRouteInfo(Route route) {
-        if (route != null) {
-            Ship ship = route.getShip();
-            Star deparature = route.getDeparture();
-            Star arrival = route.getArrival();
-            
-            StringBuilder routeDscr = new StringBuilder();
-            routeDscr.append("Owner: ").append(ship.getOwners().get(ship.getOwners().size() - 1).getName()).append("\n");
-            routeDscr.append("Speed: ").append(ship.getSpeed()).append("\n");
-            routeDscr.append("Dep: ").append(deparature.getName()).append(DisplayUtils.getCoordinates(deparature.getX(), deparature.getY())).append("\n");
-            routeDscr.append("Arr: ").append(arrival.getName()).append(DisplayUtils.getCoordinates(arrival.getX(), arrival.getY())).append("\n");
-            routeDscr.append("Distance: ").append(String.format("%.2f", route.getDistanceTotal())).append("\n");
-            routeDscr.append("Elapsed: ").append(String.format("%.2f", route.getDistanceElapsed())).append("\n");
-            
-            nameText.setText(ship.getName());
-            dscrText.setText(routeDscr.toString());
-            
-            Image shipImg = new Image(getClass().getResourceAsStream(ship.getImg()));
-            imgView.setImage(shipImg);     
-        } else {
-            resetMapInfo();
-        }
-    }
-
-    private void resetMapInfo() {
-        nameText.setText("Galaconomy");
-        dscrText.setText("Click onto map element to see details");
-        
-        Image defaultImg = new Image(getClass().getResourceAsStream(Constants.FOLDER_IMG + "galaconomy.png"));
-        imgView.setImage(defaultImg);
+    public final void setElementToDisplay(IDisplayable elementToDisplay) {
+        this.elementToDisplay = elementToDisplay;
+        reloadInfoPanel();
     }
 
     @Override
     public void engineTaskFinished(long stellarTime) {
         stellarTimeText.setText(String.valueOf(stellarTime));
+        reloadInfoPanel();
     }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    private void reloadInfoPanel() {
+        if (elementToDisplay != null) {
+            nameText.setText(elementToDisplay.displayName());
+            dscrText.setText(elementToDisplay.displayDscr());
+
+            Image defaultImg = new Image(getClass().getResourceAsStream(elementToDisplay.getImage()));
+            imgView.setImage(defaultImg);
+        } else {
+            setElementToDisplay(new VoidElement());
+        }
+    }
+    
+    private class VoidElement implements IDisplayable {
+        @Override
+        public String displayName() {
+            return "Galaconomy";
+        }
+
+        @Override
+        public String displayDscr() {
+            return "Click onto map element to see details";
+        }
+
+        @Override
+        public String getImage() {
+            return Constants.FOLDER_IMG + "galaconomy.png";
+        }
+    }
+    
 }

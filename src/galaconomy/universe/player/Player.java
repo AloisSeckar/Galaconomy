@@ -1,30 +1,42 @@
 package galaconomy.universe.player;
 
+import galaconomy.constants.Constants;
+import galaconomy.universe.IDisplayable;
 import galaconomy.universe.traffic.Ship;
 import java.util.*;
 import java.awt.Color;
 
-public class Player {
+public class Player implements IDisplayable {
     
     private final String name;
+    private final String dscr;
     private final String img;
     private final Color color;
     
-    private long credits = 10000;
+    private long credits;
     
     private final List<Ship> ships = new ArrayList<>();
 
-    public Player(String name, String img,  Color color) {
+    public Player(String name, String dscr, String img,  Color color) {
         this.name = name;
+        this.dscr = dscr;
         this.img = img;
         this.color = color;
+        this.credits = Constants.PLAYER_MONEY;
     }
 
-    public String getName() {
+    @Override
+    public String displayName() {
         return name;
     }
 
-    public String getImg() {
+    @Override
+    public String displayDscr() {
+        return dscr;
+    }
+
+    @Override
+    public String getImage() {
         return img;
     }
     

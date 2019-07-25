@@ -44,7 +44,7 @@ public class MapPane extends AnchorPane implements IEngineSubscriber {
             star.setFill(system.getFXColor());
             
             star.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.loadSystemInfo(system);
+                infoPaneReference.setElementToDisplay(system);
             });
             
             this.getChildren().add(star);
@@ -84,7 +84,7 @@ public class MapPane extends AnchorPane implements IEngineSubscriber {
             routeLine.setEndY(fitCoordIntoDisplay(arrival.getY()));
             
             routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.loadRouteInfo(route);
+                infoPaneReference.setElementToDisplay(route);
             });
             
             this.getChildren().add(routeLine);
@@ -96,7 +96,7 @@ public class MapPane extends AnchorPane implements IEngineSubscriber {
             ship.setFill(Color.DARKMAGENTA);
             
             ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.loadRouteInfo(route);
+                infoPaneReference.setElementToDisplay(route);
             });
             
             this.getChildren().add(ship);

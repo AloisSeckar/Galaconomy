@@ -18,7 +18,7 @@ public class UniverseGenerator {
         try {
             universeManager.resetUniverse();
         
-            Player centralAI = new Player("GLS AI", Constants.PLAYERS_FOLDER + "player00.jpg", Color.CYAN);
+            Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.jpg", Color.CYAN);
             universeManager.addPlayer(centralAI);
             
             centralAI.addShip(new Ship("GLS Alpha", "Test ship 1", Constants.SHIPS_FOLDER + "ship01.jpg", 2d));
@@ -27,7 +27,7 @@ public class UniverseGenerator {
             centralAI.addShip(new Ship("GLS Delta", "Test ship 4",  Constants.SHIPS_FOLDER + "ship04.jpg", 2.25d));
             centralAI.addShip(new Ship("GLS Epsilon", "Test ship 5",  Constants.SHIPS_FOLDER + "ship05.jpg", 1.85d));
             
-            Player player = new Player("Human player", Constants.PLAYERS_FOLDER + "player01.jpg", Color.GREEN);
+            Player player = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.jpg", Color.GREEN);
             universeManager.addPlayer(player);
             
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "sicopia.jpg", Color.ORANGE, 45, 45);
@@ -50,7 +50,7 @@ public class UniverseGenerator {
 
                 int numberOfPlanets = rand.nextInt(13);
                 for (int j = 1; j <= numberOfPlanets; j++) {
-                    String planetName = newStar.getName() + " " + getPlanetOrder(j);
+                    String planetName = newStar.displayName()+ " " + getPlanetOrder(j);
                     String planetImg = Constants.PLANETS_FOLDER + "planet" + getRandomImageOrder(rand, PLANETS) + ".jpg";
 
                     newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y)));
@@ -72,7 +72,7 @@ public class UniverseGenerator {
 
                     double distance = MathUtils.getDistance(departure.getX(), departure.getY(), arrival.getX(), arrival.getY());
 
-                    Route newRoute = new Route(ships.get(i), departure, arrival, distance, 0);
+                    Route newRoute = new Route(ships.get(i), departure, arrival, distance);
                     universeManager.addRoute(newRoute);
             }
         
