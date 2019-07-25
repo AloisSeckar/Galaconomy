@@ -12,7 +12,7 @@ public class Star extends MapElement {
     }
 
     public List<StellarObject> getStellarObjects() {
-        return Collections.unmodifiableList(stellarObjects);
+        return stellarObjects;
     }
     
     public boolean addStellarObject(StellarObject newObject) {

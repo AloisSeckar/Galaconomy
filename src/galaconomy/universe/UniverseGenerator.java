@@ -5,7 +5,6 @@ import galaconomy.db.DBManager;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
-import galaconomy.utils.MathUtils;
 import java.awt.Color;
 import java.util.*;
 
@@ -18,20 +17,20 @@ public class UniverseGenerator {
         try {
             universeManager.resetUniverse();
         
-            Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.jpg", Color.CYAN);
+            Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.jpg", Color.CYAN, true);
             universeManager.addPlayer(centralAI);
             
-            centralAI.addShip(new Ship("GLS Alpha", "Test ship 1", Constants.SHIPS_FOLDER + "ship01.jpg", 2d));
-            centralAI.addShip(new Ship("GLS Beta", "Test ship 2",  Constants.SHIPS_FOLDER + "ship02.jpg", 1.7d));
-            centralAI.addShip(new Ship("GLS Gama", "Test ship 3",  Constants.SHIPS_FOLDER + "ship03.jpg", 4d));
-            centralAI.addShip(new Ship("GLS Delta", "Test ship 4",  Constants.SHIPS_FOLDER + "ship04.jpg", 2.25d));
-            centralAI.addShip(new Ship("GLS Epsilon", "Test ship 5",  Constants.SHIPS_FOLDER + "ship05.jpg", 1.85d));
-            
-            Player player = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.jpg", Color.GREEN);
+            Player player = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.jpg", Color.GREEN, false);
             universeManager.addPlayer(player);
             
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "sicopia.jpg", Color.ORANGE, 45, 45);
             universeManager.addStar(sicopiaSystem);
+            
+            centralAI.addShip(new Ship("GLS Alpha", "Test ship 1", Constants.SHIPS_FOLDER + "ship01.jpg", 2d, sicopiaSystem));
+            centralAI.addShip(new Ship("GLS Beta", "Test ship 2",  Constants.SHIPS_FOLDER + "ship02.jpg", 1.7d, sicopiaSystem));
+            centralAI.addShip(new Ship("GLS Gama", "Test ship 3",  Constants.SHIPS_FOLDER + "ship03.jpg", 4d, sicopiaSystem));
+            centralAI.addShip(new Ship("GLS Delta", "Test ship 4",  Constants.SHIPS_FOLDER + "ship04.jpg", 2.25d, sicopiaSystem));
+            centralAI.addShip(new Ship("GLS Epsilon", "Test ship 5",  Constants.SHIPS_FOLDER + "ship05.jpg", 1.85d, sicopiaSystem));
         
             Random rand = new Random(8472); 
 
@@ -40,9 +39,6 @@ public class UniverseGenerator {
             int numberOfStars = Math.max(rand.nextInt(names.size() / 2), 15);
 
             for (int i = 0; i < numberOfStars; i++) {
-                rand.setSeed(System.currentTimeMillis());
-                Thread.sleep((long) 1);
-
                 String starName = names.get(rand.nextInt(names.size()));
                 String starImg = Constants.STARS_FOLDER + "star" + getRandomImageOrder(rand, STARS) + ".jpg";
 
@@ -59,25 +55,8 @@ public class UniverseGenerator {
                 universeManager.addStar(newStar);
                 names.remove(starName);
             }
-        
-            List<Ship> ships = centralAI.getShips();
-            List<Star> systems = new ArrayList<>(universeManager.getStars().values());
-            int maxInt = systems.size();
-            for (int i = 0; i < ships.size() ; i++) {
-                    rand.setSeed(System.currentTimeMillis());
-                    Thread.sleep((long) 1);
-
-                    Star departure = systems.get(rand.nextInt(maxInt));
-                    Star arrival = systems.get(rand.nextInt(maxInt));
-
-                    double distance = MathUtils.getDistance(departure.getX(), departure.getY(), arrival.getX(), arrival.getY());
-
-                    Route newRoute = new Route(ships.get(i), departure, arrival, distance);
-                    universeManager.addRoute(newRoute);
-            }
-        
         } catch (Exception ex) {
-            System.out.println("UniverseGenerator - systems: " + ex.getMessage());
+            System.out.println("UniverseGenerator: " + ex.getMessage());
         }
         
         return true;

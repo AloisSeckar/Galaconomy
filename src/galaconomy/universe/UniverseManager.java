@@ -1,6 +1,7 @@
 package galaconomy.universe;
 
 import galaconomy.universe.player.Player;
+import galaconomy.universe.player.PlayerManager;
 import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
 import java.util.*;
@@ -33,7 +34,7 @@ public class UniverseManager {
     }
     
     public Map<String, Star> getStars() {
-        return Collections.unmodifiableMap(stars);
+        return stars;
     }
     
     public Star findStar(String starName) {
@@ -45,7 +46,7 @@ public class UniverseManager {
     }
     
     public Map<String, Player> getPlayers() {
-        return Collections.unmodifiableMap(players);
+        return players;
     }
     
     public Player findPlayer(String playerName) {
@@ -57,11 +58,7 @@ public class UniverseManager {
     }
 
     public List<Route> getRoutes() {
-        return Collections.unmodifiableList(routes);
-    }
-    
-    public boolean addRoute(Route newRoute) {
-        return routes.add(newRoute);
+        return routes;
     }
     
     public void resetUniverse() {
@@ -138,6 +135,7 @@ public class UniverseManager {
                 stellarTime++;
                 
                 recalcRoutes();
+                rethinkRoutes();
 
                 for (IEngineSubscriber subscriber : subscribers) {
                     subscriber.engineTaskFinished(stellarTime);
@@ -154,17 +152,16 @@ public class UniverseManager {
     }
     
     private void recalcRoutes() {
-        List<Route> finishedRoutes = new ArrayList<>();
-        for (Route route : routes) {
-            route.progress();
-            if (route.isFinished()) {
-                finishedRoutes.add(route);
-                route.getShip().addRoute(route);
-                System.out.println(route.getShip().displayName() + " arrived in " + route.getArrival().displayName() + " system");
-            }
-        }
+        List<Route> finishedRoutes = TrafficManager.recalcRoutes(routes);
         for (Route finishedRoute : finishedRoutes) {
             routes.remove(finishedRoute);
+        }
+    }
+    
+    private void rethinkRoutes() {
+        List<Route> newRoutes = PlayerManager.rethinkRoutes(players);
+        for (Route newRoute : newRoutes) {
+            routes.add(newRoute);
         }
     }
 }

@@ -2,6 +2,7 @@ package galaconomy.universe.traffic;
 
 import galaconomy.universe.IDisplayable;
 import galaconomy.universe.player.Player;
+import galaconomy.universe.systems.Star;
 import galaconomy.utils.DisplayUtils;
 import java.util.*;
 
@@ -12,15 +13,21 @@ public class Ship implements IDisplayable {
     private final String img; 
     private final double speed; 
     
+    private boolean idle;
+    private Star location;
+    
     private Player currentOwner = null;
     private final List<Player> owners = new ArrayList<>();
     private final List<Route> routes = new ArrayList<>();
 
-    public Ship(String name, String dscr, String img, double speed) {
+    public Ship(String name, String dscr, String img, double speed, Star location) {
         this.name = name;
         this.dscr = dscr;
         this.img = img;
         this.speed = speed;
+        this.location = location;
+        
+        this.idle = true;
     }
     
     @Override
@@ -56,8 +63,12 @@ public class Ship implements IDisplayable {
         return speed;
     }
 
+    public Player getCurrentOwner() {
+        return currentOwner;
+    }
+
     public List<Player> getOwners() {
-        return Collections.unmodifiableList(owners);
+        return owners;
     }
     
     public void addOwner(Player newOwner) {
@@ -66,11 +77,26 @@ public class Ship implements IDisplayable {
     }
 
     public List<Route> getRoutes() {
-        return Collections.unmodifiableList(routes);
+        return routes;
     }
     
     public void addRoute(Route newRoute) {
         routes.add(0, newRoute);
     }
 
+    public boolean isIdle() {
+        return idle;
+    }
+
+    public void setIdle(boolean idle) {
+        this.idle = idle;
+    }
+
+    public Star getLocation() {
+        return location;
+    }
+
+    public void setLocation(Star location) {
+        this.location = location;
+    }
 }

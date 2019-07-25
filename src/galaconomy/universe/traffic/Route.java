@@ -15,6 +15,7 @@ public class Route implements IDisplayable {
     private double distanceElapsed;
     
     private final long eta;
+    private final long started;
     private long finished;
 
     public Route(Ship ship, Star departure, Star arrival, double distanceTotal) {
@@ -24,9 +25,13 @@ public class Route implements IDisplayable {
         this.distanceTotal = distanceTotal;
         
         this.distanceElapsed = 0;
+        this.started = UniverseManager.getInstance().getStellarTime();
         this.finished = -1;
         
-        this.eta = UniverseManager.getInstance().getStellarTime() + new Double(Math.ceil(distanceTotal / ship.getSpeed())).intValue();
+        this.eta = started + new Double(Math.ceil(distanceTotal / ship.getSpeed())).intValue();
+        
+        this.ship.setIdle(false);
+        this.ship.setLocation(null);
     }
 
     @Override
@@ -84,6 +89,8 @@ public class Route implements IDisplayable {
         if (distanceElapsed > distanceTotal) {
             distanceElapsed = distanceTotal;
             finished = UniverseManager.getInstance().getStellarTime();
+            ship.setIdle(true);
+            ship.setLocation(arrival);
         }
     }
     
