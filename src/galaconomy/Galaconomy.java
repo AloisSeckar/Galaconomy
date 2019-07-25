@@ -24,7 +24,7 @@ public class Galaconomy extends Application {
         
         InfoPane info = new InfoPane(SIDE_PANEL_X);
         MapPane map = new MapPane(SCREEN_X, SCREEN_Y, info);
-        PlayerPane player = new PlayerPane();
+        PlayerPane player = new PlayerPane(info);
         
         HBox menu = new HBox();
         

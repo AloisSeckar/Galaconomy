@@ -4,6 +4,12 @@ public class Constants {
     
     public static final long PLAYER_MONEY = 10000;
     
+    
+    public static final int AVAILABLE_PLANETS = 42;
+    public static final int AVAILABLE_PLAYERS = 8;
+    public static final int AVAILABLE_SHIPS = 5;
+    public static final int AVAILABLE_STARS = 20;
+    
     public static final int MAX_X = 98;
     public static final int MAX_Y = 78;
     

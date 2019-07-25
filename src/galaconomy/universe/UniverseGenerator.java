@@ -10,8 +10,6 @@ import java.util.*;
 
 public class UniverseGenerator {
     
-    private static final int STARS = 20;
-    private static final int PLANETS = 42;
     
     public static boolean generate(UniverseManager universeManager) {
         try {
@@ -37,14 +35,14 @@ public class UniverseGenerator {
 
             for (int i = 0; i < numberOfStars; i++) {
                 String starName = names.get(rand.nextInt(names.size()));
-                String starImg = Constants.STARS_FOLDER + "star" + getRandomImageOrder(rand, STARS) + ".jpg";
+                String starImg = Constants.STARS_FOLDER + "star" + UniverseUtils.getRandomImageOrder(rand, Constants.AVAILABLE_STARS) + ".jpg";
 
                 Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y));
 
                 int numberOfPlanets = rand.nextInt(13);
                 for (int j = 1; j <= numberOfPlanets; j++) {
                     String planetName = newStar.displayName()+ " " + getPlanetOrder(j);
-                    String planetImg = Constants.PLANETS_FOLDER + "planet" + getRandomImageOrder(rand, PLANETS) + ".jpg";
+                    String planetImg = Constants.PLANETS_FOLDER + "planet" + UniverseUtils.getRandomImageOrder(rand, Constants.AVAILABLE_PLANETS) + ".jpg";
 
                     newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y)));
                 }
@@ -137,17 +135,4 @@ public class UniverseGenerator {
         
         return ret;
     }
-
-    private static String getRandomImageOrder(Random rand, int options) {
-        String ret = "";
-        
-        int randValue = rand.nextInt(options) + 1;
-        if (randValue < 10) {
-            ret += "0";
-        }
-        ret += String.valueOf(randValue);
-        
-        return ret;
-    }
-    
 }
