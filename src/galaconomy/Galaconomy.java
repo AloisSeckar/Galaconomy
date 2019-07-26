@@ -28,8 +28,8 @@ public class Galaconomy extends Application {
         
         HBox menu = new HBox();
         
-        Button btn = new Button("Generate universe");
-        btn.setOnAction((ActionEvent event) -> {
+        Button newUniverseBtn = new Button("Generate universe");
+        newUniverseBtn.setOnAction((ActionEvent event) -> {
             UniverseManager universe = UniverseManager.getInstance();
             UniverseGenerator.generate(universe);
             
@@ -42,7 +42,41 @@ public class Galaconomy extends Application {
             universe.registerSubscriber(map);
             universe.startEngine();
         });
-        menu.getChildren().add(btn);
+        menu.getChildren().add(newUniverseBtn);
+        
+        
+        Button saveUniverseBtn = new Button("Save universe");
+        saveUniverseBtn.setOnAction((ActionEvent event) -> {
+            boolean saved = UniverseManager.saveUniverse("galaconomy.sav");
+            
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setContentText(saved ? "Saved" : "Failed");
+            a.show();
+        });
+        menu.getChildren().add(saveUniverseBtn);
+        
+        Button loadUniverseBtn = new Button("Load universe");
+        loadUniverseBtn.setOnAction((ActionEvent event) -> {
+            boolean loaded = UniverseManager.loadUniverse("galaconomy.sav");
+            
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setContentText(loaded ? "Loaded" : "Failed");
+            a.show();
+            
+            if (loaded) {
+                UniverseManager universe = UniverseManager.getInstance();
+                map.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
+                map.paintShipRoutes(universe.getRoutes());
+
+                player.displayPlayer();
+
+                universe.registerSubscriber(info);
+                universe.registerSubscriber(map);
+                universe.startEngine();
+            }
+        });
+        menu.getChildren().add(loadUniverseBtn);
+        
         gameLayout.setTop(menu);
         gameLayout.setCenter(map);
         gameLayout.setRight(info);

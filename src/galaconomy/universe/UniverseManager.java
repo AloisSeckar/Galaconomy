@@ -1,16 +1,16 @@
 package galaconomy.universe;
 
 import galaconomy.constants.Constants;
-import galaconomy.universe.player.Player;
-import galaconomy.universe.player.PlayerManager;
+import galaconomy.universe.player.*;
 import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
 import java.awt.Color;
+import java.io.*;
 import java.util.*;
 import javafx.animation.*;
 import javafx.util.Duration;
 
-public class UniverseManager {
+public class UniverseManager implements Serializable {
     
     private static UniverseManager INSTANCE;
     private final List<IEngineSubscriber> subscribers = new ArrayList<>();
@@ -27,10 +27,9 @@ public class UniverseManager {
     private final List<Route> routes = new ArrayList<>();
     
     private UniverseManager() {
-        
         player = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, false);
-            
-        initEngineInstance();
+        
+        setUpEngine();
     }
     
     public static UniverseManager getInstance() {
@@ -38,6 +37,43 @@ public class UniverseManager {
             INSTANCE = new UniverseManager();
         }
         return INSTANCE;
+    }
+    
+    public static boolean saveUniverse(String path) {
+        boolean ret = false;
+        
+        try {
+            try (FileOutputStream f = new FileOutputStream(new File(path)); ObjectOutputStream o = new ObjectOutputStream(f)) {
+                INSTANCE.tearDownEngine();
+                
+                o.writeObject(INSTANCE);
+            }
+
+            ret = true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return ret;
+    }
+    
+    public static boolean loadUniverse(String path) {
+        boolean ret = false;
+        
+        try {
+            try (FileInputStream fi = new FileInputStream(new File(path)); ObjectInputStream oi = new ObjectInputStream(fi)) {
+                INSTANCE = (UniverseManager) oi.readObject();
+                
+                INSTANCE.setUpEngine();
+            }
+
+            ret = true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return ret;
+        
     }
     
     public Map<String, Star> getStars() {
@@ -88,8 +124,8 @@ public class UniverseManager {
     }
     
     public void startEngine() {
-        if (isEngineRunning()) {
-            universeEngine.stop();
+        if (universeEngine == null) {
+            initEngineInstance();
         }
         universeEngine.play();
     }
@@ -138,13 +174,12 @@ public class UniverseManager {
     }
     
     ////////////////////////////////////////////////////////////////////////////
+   
+    private void setUpEngine() {
+        startEngine();
+    }
     
     private void initEngineInstance() {
-        boolean running = isEngineRunning();
-        if (running) {
-            universeEngine.stop();
-        }
-        
         universeEngine = new Timeline(
             new KeyFrame(Duration.seconds(engineDuration), e -> {
                 stellarTime++;
@@ -160,10 +195,12 @@ public class UniverseManager {
             })
         );
         universeEngine.setCycleCount(Timeline.INDEFINITE);
-        
-        if (running) {
-            universeEngine.play();
-        }
+    }
+
+    private void tearDownEngine() {
+        stopEngine();
+        subscribers.clear();
+        universeEngine = null;
     }
     
     private void recalcRoutes() {

@@ -4,9 +4,10 @@ import galaconomy.universe.IDisplayable;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.Star;
 import galaconomy.utils.DisplayUtils;
+import java.io.Serializable;
 import java.util.*;
 
-public class Ship implements IDisplayable {
+public class Ship implements IDisplayable, Serializable {
     
     private final String name;
     private final String dscr; 

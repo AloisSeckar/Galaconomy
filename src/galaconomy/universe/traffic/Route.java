@@ -4,8 +4,9 @@ import galaconomy.universe.IDisplayable;
 import galaconomy.universe.UniverseManager;
 import galaconomy.universe.systems.Star;
 import galaconomy.utils.DisplayUtils;
+import java.io.Serializable;
 
-public class Route implements IDisplayable {
+public class Route implements IDisplayable, Serializable {
     
     private final Ship ship;
     private final Star departure;

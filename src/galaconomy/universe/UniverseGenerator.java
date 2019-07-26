@@ -27,7 +27,7 @@ public class UniverseGenerator {
             centralAI.addShip(new Ship("GLS Delta", "Test ship 4",  Constants.SHIPS_FOLDER + "ship04.jpg", 2.25d, sicopiaSystem));
             centralAI.addShip(new Ship("GLS Epsilon", "Test ship 5",  Constants.SHIPS_FOLDER + "ship05.jpg", 1.85d, sicopiaSystem));
         
-            Random rand = new Random(8472); 
+            Random rand = new Random(System.currentTimeMillis()); 
 
             List<String> names = DBManager.getInstance().getAvailableStarNames();
 

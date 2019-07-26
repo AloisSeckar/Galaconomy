@@ -3,9 +3,10 @@ package galaconomy.universe.systems;
 import galaconomy.constants.Constants;
 import galaconomy.universe.IDisplayable;
 import java.awt.Color;
+import java.io.Serializable;
 import javafx.scene.paint.Paint;
 
-public abstract class MapElement implements IDisplayable {
+public abstract class MapElement implements IDisplayable, Serializable {
     
     private final String name;
     private final String dscr; 

@@ -2,12 +2,12 @@ package galaconomy.universe.player;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.IDisplayable;
-import galaconomy.universe.systems.Star;
 import galaconomy.universe.traffic.Ship;
 import java.util.*;
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Player implements IDisplayable {
+public class Player implements IDisplayable, Serializable {
     
     private final String name;
     private final String dscr;
