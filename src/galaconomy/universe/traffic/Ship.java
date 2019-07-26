@@ -1,6 +1,6 @@
 package galaconomy.universe.traffic;
 
-import galaconomy.universe.IDisplayable;
+import galaconomy.universe.*;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.Star;
 import galaconomy.utils.DisplayUtils;
@@ -10,25 +10,44 @@ import java.util.*;
 public class Ship implements IDisplayable, Serializable {
     
     private final String name;
+    private final String shipClass;
     private final String dscr; 
-    private final String img; 
-    private final double speed; 
+    private final String img;
     
-    private boolean idle;
+    private final int price;
+    private int upkeep;
+    
+    private int hull;
+    private int cargo;
+    private double speed;
+    
+    private final long comissioned;
+    
     private Star location;
     
+    private double mileage = 0;
+    private boolean idle = true;
     private Player currentOwner = null;
+    
     private final List<Player> owners = new ArrayList<>();
     private final List<Route> routes = new ArrayList<>();
 
-    public Ship(String name, String dscr, String img, double speed, Star location) {
+    public Ship(String name, ShipClass shipClass, Star location) {
         this.name = name;
-        this.dscr = dscr;
-        this.img = img;
-        this.speed = speed;
-        this.location = location;
         
-        this.idle = true;
+        this.shipClass = shipClass.getName();
+        this.dscr = shipClass.getDscr();
+        this.img = shipClass.getImage();
+        
+        this.price = shipClass.getPrice();
+        this.upkeep = shipClass.getUpkeep();
+        this.hull = shipClass.getHull();
+        this.cargo = shipClass.getCargo();
+        this.speed = shipClass.getSpeed();
+        
+        this.comissioned = UniverseManager.getInstance().getStellarTime();
+        
+        this.location = location;
     }
     
     @Override
@@ -40,8 +59,6 @@ public class Ship implements IDisplayable, Serializable {
     public String displayDscr() {
         StringBuilder shipDscr = new StringBuilder();
         
-        shipDscr.append(dscr).append("\n\n");
-                
         shipDscr.append("Owner: ");
         if (currentOwner != null) {
             shipDscr.append(currentOwner.displayName());
@@ -50,18 +67,20 @@ public class Ship implements IDisplayable, Serializable {
         }
         shipDscr.append("\n");
         
-        shipDscr.append("Speed: ").append(DisplayUtils.formatDouble(speed)).append("\n");
+        shipDscr.append("Class: ").append(shipClass).append("\n");
+        shipDscr.append("Upkeep: ").append(upkeep).append("\n");
+        shipDscr.append("Hull: ").append(hull).append("\n");
+        shipDscr.append("Cargo: ").append(cargo).append("\n");
+        shipDscr.append("Speed: ").append(DisplayUtils.formatDouble(speed)).append("\n\n");
         
+        shipDscr.append(dscr);
+           
         return shipDscr.toString();
     }
 
     @Override
     public String getImage() {
         return img;
-    }
-
-    public double getSpeed() {
-        return speed;
     }
 
     public Player getCurrentOwner() {
@@ -100,4 +119,54 @@ public class Ship implements IDisplayable, Serializable {
     public void setLocation(Star location) {
         this.location = location;
     }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public long getComissioned() {
+        return comissioned;
+    }
+
+    public int getUpkeep() {
+        return upkeep;
+    }
+
+    public void setUpkeep(int upkeep) {
+        this.upkeep = upkeep;
+    }
+
+    public int getHull() {
+        return hull;
+    }
+
+    public void setHull(int hull) {
+        this.hull = hull;
+    }
+
+    public int getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(int cargo) {
+        this.cargo = cargo;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+    
+    public double getMileage() {
+        return mileage;
+    }
+
+    public void increaseMileage(double distanceElapsed) {
+        this.mileage += mileage;
+    }
+    
+    
 }

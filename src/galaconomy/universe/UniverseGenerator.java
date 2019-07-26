@@ -29,14 +29,14 @@ public class UniverseGenerator {
             
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "sicopia.jpg", Color.ORANGE, 45, 45);
             universeManager.addStar(sicopiaSystem);
-            
-            centralAI.addShip(new Ship("GLS Alpha", "Test ship 1", Constants.SHIPS_FOLDER + "ship01.jpg", 2d, sicopiaSystem));
-            centralAI.addShip(new Ship("GLS Beta", "Test ship 2",  Constants.SHIPS_FOLDER + "ship02.jpg", 1.7d, sicopiaSystem));
-            centralAI.addShip(new Ship("GLS Gama", "Test ship 3",  Constants.SHIPS_FOLDER + "ship03.jpg", 4d, sicopiaSystem));
-            centralAI.addShip(new Ship("GLS Delta", "Test ship 4",  Constants.SHIPS_FOLDER + "ship04.jpg", 2.25d, sicopiaSystem));
-            centralAI.addShip(new Ship("GLS Epsilon", "Test ship 5",  Constants.SHIPS_FOLDER + "ship05.jpg", 1.85d, sicopiaSystem));
         
             Random rand = new Random(System.currentTimeMillis()); 
+            
+            centralAI.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
+            centralAI.addShip(new Ship("GLS Beta", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
+            centralAI.addShip(new Ship("GLS Gama", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
+            centralAI.addShip(new Ship("GLS Delta", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
+            centralAI.addShip(new Ship("GLS Epsilon", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
 
             List<String> names = DBManager.getInstance().getAvailableStarNames();
 

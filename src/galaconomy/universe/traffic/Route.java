@@ -1,7 +1,6 @@
 package galaconomy.universe.traffic;
 
-import galaconomy.universe.IDisplayable;
-import galaconomy.universe.UniverseManager;
+import galaconomy.universe.*;
 import galaconomy.universe.systems.Star;
 import galaconomy.utils.DisplayUtils;
 import java.io.Serializable;
@@ -86,12 +85,17 @@ public class Route implements IDisplayable, Serializable {
     }
     
     public void progress() {
-        this.distanceElapsed += ship.getSpeed();
+        double elapsed = ship.getSpeed();
+        this.distanceElapsed += elapsed;
+        
         if (distanceElapsed > distanceTotal) {
-            distanceElapsed = distanceTotal;
-            finished = UniverseManager.getInstance().getStellarTime();
+            ship.increaseMileage(elapsed - (distanceElapsed - distanceTotal));
             ship.setIdle(true);
             ship.setLocation(arrival);
+            finished = UniverseManager.getInstance().getStellarTime();
+            distanceElapsed = distanceTotal;
+        } else {
+            ship.increaseMileage(elapsed);
         }
     }
     
