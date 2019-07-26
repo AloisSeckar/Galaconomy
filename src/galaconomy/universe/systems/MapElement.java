@@ -55,7 +55,7 @@ public abstract class MapElement implements IDisplayable, Serializable {
 
     @Override
     public String displayName() {
-        return name;
+        return name + " [" + xCoord + ";" + yCoord + "]";
     }
 
     @Override
@@ -81,11 +81,6 @@ public abstract class MapElement implements IDisplayable, Serializable {
 
     public int getY() {
         return yCoord;
-    }
-
-    @Override
-    public String toString() {
-        return name + " [" + xCoord + ";" + yCoord + "]";
     }
     
 }

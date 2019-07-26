@@ -5,8 +5,11 @@ import galaconomy.universe.systems.Star;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.MathUtils;
 import java.util.*;
+import org.slf4j.*;
 
 public class PlayerManager {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(PlayerManager.class);
     
     public static List<Route> rethinkRoutes(Map<String, Player> players) {
         List<Route> newRoutes = new ArrayList<>();
@@ -22,14 +25,13 @@ public class PlayerManager {
                         Star departure = ship.getLocation();
                         int random = rand.nextInt(maxInt);
                         Star arrival = systems.get(random);
-                        System.out.println("Random: " + random + ": " + arrival.displayName());
 
                         double distance = MathUtils.getDistance(departure.getX(), departure.getY(), arrival.getX(), arrival.getY());
 
                         Route newRoute = new Route(ship, departure, arrival, distance);
                         newRoutes.add(newRoute);
 
-                        System.out.println(UniverseManager.getInstance().getStellarTime() + ": " + ship.displayName() + " set off from " + departure.displayName() + " system");
+                        LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + ship.displayName() + " set off from " + departure.displayName() + " system to " + arrival.displayName());
                     }
                 }
             }

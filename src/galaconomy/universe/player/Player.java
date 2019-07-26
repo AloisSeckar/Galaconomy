@@ -6,8 +6,11 @@ import galaconomy.universe.traffic.Ship;
 import java.util.*;
 import java.awt.Color;
 import java.io.Serializable;
+import org.slf4j.*;
 
 public class Player implements IDisplayable, Serializable {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(Player.class);
     
     private final String name;
     private final String dscr;
@@ -54,10 +57,12 @@ public class Player implements IDisplayable, Serializable {
     
     public void earnCredits(long amountEarned) {
         credits += amountEarned;
+        LOG.info("Player " + name + " earned " + amountEarned + " credits [new balance: " + credits + "]");
     }
     
     public void spendCredits(long amountSpent) {
         credits -= amountSpent;
+        LOG.info("Player " + name + " spent " + amountSpent + " credits [new balance: " + credits + "]");
     }
 
     public List<Ship> getShips() {
@@ -65,6 +70,7 @@ public class Player implements IDisplayable, Serializable {
     }
     
     public boolean addShip(Ship newShip) {
+        LOG.info("Player " + name + " acquired new ship " + newShip.displayName());
         newShip.addOwner(Player.this);
         return ships.add(newShip);
     }

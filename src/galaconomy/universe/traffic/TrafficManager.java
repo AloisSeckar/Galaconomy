@@ -2,8 +2,11 @@ package galaconomy.universe.traffic;
 
 import galaconomy.universe.UniverseManager;
 import java.util.*;
+import org.slf4j.*;
 
 public class TrafficManager {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(TrafficManager.class);
     
     public static List<Route> recalcRoutes(List<Route> activeRoutes) {
         List<Route> finishedRoutes = new ArrayList<>();
@@ -13,7 +16,7 @@ public class TrafficManager {
             if (route.isFinished()) {
                 finishedRoutes.add(route);
                 route.getShip().addRoute(route);
-                System.out.println(UniverseManager.getInstance().getStellarTime() + ": " + route.getShip().displayName() + " arrived in " + route.getArrival().displayName() + " system");
+                LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + route.getShip().displayName() + " arrived in " + route.getArrival().displayName() + " system");
             }
         }
         

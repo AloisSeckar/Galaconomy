@@ -7,13 +7,22 @@ import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
 import java.awt.Color;
 import java.util.*;
+import org.slf4j.*;
 
 public class UniverseGenerator {
     
+    private static final Logger LOG = LoggerFactory.getLogger(UniverseGenerator.class);
     
     public static boolean generate(UniverseManager universeManager) {
+        boolean ret = false;
+        
         try {
+            LOG.info("New universe generating started");
+        
             universeManager.resetUniverse();
+            
+            Player humanPlayer = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, false);
+            universeManager.updatePlayer(humanPlayer);
         
             Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, true);
             universeManager.addAIPlayer(centralAI);
@@ -37,100 +46,25 @@ public class UniverseGenerator {
                 String starName = names.get(rand.nextInt(names.size()));
                 String starImg = Constants.STARS_FOLDER + "star" + UniverseUtils.getRandomImageOrder(rand, Constants.AVAILABLE_STARS) + ".jpg";
 
-                Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y));
+                Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, UniverseUtils.getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y));
 
                 int numberOfPlanets = rand.nextInt(13);
                 for (int j = 1; j <= numberOfPlanets; j++) {
-                    String planetName = newStar.displayName()+ " " + getPlanetOrder(j);
+                    String planetName = newStar.displayName()+ " " + UniverseUtils.getPlanetOrder(j);
                     String planetImg = Constants.PLANETS_FOLDER + "planet" + UniverseUtils.getRandomImageOrder(rand, Constants.AVAILABLE_PLANETS) + ".jpg";
 
-                    newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y)));
+                    newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, UniverseUtils.getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y)));
                 }
 
                 universeManager.addStar(newStar);
                 names.remove(starName);
             }
+            
+            LOG.info("New universe generating finished");
+            ret = true;
+            
         } catch (Exception ex) {
-            System.out.println("UniverseGenerator: " + ex.getMessage());
-        }
-        
-        return true;
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////
-
-    private static String getPlanetOrder(int order) {
-        String ret = "Zero";
-        
-        switch (order) {
-            case 1:
-                ret = "Prime";
-                break;
-            case 2:
-                ret = "II";
-                break;
-            case 3:
-                ret = "III";
-                break;
-            case 4:
-                ret = "IV";
-                break;
-            case 5:
-                ret = "V";
-                break;
-            case 6:
-                ret = "VI";
-                break;
-            case 7:
-                ret = "VII";
-                break;
-            case 8:
-                ret = "VIII";
-                break;
-            case 9:
-                ret = "IX";
-                break;
-            case 10:
-                ret = "X";
-                break;
-            case 11:
-                ret = "XI";
-                break;
-            case 12:
-                ret = "XII";
-                break;
-        }
-        
-        return ret;
-    }
-    
-    private static Color getRandomColor(int color) {
-        Color ret = Color.YELLOW;
-        
-        switch (color) {
-            case 1:
-            case 8:
-                ret = Color.WHITE;
-                break;
-            case 2:
-                ret = Color.BLUE;
-                break;
-            case 3:
-                ret = Color.RED;
-                break;
-            case 4:
-            case 9:
-                ret = Color.ORANGE;
-                break;
-            case 5:
-                ret = Color.GREEN;
-                break;
-            case 6:
-                ret = Color.CYAN;
-                break;
-            case 7:
-                ret = Color.MAGENTA;
-                break;
+             LOG.error("UniverseGenerator:generate" + ex.getMessage());
         }
         
         return ret;

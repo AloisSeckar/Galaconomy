@@ -38,7 +38,7 @@ public class EngineSpeedPane extends AnchorPane {
         halfSpeedButton = new Button("|>");
         halfSpeedButton.setMinWidth(BUTTON_WIDTH);
         halfSpeedButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            UniverseManager.getInstance().setEngineDuration(2);
+            UniverseManager.getInstance().setEnginePeriod(2);
             updateText();
         });
         super.getChildren().add(halfSpeedButton);
@@ -48,7 +48,7 @@ public class EngineSpeedPane extends AnchorPane {
         normalSpeedButton = new Button(">");
         normalSpeedButton.setMinWidth(BUTTON_WIDTH);
         normalSpeedButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            UniverseManager.getInstance().setEngineDuration(1);
+            UniverseManager.getInstance().setEnginePeriod(1);
             updateText();
         });
         super.getChildren().add(normalSpeedButton);
@@ -58,7 +58,7 @@ public class EngineSpeedPane extends AnchorPane {
         doubleSpeedButton = new Button(">>");
         doubleSpeedButton.setMinWidth(50);
         doubleSpeedButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            UniverseManager.getInstance().setEngineDuration(0.5d);
+            UniverseManager.getInstance().setEnginePeriod(0.5d);
             updateText();
         });
         super.getChildren().add(doubleSpeedButton);
@@ -71,7 +71,7 @@ public class EngineSpeedPane extends AnchorPane {
     ////////////////////////////////////////////////////////////////////////////
     
     private void updateText() {
-        double engineDuration = UniverseManager.getInstance().getEngineDuration();
+        double engineDuration = UniverseManager.getInstance().getEnginePeriod();
         boolean isPaused = UniverseManager.getInstance().isEnginePaused();
                 
         if (isPaused) {

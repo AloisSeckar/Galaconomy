@@ -2,8 +2,9 @@ package galaconomy.constants;
 
 public class Constants {
     
-    public static final long PLAYER_MONEY = 10000;
+    public static final String PROGRAM_NAME = "Galaconomy 0.1";
     
+    public static final long PLAYER_MONEY = 10000;
     
     public static final int AVAILABLE_PLANETS = 42;
     public static final int AVAILABLE_PLAYERS = 8;

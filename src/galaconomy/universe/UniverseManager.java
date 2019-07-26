@@ -1,16 +1,17 @@
 package galaconomy.universe;
 
-import galaconomy.constants.Constants;
 import galaconomy.universe.player.*;
 import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
-import java.awt.Color;
 import java.io.*;
 import java.util.*;
 import javafx.animation.*;
 import javafx.util.Duration;
+import org.slf4j.*;
 
 public class UniverseManager implements Serializable {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(UniverseManager.class);
     
     private static UniverseManager INSTANCE;
     private final List<IEngineSubscriber> subscribers = new ArrayList<>();
@@ -18,7 +19,7 @@ public class UniverseManager implements Serializable {
     private Timeline universeEngine;
     
     private long stellarTime = 100000;
-    private double engineDuration = 1;
+    private double enginePeriod = 1;
     
     private Player player;
     private final Map<String, Player> aiPlayers = new HashMap<>();
@@ -27,8 +28,6 @@ public class UniverseManager implements Serializable {
     private final List<Route> routes = new ArrayList<>();
     
     private UniverseManager() {
-        player = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, false);
-        
         setUpEngine();
     }
     
@@ -42,16 +41,16 @@ public class UniverseManager implements Serializable {
     public static boolean saveUniverse(String path) {
         boolean ret = false;
         
-        try {
-            try (FileOutputStream f = new FileOutputStream(new File(path)); ObjectOutputStream o = new ObjectOutputStream(f)) {
-                INSTANCE.tearDownEngine();
-                
-                o.writeObject(INSTANCE);
-            }
-
+        try (FileOutputStream f = new FileOutputStream(new File(path)); ObjectOutputStream o = new ObjectOutputStream(f)) {
+            
+            INSTANCE.tearDownEngine();
+            
+            o.writeObject(INSTANCE);
+            
+            LOG.info("Universe saved");
             ret = true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
+            LOG.error("UniverseManager.saveUniverse", ex);
         }
         
         return ret;
@@ -60,16 +59,16 @@ public class UniverseManager implements Serializable {
     public static boolean loadUniverse(String path) {
         boolean ret = false;
         
-        try {
-            try (FileInputStream fi = new FileInputStream(new File(path)); ObjectInputStream oi = new ObjectInputStream(fi)) {
-                INSTANCE = (UniverseManager) oi.readObject();
-                
-                INSTANCE.setUpEngine();
-            }
+        try (FileInputStream fi = new FileInputStream(new File(path)); ObjectInputStream oi = new ObjectInputStream(fi)) {
+            
+            INSTANCE = (UniverseManager) oi.readObject();
 
+            INSTANCE.setUpEngine();
+
+            LOG.info("Universe loaded");
             ret = true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (IOException | ClassNotFoundException ex) {
+            LOG.error("UniverseManager.loadUniverse", ex);
         }
         
         return ret;
@@ -86,6 +85,7 @@ public class UniverseManager implements Serializable {
     
     public void addStar(Star newStar) {
         stars.put(newStar.displayName(), newStar);
+        LOG.info("Star added: " + newStar.displayName());
     }
 
     public Player getPlayer() {
@@ -94,6 +94,7 @@ public class UniverseManager implements Serializable {
 
     public void updatePlayer(Player player) {
         this.player = player;
+        LOG.info("Player updated: " + player.displayName());
     }
     
     public Map<String, Player> getAIPlayers() {
@@ -106,6 +107,7 @@ public class UniverseManager implements Serializable {
     
     public void addAIPlayer(Player newPlayer) {
         aiPlayers.put(newPlayer.displayName(), newPlayer);
+        LOG.info("AI Player added: " + newPlayer.displayName());
     }
 
     public List<Route> getRoutes() {
@@ -120,7 +122,9 @@ public class UniverseManager implements Serializable {
         routes.clear();
         
         stellarTime = 100000;
-        engineDuration = 1;
+        enginePeriod = 1;
+        
+        LOG.info("Universe reset completed");
     }
     
     public void startEngine() {
@@ -128,37 +132,43 @@ public class UniverseManager implements Serializable {
             initEngineInstance();
         }
         universeEngine.play();
+        LOG.info("Engine started");
     }
     
     public void pauseEngine() {
         if (isEngineRunning()) {
             universeEngine.pause();
+            LOG.info("Engine paused");
         } else {
             universeEngine.play();
+            LOG.info("Engine resumed");
         }
     }
     
     public void stopEngine() {
         if (isEngineRunning()) {
             universeEngine.stop();
+            LOG.info("Engine stopped");
         }
     }
 
-    public double getEngineDuration() {
-        return engineDuration;
+    public double getEnginePeriod() {
+        return enginePeriod;
     }
 
-    public void setEngineDuration(double engineDuration) {
-        this.engineDuration = engineDuration;
+    public void setEnginePeriod(double enginePeriod) {
+        this.enginePeriod = enginePeriod;
         initEngineInstance();
-        System.out.println("GalaconomyEngine: engine duration changed to " + engineDuration);
+        LOG.info("Engine period changed to " + enginePeriod);
     }
     
     public void registerSubscriber(IEngineSubscriber newSubscriber) {
         if (!subscribers.contains(newSubscriber)) {
             subscribers.add(newSubscriber);
+            LOG.info("Subscriber added: " + newSubscriber.toString());
+        } else {
+            LOG.warn("Subscriber already registered: " + newSubscriber.toString());
         }
-        System.out.println("GalaconomyEngine: new subscriber registered");
     }
     
     public long getStellarTime() {
@@ -177,11 +187,12 @@ public class UniverseManager implements Serializable {
    
     private void setUpEngine() {
         startEngine();
+        LOG.info("Engine set up");
     }
     
     private void initEngineInstance() {
         universeEngine = new Timeline(
-            new KeyFrame(Duration.seconds(engineDuration), e -> {
+            new KeyFrame(Duration.seconds(enginePeriod), e -> {
                 stellarTime++;
                 
                 recalcRoutes();
@@ -190,17 +201,17 @@ public class UniverseManager implements Serializable {
                 for (IEngineSubscriber subscriber : subscribers) {
                     subscriber.engineTaskFinished(stellarTime);
                 }
-
-                System.out.println("GalaconomyEngine: engine tick finished");
             })
         );
         universeEngine.setCycleCount(Timeline.INDEFINITE);
+        LOG.info("Engine initiated");
     }
 
     private void tearDownEngine() {
         stopEngine();
         subscribers.clear();
         universeEngine = null;
+        LOG.info("Engine torn down");
     }
     
     private void recalcRoutes() {

@@ -3,8 +3,11 @@ package galaconomy.db;
 import galaconomy.constants.Constants;
 import java.sql.*;
 import java.util.*;
+import org.slf4j.*;
 
 public class DBManager {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(DBManager.class);
     
     private static DBManager INSTANCE;
     
@@ -30,8 +33,8 @@ public class DBManager {
             while (rs.next()) {
                 ret.add(rs.getString("name"));
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException ex) {
+            LOG.error("DBManager.getAvailableStarNames", ex);
         }
         
         return ret;
@@ -44,8 +47,13 @@ public class DBManager {
         
         try {
             conn = DriverManager.getConnection(Constants.SQLITE_DB);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            if (conn.isValid(5)) {
+                LOG.info("DB connection successful");
+            } else {
+                LOG.warn("DB connection failed");
+            }
+        } catch (SQLException ex) {
+            LOG.error("DBManager.connect:", ex);
         }
         
         return conn;
