@@ -22,7 +22,7 @@ public class ShipGenerator {
             case 1:
                 return new ShipClass("Tiger", "Test class 01", Constants.SHIPS_FOLDER + "ship01.jpg", 25000, 500, 5, 25, 3.5d);
             case 2:
-                return new ShipClass("Banshee", "Test class 02", Constants.SHIPS_FOLDER + "ship02jpg", 40000, 800, 8, 50, 2d);
+                return new ShipClass("Banshee", "Test class 02", Constants.SHIPS_FOLDER + "ship02.jpg", 40000, 800, 8, 50, 2d);
             case 3:
                 return new ShipClass("Raptor", "Test class 03", Constants.SHIPS_FOLDER + "ship03.jpg", 60000, 500, 6, 20, 4.25d);
             case 4:
