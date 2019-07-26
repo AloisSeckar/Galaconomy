@@ -32,35 +32,35 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
         AnchorPane.setLeftAnchor(nameText, 5d);
         AnchorPane.setTopAnchor(nameText, 5d);
         
-        dscrText = new TextArea();
-        dscrText.setMaxWidth(width);
-        dscrText.setPrefRowCount(7);
-        dscrText.setWrapText(true);
-        dscrText.setEditable(false);
-        dscrText.getStyleClass().add("pane-info-dscr");
-        super.getChildren().add(dscrText);
-        AnchorPane.setLeftAnchor(dscrText, 5d);
-        AnchorPane.setTopAnchor(dscrText, 35d);
-        
         imgView = new ImageView();
         imgView.setFitWidth(width);
         imgView.setFitHeight(width);
         imgView.getStyleClass().add("pane-info-img");
         super.getChildren().add(imgView);
         AnchorPane.setLeftAnchor(imgView, 5d);
-        AnchorPane.setTopAnchor(imgView, 205d);
+        AnchorPane.setTopAnchor(imgView, 35d);
+        
+        dscrText = new TextArea();
+        dscrText.setMaxWidth(width);
+        dscrText.setMinHeight(260d);
+        dscrText.setWrapText(true);
+        dscrText.setEditable(false);
+        dscrText.getStyleClass().add("pane-info-dscr");
+        super.getChildren().add(dscrText);
+        AnchorPane.setLeftAnchor(dscrText, 5d);
+        AnchorPane.setTopAnchor(dscrText, width + 50d);
         
         stellarTimeText = new Label();
         stellarTimeText.setMaxWidth(width);
         stellarTimeText.getStyleClass().add("pane-info-name");
         super.getChildren().add(stellarTimeText);
         AnchorPane.setLeftAnchor(stellarTimeText, 5d);
-        AnchorPane.setBottomAnchor(stellarTimeText, 10d);
+        AnchorPane.setBottomAnchor(stellarTimeText, 5d);
         
         engineSpeed = new EngineSpeedPane();
         super.getChildren().add(engineSpeed);
         AnchorPane.setLeftAnchor(engineSpeed, 5d);
-        AnchorPane.setBottomAnchor(engineSpeed, 45d);
+        AnchorPane.setBottomAnchor(engineSpeed, 40d);
         
         setElementToDisplay(new VoidElement());
     }
