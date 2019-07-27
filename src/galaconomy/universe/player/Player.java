@@ -79,4 +79,9 @@ public class Player implements IDisplayable, Serializable {
         return ai;
     }
 
+    @Override
+    public String toString() {
+        return displayName();
+    }
+
 }

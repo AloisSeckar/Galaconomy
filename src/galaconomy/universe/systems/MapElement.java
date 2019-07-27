@@ -2,6 +2,7 @@ package galaconomy.universe.systems;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.IDisplayable;
+import galaconomy.utils.DisplayUtils;
 import java.awt.Color;
 import java.io.Serializable;
 import javafx.scene.paint.Paint;
@@ -55,7 +56,7 @@ public abstract class MapElement implements IDisplayable, Serializable {
 
     @Override
     public String displayName() {
-        return name + " [" + xCoord + ";" + yCoord + "]";
+        return name + DisplayUtils.getCoordinates(xCoord, yCoord);
     }
 
     @Override
@@ -81,6 +82,11 @@ public abstract class MapElement implements IDisplayable, Serializable {
 
     public int getY() {
         return yCoord;
+    }
+
+    @Override
+    public String toString() {
+        return displayName();
     }
     
 }

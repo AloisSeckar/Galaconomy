@@ -81,4 +81,9 @@ public class ShipClass implements IDisplayable {
     public double getSpeed() {
         return speed;
     }
+
+    @Override
+    public String toString() {
+        return displayName();
+    }
 }

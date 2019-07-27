@@ -17,8 +17,11 @@ public class ShipGenerator {
     }
     
     public static ShipClass getRandomShipClass(Random rand) {
-        int random = rand.nextInt(5);
-        switch (random) {
+        return getShipClassById(rand.nextInt(Constants.AVAILABLE_SHIPS));
+    }
+    
+    public static ShipClass getShipClassById(int classId) {
+        switch (classId) {
             case 1:
                 return new ShipClass("Tiger", "Test class 01", Constants.SHIPS_FOLDER + "ship01.jpg", 25000, 500, 5, 25, 3.5d);
             case 2:

@@ -168,5 +168,8 @@ public class Ship implements IDisplayable, Serializable {
         this.mileage += mileage;
     }
     
-    
+    @Override
+    public String toString() {
+        return displayName();
+    }
 }

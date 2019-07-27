@@ -44,12 +44,12 @@ public class Route implements IDisplayable, Serializable {
         StringBuilder routeDscr = new StringBuilder();
         
         if (isFinished()) {
-            routeDscr.append("Travelled from ").append(departure.displayName()).append(DisplayUtils.getCoordinates(departure.getX(), departure.getY()));
-            routeDscr.append(" to ").append(arrival.displayName()).append(DisplayUtils.getCoordinates(arrival.getX(), arrival.getY())).append("system\n");
+            routeDscr.append("Travelled from ").append(departure.displayName());
+            routeDscr.append("to ").append(arrival.displayName()).append("system\n");
             routeDscr.append("Landed: ").append(finished).append("\n");
         } else {
-            routeDscr.append("Traveling from ").append(departure.displayName()).append(DisplayUtils.getCoordinates(departure.getX(), departure.getY()));
-            routeDscr.append(" to ").append(arrival.displayName()).append(DisplayUtils.getCoordinates(arrival.getX(), arrival.getY())).append("system\n");
+            routeDscr.append("Traveling from ").append(departure.displayName());
+            routeDscr.append("to ").append(arrival.displayName()).append("system\n");
             routeDscr.append("Distance: ").append(String.format("%.2f", distanceTotal)).append("\n");
             routeDscr.append("Elapsed: ").append(String.format("%.2f", distanceElapsed)).append("\n");
             routeDscr.append("Speed: ").append(String.format("%.2f", ship.getSpeed())).append("\n");
@@ -102,5 +102,4 @@ public class Route implements IDisplayable, Serializable {
     public boolean isFinished() {
         return finished > -1;
     }
-
 }
