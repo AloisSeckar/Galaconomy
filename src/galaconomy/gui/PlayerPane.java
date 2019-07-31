@@ -8,6 +8,7 @@ import galaconomy.universe.traffic.Ship;
 import galaconomy.universe.traffic.ShipClass;
 import galaconomy.universe.traffic.ShipGenerator;
 import static galaconomy.universe.traffic.ShipGenerator.getRandomShipClass;
+import galaconomy.utils.InfoUtils;
 import java.util.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -106,6 +107,7 @@ public class PlayerPane extends AnchorPane implements IEngineSubscriber {
     
     public void buyShip(String shipName, ShipClass shipClass, Star location) {
         Player player = UniverseManager.getInstance().getPlayer();
+        
         Ship newShip = new Ship(shipName, shipClass, location);
         newShip.addOwner(player);
 
@@ -116,5 +118,8 @@ public class PlayerPane extends AnchorPane implements IEngineSubscriber {
         shipDetailButtons.add(newShipButton);
 
         shipBox.getChildren().add(newShipButton);
+
+        player.spendCredits(shipClass.getPrice());
+        playerCredits.setText("Credits: " + String.valueOf(player.getCredits()));  
     }
 }

@@ -5,6 +5,8 @@ import galaconomy.universe.UniverseManager;
 import galaconomy.universe.systems.Star;
 import galaconomy.universe.traffic.ShipClass;
 import galaconomy.universe.traffic.ShipGenerator;
+import galaconomy.utils.InfoUtils;
+import galaconomy.utils.InputUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -67,8 +69,20 @@ public class BuyShipWindow extends Stage {
 
         Button buyButton = new Button("Buy ship");
         buyButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
-            parent.buyShip(shipNameTF.getText(), (ShipClass) shipClassCB.getValue(),(Star) locationCB.getValue());
-            close();
+            String shipName = InputUtils.trimToNull(shipNameTF.getText());
+            ShipClass shipClass = (ShipClass) shipClassCB.getValue();
+            Star location = (Star) locationCB.getValue();
+            
+            if (shipName != null && shipClass != null && location != null) {
+                if (UniverseManager.getInstance().getPlayer().getCredits() >= shipClass.getPrice()) {
+                    parent.buyShip(shipName, shipClass, location);
+                    close();
+                } else {
+                    InfoUtils.showMessage("Insufficent credits!");
+                }
+            } else {
+                InfoUtils.showMessage("Please fill in all inputs first");
+            }
         });
         menuBox.getChildren().add(buyButton);
         
