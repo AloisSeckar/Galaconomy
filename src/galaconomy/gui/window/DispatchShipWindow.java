@@ -13,14 +13,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
-public class BuyShipWindow extends Stage {
+public class DispatchShipWindow extends Stage {
     
-    private final TextField shipNameTF;
-    private final ComboBox<ObservableList<ShipClass>> shipClassCB;
-    private final ComboBox<ObservableList<Star>> locationCB;
+    private final Label shipNameLabel;
+    private final Label locationLabel;
+    private final ComboBox<ObservableList<Star>> destinationCB;
     
-    public BuyShipWindow(PlayerPane parent) {
-        super.setTitle("Select ship to buy");
+    public DispatchShipWindow(PlayerPane parent, Ship ship) {
+        super.setTitle("Dispatch ship");
         super.initModality(Modality.APPLICATION_MODAL);
         super.initOwner((Stage) parent.getScene().getWindow());
         
@@ -30,51 +30,38 @@ public class BuyShipWindow extends Stage {
         inputsGrid.setVgap(10);
         inputsGrid.setPadding(new Insets(5, 5, 5, 5));
         
-        Label shipNameLabel = new Label("Name your ship:");
-        inputsGrid.add(shipNameLabel, 0, 0);
+        inputsGrid.add(new Label("Ship:"), 0, 0);
         
-        shipNameTF = new TextField();
-        inputsGrid.add(shipNameTF, 1, 0);
+        shipNameLabel = new Label(ship.displayName());
+        inputsGrid.add(shipNameLabel, 1, 0);
         
-        Label shipClassLabel = new Label("Select class:");
-        inputsGrid.add(shipClassLabel, 0, 1);
+        inputsGrid.add(new Label("Ship:"), 0, 1);
         
-        ObservableList<ShipClass> availableShipClasses = 
-            FXCollections.observableArrayList(
-                        ShipGenerator.getShipClassById(0),
-                        ShipGenerator.getShipClassById(1),
-                        ShipGenerator.getShipClassById(2),
-                        ShipGenerator.getShipClassById(3),
-                        ShipGenerator.getShipClassById(4)
-            );
-        shipClassCB = new ComboBox(availableShipClasses);
-        inputsGrid.add(shipClassCB, 1, 1);
+        locationLabel = new Label(ship.getLocation().displayName());
+        inputsGrid.add(locationLabel, 1, 1);
         
-        Label locationLabel = new Label("Select init. location:");
-        inputsGrid.add(locationLabel, 0, 2);
+        inputsGrid.add(new Label("Select destination:"), 0, 2);
         
         ObservableList<Star> availableStars = 
             FXCollections.observableArrayList(
                     UniverseManager.getInstance().getStars().values()
             );
-        locationCB = new ComboBox(availableStars);
-        inputsGrid.add(locationCB, 1, 2);
+        destinationCB = new ComboBox(availableStars);
+        inputsGrid.add(destinationCB, 1, 2);
         
         HBox menuBox = new HBox(20);
         menuBox.setAlignment(Pos.CENTER);
 
-        Button buyButton = new Button("Buy ship");
+        Button buyButton = new Button("Launch");
         buyButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
-            String shipName = InputUtils.trimToNull(shipNameTF.getText());
-            ShipClass shipClass = (ShipClass) shipClassCB.getValue();
-            Star location = (Star) locationCB.getValue();
+            Star destination = (Star) destinationCB.getValue();
             
-            if (shipName != null && shipClass != null && location != null) {
-                if (UniverseManager.getInstance().getPlayer().getCredits() >= shipClass.getPrice()) {
-                    parent.buyShip(shipName, shipClass, location);
+            if (destination != null) {
+                if (true /*TODO route plaing restrictions*/) {
+                    parent.planRoute(ship, destination);
                     close();
                 } else {
-                    InfoUtils.showMessage("Insufficent credits!");
+                    InfoUtils.showMessage("Cannot depart! TODO why");
                 }
             } else {
                 InfoUtils.showMessage("Please fill in all inputs first");

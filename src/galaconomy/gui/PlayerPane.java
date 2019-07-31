@@ -1,30 +1,24 @@
 package galaconomy.gui;
 
-import galaconomy.gui.window.BuyShipWindow;
+import galaconomy.gui.window.*;
 import galaconomy.universe.*;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.Star;
-import galaconomy.universe.traffic.Ship;
-import galaconomy.universe.traffic.ShipClass;
-import galaconomy.universe.traffic.ShipGenerator;
-import static galaconomy.universe.traffic.ShipGenerator.getRandomShipClass;
+import galaconomy.universe.traffic.*;
 import galaconomy.utils.InfoUtils;
+import galaconomy.utils.MathUtils;
 import java.util.*;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import org.slf4j.*;
 
 public class PlayerPane extends AnchorPane implements IEngineSubscriber {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(PlayerPane.class);
     
     private final Label playerName;
     private final ImageView playerImage;
@@ -70,17 +64,6 @@ public class PlayerPane extends AnchorPane implements IEngineSubscriber {
         getShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
             BuyShipWindow window = new BuyShipWindow(this);
             window.show();
-//            Player player = UniverseManager.getInstance().getPlayer();
-//            Ship newShip = ShipGenerator.createRandomShip();
-//            newShip.addOwner(player);
-//            
-//            Button newShipButton = new Button(newShip.displayName());
-//            newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-//                info.setElementToDisplay(newShip);
-//            });
-//            shipDetailButtons.add(newShipButton);
-//            
-//            shipBox.getChildren().add(newShipButton);
         });
         getShipButton.setVisible(false);
         super.getChildren().add(getShipButton);
@@ -114,6 +97,12 @@ public class PlayerPane extends AnchorPane implements IEngineSubscriber {
         Button newShipButton = new Button(newShip.displayName());
         newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
             infoBox.setElementToDisplay(newShip);
+            if (newShip.getLocation() != null) {
+                DispatchShipWindow window = new DispatchShipWindow(this, newShip);
+                window.show();
+            } else {
+                InfoUtils.showMessage(newShip.displayName() + " is under way...");
+            }
         });
         shipDetailButtons.add(newShipButton);
 
@@ -121,5 +110,18 @@ public class PlayerPane extends AnchorPane implements IEngineSubscriber {
 
         player.spendCredits(shipClass.getPrice());
         playerCredits.setText("Credits: " + String.valueOf(player.getCredits()));  
+        
+        LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + player.displayName() + " bought new " + shipClass.displayName() + " caalled " + shipName);            
+    }
+
+    public void planRoute(Ship ship, Star arrival) {
+        Star departure = ship.getLocation();
+
+        double distance = MathUtils.getDistance(departure.getX(), departure.getY(), arrival.getX(), arrival.getY());
+
+        Route newRoute = new Route(ship, departure, arrival, distance);
+        UniverseManager.getInstance().addRoute(newRoute);
+
+        LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + ship.displayName() + " set off from " + departure.displayName() + " system to " + arrival.displayName());             
     }
 }

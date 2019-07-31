@@ -114,6 +114,11 @@ public class UniverseManager implements Serializable {
         return routes;
     }
     
+    public void addRoute(Route newRoute) {
+        routes.add(newRoute);
+        LOG.info("Route added: " + newRoute.displayName());
+    }
+    
     public void resetUniverse() {
         stopEngine();
         
