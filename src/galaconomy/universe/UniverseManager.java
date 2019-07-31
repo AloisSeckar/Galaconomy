@@ -163,8 +163,9 @@ public class UniverseManager implements Serializable {
 
     public void setEnginePeriod(double enginePeriod) {
         this.enginePeriod = enginePeriod;
-        initEngineInstance();
         LOG.info("Engine period changed to " + enginePeriod);
+        
+        restartEngine();
     }
     
     public void registerSubscriber(IEngineSubscriber newSubscriber) {
@@ -189,6 +190,15 @@ public class UniverseManager implements Serializable {
     }
     
     ////////////////////////////////////////////////////////////////////////////
+    
+    private void restartEngine() {
+        if (isEngineRunning() || isEnginePaused()) {
+            universeEngine.stop();
+            LOG.info("Engine stopped");
+        }
+        initEngineInstance();
+        universeEngine.play();
+    }
    
     private void setUpEngine() {
         startEngine();
