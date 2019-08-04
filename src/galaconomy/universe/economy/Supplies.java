@@ -2,21 +2,26 @@ package galaconomy.universe.economy;
 
 import galaconomy.universe.IDisplayable;
 import java.io.Serializable;
+import java.util.Random;
 
 public class Supplies implements IDisplayable, Serializable {
     
     private final Goods goods;
     
     private int amount;
-    private Integer priceBuy;
-    private Integer priceSell;
+    private int priceBuy;
+    private int priceSell;
 
     public Supplies(Goods goods, int amount) {
         this.goods = goods;
         this.amount = amount;
+        
+        Random rand = new Random();
+        this.priceBuy = rand.nextInt(1000) + 1;
+        this.priceSell = this.priceBuy + rand.nextInt(500) + 1;
     }
 
-    public Supplies(Goods goods, int amount, Integer priceBuy, Integer priceSell) {
+    public Supplies(Goods goods, int amount, int priceBuy, int priceSell) {
         this.goods = goods;
         this.amount = amount;
         this.priceBuy = priceBuy;
@@ -61,19 +66,19 @@ public class Supplies implements IDisplayable, Serializable {
         this.amount -= amount;
     }
 
-    public Integer getPriceBuy() {
+    public int getPriceBuy() {
         return priceBuy;
     }
 
-    public void setPriceBuy(Integer priceBuy) {
+    public void setPriceBuy(int priceBuy) {
         this.priceBuy = priceBuy;
     }
 
-    public Integer getPriceSell() {
+    public int getPriceSell() {
         return priceSell;
     }
 
-    public void setPriceSell(Integer priceSell) {
+    public void setPriceSell(int priceSell) {
         this.priceSell = priceSell;
     }
 

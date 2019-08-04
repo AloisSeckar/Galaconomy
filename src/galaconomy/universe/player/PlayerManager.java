@@ -1,7 +1,8 @@
 package galaconomy.universe.player;
 
 import galaconomy.universe.UniverseManager;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.economy.*;
+import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.MathUtils;
 import java.util.*;
@@ -19,25 +20,38 @@ public class PlayerManager {
         int maxInt = systems.size();
         
         for (Player player : players.values()) {
-            if (player != null && player.isAi()) {
-                for (Ship ship : player.getShips()) {
-                    if (ship.isIdle()) {
-                        Star departure = ship.getCurrentLocation();
-                        int random = rand.nextInt(maxInt);
-                        Star arrival = systems.get(random);
-
-                        double distance = MathUtils.getDistance(departure.getX(), departure.getY(), arrival.getX(), arrival.getY());
-
-                        Route newRoute = new Route(ship, departure, arrival, distance);
-                        newRoutes.add(newRoute);
-
-                        LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + ship.displayName() + " set off from " + departure.displayName() + " system to " + arrival.displayName());
+            for (Ship ship : player.getShips()) {
+                if (ship.isIdle()) {
+                    Star location = ship.getCurrentLocation();
+                    Star destination = null;
+                    
+                    while (!ship.getCargoList().isEmpty()) {
+                        Cargo cargo = ship.getCargoList().get(0);
+                        Supplies supply = location.findSupplies(cargo.getGoods().displayName());
+                        ship.performSale(ship.getCargoList().get(0), supply.getPriceBuy());
                     }
+                    
+                    Supplies itemToBuy = EconomyHelper.findLowestPrice(location);
+                    if (itemToBuy != null) {
+                        Goods godsToBuy = itemToBuy.getGoods();
+                        ship.performPurchase(godsToBuy, ship.getCargo(), itemToBuy.getPriceSell());
+                        destination = EconomyHelper.findBestPrice(godsToBuy);
+                    } 
+                    
+                    if (destination == null) {
+                        destination = systems.get(rand.nextInt(maxInt));
+                    }
+                    
+                    double distance = MathUtils.getDistance(location.getX(), location.getY(), destination.getX(), destination.getY());
+
+                    Route newRoute = new Route(ship, location, destination, distance);
+                    newRoutes.add(newRoute);
+
+                    LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + ship.displayName() + " set off from " + location.displayName() + " system to " + destination.displayName());
                 }
             }
         }
         
         return newRoutes;
     }
-
 }

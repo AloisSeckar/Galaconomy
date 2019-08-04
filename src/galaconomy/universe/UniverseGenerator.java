@@ -40,12 +40,6 @@ public class UniverseGenerator {
             sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(3), rand.nextInt(5000) + 1));
             sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(4), rand.nextInt(5000) + 1));
             universeManager.addStar(sicopiaSystem);
-            
-            centralAI.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
-            centralAI.addShip(new Ship("GLS Beta", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
-            centralAI.addShip(new Ship("GLS Gama", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
-            centralAI.addShip(new Ship("GLS Delta", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
-            centralAI.addShip(new Ship("GLS Epsilon", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
 
             List<String> names = DBManager.getInstance().getAvailableStarNames();
 
@@ -74,6 +68,15 @@ public class UniverseGenerator {
                 universeManager.addStar(newStar);
                 names.remove(starName);
             }
+            
+            List<Star> systems = new ArrayList<>( UniverseManager.getInstance().getStars().values());
+            int maxInt = systems.size();
+            
+            centralAI.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), systems.get(rand.nextInt(maxInt))));
+            centralAI.addShip(new Ship("GLS Beta", ShipGenerator.getRandomShipClass(rand), systems.get(rand.nextInt(maxInt))));
+            centralAI.addShip(new Ship("GLS Gama", ShipGenerator.getRandomShipClass(rand), systems.get(rand.nextInt(maxInt))));
+            centralAI.addShip(new Ship("GLS Delta", ShipGenerator.getRandomShipClass(rand), systems.get(rand.nextInt(maxInt))));
+            centralAI.addShip(new Ship("GLS Epsilon", ShipGenerator.getRandomShipClass(rand), systems.get(rand.nextInt(maxInt))));
             
             LOG.info("New universe generating finished");
             ret = true;

@@ -45,7 +45,11 @@ public class Star extends MapElement {
     }
     
     public Supplies findSupplies(String key) {
-        return supplies.get(key);
+        Supplies ret = supplies.get(key);
+        if (ret == null) {
+            ret = new Supplies(Goods.getGoodsByName(key), 0);
+        }
+        return ret;
     }
     
     public void updateSupplies(Supplies newSupply) {

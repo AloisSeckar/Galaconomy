@@ -125,7 +125,7 @@ public class Ship implements IDisplayable, Serializable {
     }
     
     public String performPurchase(Goods goods, int amount, int price) {
-        String ret = TraderHelper.checkPurchase(this, goods, amount, price);
+        String ret = TradeHelper.checkPurchase(this, goods, amount, price);
         
         if (ret.isEmpty()) {
             long totalPrice = amount * price;
@@ -141,7 +141,7 @@ public class Ship implements IDisplayable, Serializable {
     }
     
     public String performSale(Cargo cargo, int price) {
-        String ret = TraderHelper.checkSale(this, cargo, price);
+        String ret = TradeHelper.checkSale(this, cargo, price);
         
         if (ret.isEmpty()) {
             int amount = cargo.getAmount();

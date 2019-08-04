@@ -36,11 +36,36 @@ public class Goods implements IDisplayable, Serializable {
     public static List<Goods> getAvailableGoods() {
         List<Goods> ret = new ArrayList<>();
         
-        ret.add(new Goods("Metal", "High quality alloy", Constants.GOODS_FOLDER + "metal.jpg"));
-        ret.add(new Goods("Arms", "Military class weapons and stuff", Constants.GOODS_FOLDER + "arms.jpg"));
-        ret.add(new Goods("Food", "Basic foods", Constants.GOODS_FOLDER + "food.jpg"));
-        ret.add(new Goods("Chips", "Advanced computer chips", Constants.GOODS_FOLDER + "chips.jpg"));
-        ret.add(new Goods("Drugs", "Cure for every possible disease", Constants.GOODS_FOLDER + "drugs.jpg"));
+        ret.add(getGoodsByName("Metal"));
+        ret.add(getGoodsByName("Arms"));
+        ret.add(getGoodsByName("Food"));
+        ret.add(getGoodsByName("Chips"));
+        ret.add(getGoodsByName("Drugs"));
+        
+        return ret;
+    }
+    public static Goods getGoodsByName(String name) {
+        Goods ret;
+        
+        switch (name) {
+            case "Metal":
+                ret = new Goods("Metal", "High quality alloy", Constants.GOODS_FOLDER + "metal.jpg");
+                break;
+            case "Arms":
+                ret = new Goods("Arms", "Military class weapons and stuff", Constants.GOODS_FOLDER + "arms.jpg");
+                break;
+            case "Food":
+                ret = new Goods("Food", "Basic foods", Constants.GOODS_FOLDER + "food.jpg");
+                break;
+            case "Chips":
+                ret = new Goods("Chips", "Advanced computer chips", Constants.GOODS_FOLDER + "chips.jpg");
+                break;
+            case "Drugs":
+                ret = new Goods("Drugs", "Cure for every possible disease", Constants.GOODS_FOLDER + "drugs.jpg");
+                break;
+            default:
+                ret = new Goods("Goods", "Universal whatever...", Constants.GOODS_FOLDER + "goods.jpg");
+        }
         
         return ret;
     }

@@ -4,7 +4,7 @@ import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.Star;
 import galaconomy.universe.traffic.Ship;
 
-public class TraderHelper {
+public class TradeHelper {
     
     public static String checkPurchase(Ship ship, Goods goods, int amount, int price) {
         String ret = checkInputs(ship, goods, amount, price);
@@ -51,7 +51,7 @@ public class TraderHelper {
     ////////////////////////////////////////////////////////////////////////////
     
     private static String checkInputs(Ship ship, Goods goods, int amount, int price) {
-        String ret = null;
+        String ret = "";
         
         if (ship == null) {
             ret = "Target ship not specified!";
@@ -67,7 +67,7 @@ public class TraderHelper {
     }
     
     private static String checkInputs(Ship ship, Cargo cargo, int price) {
-        String ret = null;
+        String ret = "";
         
         if (ship == null) {
             ret = "Target ship not specified!";
