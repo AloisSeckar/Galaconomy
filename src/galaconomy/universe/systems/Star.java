@@ -21,7 +21,10 @@ public class Star extends MapElement {
         starDscr.append("SUPPLIES").append("\n");
         starDscr.append("----------").append("\n");
         for (Supplies goods : supplies.values()) {
-            starDscr.append(goods.displayName()).append("\n");
+            starDscr.append(goods.displayName());
+            starDscr.append("\tB: ").append(goods.getPriceBuy());
+            starDscr.append("\tS: ").append(goods.getPriceSell());
+            starDscr.append("\n");
         }
         starDscr.append("\n");
         

@@ -17,8 +17,8 @@ public class Supplies implements IDisplayable, Serializable {
         this.amount = amount;
         
         Random rand = new Random();
-        this.priceBuy = rand.nextInt(1000) + 1;
-        this.priceSell = this.priceBuy + rand.nextInt(500) + 1;
+        this.priceBuy = rand.nextInt(900) + 101;
+        this.priceSell = this.priceBuy + rand.nextInt(500) + 101;
     }
 
     public Supplies(Goods goods, int amount, int priceBuy, int priceSell) {

@@ -1,5 +1,6 @@
 package galaconomy.universe;
 
+import galaconomy.universe.economy.EconomyManager;
 import galaconomy.universe.player.*;
 import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
@@ -210,6 +211,7 @@ public class UniverseManager implements Serializable {
             new KeyFrame(Duration.seconds(enginePeriod), e -> {
                 stellarTime++;
                 
+                recalcSupplies();
                 recalcRoutes();
                 rethinkRoutes();
 
@@ -227,6 +229,10 @@ public class UniverseManager implements Serializable {
         subscribers.clear();
         universeEngine = null;
         LOG.info("Engine torn down");
+    }
+
+    private void recalcSupplies() {
+        EconomyManager.recalcSupplies(stars.values());
     }
     
     private void recalcRoutes() {
