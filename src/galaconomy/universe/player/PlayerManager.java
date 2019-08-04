@@ -33,9 +33,26 @@ public class PlayerManager {
                     
                     Supplies itemToBuy = EconomyHelper.findLowestPrice(location);
                     if (itemToBuy != null) {
-                        Goods godsToBuy = itemToBuy.getGoods();
-                        ship.performPurchase(godsToBuy, ship.getCargo(), itemToBuy.getPriceSell());
-                        destination = EconomyHelper.findBestPrice(godsToBuy);
+                        Goods goodsToBuy = itemToBuy.getGoods();
+                        
+                        int available = itemToBuy.getAmount();
+                        int price = itemToBuy.getPriceSell();
+                        int capacity = ship.getCargo();
+                        long credits = ship.getCurrentOwner().getCredits();
+                        
+                        int amount;
+                        if (price * capacity <= credits) {
+                            amount = Math.min(capacity, available);
+                        } else {
+                            amount = Math.min(new Long(credits / price).intValue(), available);
+                        }
+                        
+                        ship.performPurchase(goodsToBuy, amount, price);
+                        
+                        destination = EconomyHelper.findBestPrice(goodsToBuy);
+                        if (location.equals(destination)) {
+                            destination = null;
+                        }
                     } 
                     
                     if (destination == null) {

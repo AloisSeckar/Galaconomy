@@ -129,12 +129,13 @@ public class Ship implements IDisplayable, Serializable {
         
         if (ret.isEmpty()) {
             long totalPrice = amount * price;
+            Cargo newCargo  = new Cargo(goods, amount, price, currentLocation, UniverseManager.getInstance().getStellarTime());
             
             currentLocation.performSale(goods, amount);
             currentOwner.spendCredits(totalPrice);
-            cargoList.add(new Cargo(goods, amount, price, currentLocation, UniverseManager.getInstance().getStellarTime()));
+            cargoList.add(newCargo);
             
-            LOG.info(name + " purchased " + amount + " " + goods.displayName() + " at " + currentLocation.displayName() + " for " + totalPrice + " credits");
+            LOG.info(name + " purchased " + newCargo.displayName() + " at " + currentLocation.displayName() + " for " + totalPrice + " credits");
         }
         
         return ret;

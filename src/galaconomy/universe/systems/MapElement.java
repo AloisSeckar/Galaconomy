@@ -5,6 +5,7 @@ import galaconomy.universe.IDisplayable;
 import galaconomy.utils.DisplayUtils;
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.Objects;
 import javafx.scene.paint.Paint;
 
 public abstract class MapElement implements IDisplayable, Serializable {
@@ -88,5 +89,36 @@ public abstract class MapElement implements IDisplayable, Serializable {
     public String toString() {
         return displayName();
     }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() + xCoord + yCoord;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MapElement other = (MapElement) obj;
+        if (this.xCoord != other.xCoord) {
+            return false;
+        }
+        if (this.yCoord != other.yCoord) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
     
 }
