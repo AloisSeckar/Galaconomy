@@ -97,7 +97,7 @@ public class PlayerPane extends AnchorPane implements IEngineSubscriber {
         Button newShipButton = new Button(newShip.displayName());
         newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
             infoBox.setElementToDisplay(newShip);
-            if (newShip.getLocation() != null) {
+            if (newShip.getCurrentLocation() != null) {
                 DispatchShipWindow window = new DispatchShipWindow(this, newShip);
                 window.show();
             } else {
@@ -115,7 +115,7 @@ public class PlayerPane extends AnchorPane implements IEngineSubscriber {
     }
 
     public void planRoute(Ship ship, Star arrival) {
-        Star departure = ship.getLocation();
+        Star departure = ship.getCurrentLocation();
 
         double distance = MathUtils.getDistance(departure.getX(), departure.getY(), arrival.getX(), arrival.getY());
 

@@ -19,6 +19,7 @@ public class Constants {
     public static final String FOLDER_RES = "/galaconomy/resources/";
     public static final String FOLDER_CSS = FOLDER_RES + "css/";
     public static final String FOLDER_IMG = FOLDER_RES + "img/";
+    public static final String GOODS_FOLDER = FOLDER_IMG + "goods/";
     public static final String PLANETS_FOLDER = FOLDER_IMG + "planets/";
     public static final String PLAYERS_FOLDER = FOLDER_IMG + "players/";
     public static final String SHIPS_FOLDER = FOLDER_IMG + "ships/";

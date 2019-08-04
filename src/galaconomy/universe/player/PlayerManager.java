@@ -22,7 +22,7 @@ public class PlayerManager {
             if (player != null && player.isAi()) {
                 for (Ship ship : player.getShips()) {
                     if (ship.isIdle()) {
-                        Star departure = ship.getLocation();
+                        Star departure = ship.getCurrentLocation();
                         int random = rand.nextInt(maxInt);
                         Star arrival = systems.get(random);
 

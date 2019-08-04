@@ -1,8 +1,8 @@
 package galaconomy.universe.traffic;
 
 import galaconomy.universe.*;
+import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.systems.Star;
-import galaconomy.utils.DisplayUtils;
 import java.io.Serializable;
 
 public class Route implements IDisplayable, Serializable {
@@ -31,7 +31,7 @@ public class Route implements IDisplayable, Serializable {
         this.eta = started + new Double(Math.ceil(distanceTotal / ship.getSpeed())).intValue();
         
         this.ship.setIdle(false);
-        this.ship.setLocation(null);
+        this.ship.setCurrentLocation(null);
     }
 
     @Override
@@ -53,7 +53,13 @@ public class Route implements IDisplayable, Serializable {
             routeDscr.append("Distance: ").append(String.format("%.2f", distanceTotal)).append("\n");
             routeDscr.append("Elapsed: ").append(String.format("%.2f", distanceElapsed)).append("\n");
             routeDscr.append("Speed: ").append(String.format("%.2f", ship.getSpeed())).append("\n");
-            routeDscr.append("ETA: ").append(eta).append("\n");
+            routeDscr.append("ETA: ").append(eta).append("\n\n");
+            
+            routeDscr.append("CARGO").append("\n");
+            routeDscr.append("----------").append("\n");
+            for (Cargo goods : ship.getCargoList()) {
+                routeDscr.append(goods.displayName()).append("\n");
+            }
         }
 
         return routeDscr.toString();
@@ -91,7 +97,7 @@ public class Route implements IDisplayable, Serializable {
         if (distanceElapsed > distanceTotal) {
             ship.increaseMileage(elapsed - (distanceElapsed - distanceTotal));
             ship.setIdle(true);
-            ship.setLocation(arrival);
+            ship.setCurrentLocation(arrival);
             finished = UniverseManager.getInstance().getStellarTime();
             distanceElapsed = distanceTotal;
         } else {

@@ -1,13 +1,17 @@
 package galaconomy.universe.traffic;
 
 import galaconomy.universe.*;
+import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.Star;
 import galaconomy.utils.DisplayUtils;
 import java.io.Serializable;
 import java.util.*;
+import org.slf4j.*;
 
 public class Ship implements IDisplayable, Serializable {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(Ship.class);
     
     private final String name;
     private final String shipClass;
@@ -23,11 +27,13 @@ public class Ship implements IDisplayable, Serializable {
     
     private final long comissioned;
     
-    private Star location;
+    private Star currentLocation;
     
     private double mileage = 0;
     private boolean idle = true;
     private Player currentOwner = null;
+    
+    private final List<Cargo> cargoList = new ArrayList<>();
     
     private final List<Player> owners = new ArrayList<>();
     private final List<Route> routes = new ArrayList<>();
@@ -47,7 +53,7 @@ public class Ship implements IDisplayable, Serializable {
         
         this.comissioned = UniverseManager.getInstance().getStellarTime();
         
-        this.location = location;
+        this.currentLocation = location;
     }
     
     @Override
@@ -58,6 +64,16 @@ public class Ship implements IDisplayable, Serializable {
     @Override
     public String displayDscr() {
         StringBuilder shipDscr = new StringBuilder();
+        
+        shipDscr.append("CARGO").append("\n");
+        shipDscr.append("----------").append("\n");
+        for (Cargo goods : cargoList) {
+            shipDscr.append(goods.displayName()).append("\n");
+        }
+        shipDscr.append("\n");
+        
+        shipDscr.append("INFO").append("\n");
+        shipDscr.append("----------").append("\n");
         
         shipDscr.append("Owner: ");
         if (currentOwner != null) {
@@ -104,6 +120,43 @@ public class Ship implements IDisplayable, Serializable {
         routes.add(0, newRoute);
     }
 
+    public List<Cargo> getCargoList() {
+        return cargoList;
+    }
+    
+    public String performPurchase(Goods goods, int amount, int price) {
+        String ret = TraderHelper.checkPurchase(this, goods, amount, price);
+        
+        if (ret.isEmpty()) {
+            long totalPrice = amount * price;
+            
+            currentLocation.performSale(goods, amount);
+            currentOwner.spendCredits(totalPrice);
+            cargoList.add(new Cargo(goods, amount, price, currentLocation, UniverseManager.getInstance().getStellarTime()));
+            
+            LOG.info(name + " purchased " + amount + " " + goods.displayName() + " at " + currentLocation.displayName() + " for " + totalPrice + " credits");
+        }
+        
+        return ret;
+    }
+    
+    public String performSale(Cargo cargo, int price) {
+        String ret = TraderHelper.checkSale(this, cargo, price);
+        
+        if (ret.isEmpty()) {
+            int amount = cargo.getAmount();
+            long totalPrice = amount * price;
+            
+            currentLocation.performPurchase(cargo);
+            currentOwner.earnCredits(totalPrice);
+            cargoList.remove(cargo);
+            
+            LOG.info(name + " sold " + cargo.displayName() + " at " + currentLocation.displayName() + " for " + totalPrice + " credits");
+        }
+        
+        return ret;
+    }
+
     public boolean isIdle() {
         return idle;
     }
@@ -112,12 +165,12 @@ public class Ship implements IDisplayable, Serializable {
         this.idle = idle;
     }
 
-    public Star getLocation() {
-        return location;
+    public Star getCurrentLocation() {
+        return currentLocation;
     }
 
-    public void setLocation(Star location) {
-        this.location = location;
+    public void setCurrentLocation(Star currentLocation) {
+        this.currentLocation = currentLocation;
     }
 
     public int getPrice() {

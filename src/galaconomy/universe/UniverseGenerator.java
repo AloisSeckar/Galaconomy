@@ -2,6 +2,8 @@ package galaconomy.universe;
 
 import galaconomy.constants.Constants;
 import galaconomy.db.DBManager;
+import galaconomy.universe.economy.Goods;
+import galaconomy.universe.economy.Supplies;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
@@ -18,6 +20,8 @@ public class UniverseGenerator {
         
         try {
             LOG.info("New universe generating started");
+            
+            Random rand = new Random(System.currentTimeMillis()); 
         
             universeManager.resetUniverse();
             
@@ -27,10 +31,15 @@ public class UniverseGenerator {
             Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, true);
             universeManager.addAIPlayer(centralAI);
             
+            List<Goods> availableGoods = Goods.getAvailableGoods();
+            
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "sicopia.jpg", Color.ORANGE, 45, 45);
+            sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(5000) + 1));
+            sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(5000) + 1));
+            sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(2), rand.nextInt(5000) + 1));
+            sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(3), rand.nextInt(5000) + 1));
+            sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(4), rand.nextInt(5000) + 1));
             universeManager.addStar(sicopiaSystem);
-        
-            Random rand = new Random(System.currentTimeMillis()); 
             
             centralAI.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
             centralAI.addShip(new Ship("GLS Beta", ShipGenerator.getRandomShipClass(rand), sicopiaSystem));
@@ -48,6 +57,12 @@ public class UniverseGenerator {
 
                 Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, UniverseUtils.getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y));
 
+                newStar.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(2000) + 1));
+                newStar.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(2000) + 1));
+                newStar.updateSupplies(new Supplies(availableGoods.get(2), rand.nextInt(2000) + 1));
+                newStar.updateSupplies(new Supplies(availableGoods.get(3), rand.nextInt(2000) + 1));
+                newStar.updateSupplies(new Supplies(availableGoods.get(4), rand.nextInt(2000) + 1));
+                
                 int numberOfPlanets = rand.nextInt(13);
                 for (int j = 1; j <= numberOfPlanets; j++) {
                     String planetName = newStar.displayName()+ " " + UniverseUtils.getPlanetOrder(j);

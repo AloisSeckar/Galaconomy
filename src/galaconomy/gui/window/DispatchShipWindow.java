@@ -37,7 +37,7 @@ public class DispatchShipWindow extends Stage {
         
         inputsGrid.add(new Label("Ship:"), 0, 1);
         
-        locationLabel = new Label(ship.getLocation().displayName());
+        locationLabel = new Label(ship.getCurrentLocation().displayName());
         inputsGrid.add(locationLabel, 1, 1);
         
         inputsGrid.add(new Label("Select destination:"), 0, 2);
