@@ -107,6 +107,7 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
         
         Ship newShip = new Ship(shipName, shipClass, location);
         newShip.addOwner(player);
+        player.addShip(newShip);
         
         // TODO delete
         Star origin = UniverseUtils.getRandomSystem();
@@ -148,5 +149,32 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
         UniverseManager.getInstance().addRoute(newRoute);
 
         LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + ship.displayName() + " set off from " + departure.displayName() + " system to " + arrival.displayName());             
+    }
+    
+    public void loadPlayerShips() {
+        shipBox.getChildren().removeAll(shipDetailButtons);
+        shipDetailButtons.clear();
+            
+        Player player = UniverseManager.getInstance().getPlayer();
+        
+        for (Ship ship : player.getShips()) {
+            Image newShipImage = new Image(getClass().getResourceAsStream(ship.getImage()));
+            ImageView newShipImageView = new ImageView(newShipImage);
+            newShipImageView.setFitWidth(64);
+            newShipImageView.setFitHeight(64);
+            
+            Button newShipButton = new Button();
+            newShipButton.setGraphic(newShipImageView);
+            newShipButton.setTooltip(new Tooltip(ship.displayName()));
+            newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
+                infoBox.setElementToDisplay(ship);
+
+                ShipWindow window = new ShipWindow(this, ship);
+                window.show();
+            });
+            shipDetailButtons.add(newShipButton);
+
+            shipBox.getChildren().add(newShipButton);
+        }
     }
 }

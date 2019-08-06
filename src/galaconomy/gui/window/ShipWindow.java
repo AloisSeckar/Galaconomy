@@ -56,7 +56,8 @@ public class ShipWindow extends Stage {
         AnchorPane.setLeftAnchor(cargoPane,115d);
         AnchorPane.setTopAnchor(cargoPane, 5d);
         
-        shipDispatchPane = new ShipDispatchPane(ship.getCurrentLocation().displayName());
+        String location = ship.getCurrentLocation() != null ? ship.getCurrentLocation().displayName() : "Deep space";
+        shipDispatchPane = new ShipDispatchPane(location);
         windowLayout.getChildren().add(shipDispatchPane);
         AnchorPane.setLeftAnchor(shipDispatchPane, 115d);
         AnchorPane.setTopAnchor(shipDispatchPane, 120d);

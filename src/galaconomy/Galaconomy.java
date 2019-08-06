@@ -46,6 +46,7 @@ public class Galaconomy extends Application {
             map.paintShipRoutes(universe.getRoutes());
             
             player.displayPlayer();
+            player.loadPlayerShips();
             
             universe.registerSubscriber(info);
             universe.registerSubscriber(map);
@@ -79,6 +80,7 @@ public class Galaconomy extends Application {
                 map.paintShipRoutes(universe.getRoutes());
 
                 player.displayPlayer();
+                player.loadPlayerShips();
 
                 universe.registerSubscriber(info);
                 universe.registerSubscriber(map);
