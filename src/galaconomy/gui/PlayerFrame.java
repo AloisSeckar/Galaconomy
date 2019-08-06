@@ -1,5 +1,6 @@
 package galaconomy.gui;
 
+import galaconomy.gui.pane.InfoPane;
 import galaconomy.gui.window.*;
 import galaconomy.universe.*;
 import galaconomy.universe.player.Player;
@@ -16,9 +17,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.slf4j.*;
 
-public class PlayerPane extends AnchorPane implements IEngineSubscriber {
+public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
     
-    private static final Logger LOG = LoggerFactory.getLogger(PlayerPane.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PlayerFrame.class);
     
     private final Label playerName;
     private final ImageView playerImage;
@@ -30,7 +31,7 @@ public class PlayerPane extends AnchorPane implements IEngineSubscriber {
     private final Button getShipButton = new Button("Get a ship");
     private final List<Button> shipDetailButtons = new ArrayList<>();
     
-    public PlayerPane(InfoPane info) {
+    public PlayerFrame(InfoPane info) {
         super.setMinHeight(155);
         super.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");

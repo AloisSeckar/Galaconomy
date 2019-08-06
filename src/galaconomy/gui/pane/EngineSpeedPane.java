@@ -1,4 +1,4 @@
-package galaconomy.gui;
+package galaconomy.gui.pane;
 
 import galaconomy.universe.UniverseManager;
 import javafx.scene.control.*;

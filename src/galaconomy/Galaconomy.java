@@ -1,5 +1,6 @@
 package galaconomy;
 
+import galaconomy.gui.pane.InfoPane;
 import galaconomy.constants.Constants;
 import galaconomy.gui.*;
 import galaconomy.universe.*;
@@ -30,9 +31,9 @@ public class Galaconomy extends Application {
         
         BorderPane gameLayout = new BorderPane();
         
-        InfoPane info = new InfoPane(SIDE_PANEL_X);
-        MapPane map = new MapPane(SCREEN_X, SCREEN_Y, info);
-        PlayerPane player = new PlayerPane(info);
+        InfoFrame info = new InfoFrame(SIDE_PANEL_X);
+        MapFrame map = new MapFrame(SCREEN_X, SCREEN_Y, info.getInfoPane());
+        PlayerFrame player = new PlayerFrame(info.getInfoPane());
         
         HBox menu = new HBox();
         

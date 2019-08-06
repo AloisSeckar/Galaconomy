@@ -1,5 +1,6 @@
-package galaconomy.gui;
+package galaconomy.gui.pane;
 
+import galaconomy.gui.pane.EngineSpeedPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import javafx.geometry.Insets;
@@ -8,59 +9,39 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class InfoPane extends AnchorPane implements IEngineSubscriber {
+public class InfoPane extends AnchorPane {
     
     private final Label nameText;
     private final TextArea dscrText;
     private final ImageView imgView;
-    private final Label stellarTimeText;
-    
-    private final EngineSpeedPane engineSpeed;
     
     private IDisplayable elementToDisplay;
     
     public InfoPane(int width) {
-        super.setMinWidth(width + 20);
-        super.setMaxWidth(width + 20);
+        super.setMinWidth(width);
+        super.setMaxWidth(width);
         super.setBackground(new Background(new BackgroundFill(Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));
-        super.getStyleClass().add("pane-info");
         
         nameText = new Label();
         nameText.setMaxWidth(width);
         nameText.getStyleClass().add("pane-info-name");
         super.getChildren().add(nameText);
-        AnchorPane.setLeftAnchor(nameText, 5d);
-        AnchorPane.setTopAnchor(nameText, 5d);
         
         imgView = new ImageView();
         imgView.setFitWidth(width);
         imgView.setFitHeight(width);
         imgView.getStyleClass().add("pane-info-img");
         super.getChildren().add(imgView);
-        AnchorPane.setLeftAnchor(imgView, 5d);
         AnchorPane.setTopAnchor(imgView, 35d);
         
         dscrText = new TextArea();
         dscrText.setMaxWidth(width);
-        dscrText.setMinHeight(260d);
+        dscrText.setMinHeight(250d);
         dscrText.setWrapText(true);
         dscrText.setEditable(false);
         dscrText.getStyleClass().add("pane-info-dscr");
         super.getChildren().add(dscrText);
-        AnchorPane.setLeftAnchor(dscrText, 5d);
         AnchorPane.setTopAnchor(dscrText, width + 50d);
-        
-        stellarTimeText = new Label();
-        stellarTimeText.setMaxWidth(width);
-        stellarTimeText.getStyleClass().add("pane-info-name");
-        super.getChildren().add(stellarTimeText);
-        AnchorPane.setLeftAnchor(stellarTimeText, 5d);
-        AnchorPane.setBottomAnchor(stellarTimeText, 5d);
-        
-        engineSpeed = new EngineSpeedPane();
-        super.getChildren().add(engineSpeed);
-        AnchorPane.setLeftAnchor(engineSpeed, 5d);
-        AnchorPane.setBottomAnchor(engineSpeed, 40d);
         
         setElementToDisplay(new VoidElement());
     }
@@ -69,16 +50,8 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
         this.elementToDisplay = elementToDisplay;
         reloadInfoPanel();
     }
-
-    @Override
-    public void engineTaskFinished(long stellarTime) {
-        stellarTimeText.setText(String.valueOf(stellarTime));
-        reloadInfoPanel();
-    }
     
-    ////////////////////////////////////////////////////////////////////////////
-    
-    private void reloadInfoPanel() {
+    public final void reloadInfoPanel() {
         if (elementToDisplay != null) {
             nameText.setText(elementToDisplay.displayName());
             dscrText.setText(elementToDisplay.displayDscr());
@@ -89,6 +62,8 @@ public class InfoPane extends AnchorPane implements IEngineSubscriber {
             setElementToDisplay(new VoidElement());
         }
     }
+    
+    ////////////////////////////////////////////////////////////////////////////
     
     private class VoidElement implements IDisplayable {
         @Override

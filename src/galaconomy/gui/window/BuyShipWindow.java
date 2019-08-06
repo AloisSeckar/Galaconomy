@@ -1,6 +1,6 @@
 package galaconomy.gui.window;
 
-import galaconomy.gui.PlayerPane;
+import galaconomy.gui.PlayerFrame;
 import galaconomy.universe.UniverseManager;
 import galaconomy.universe.systems.Star;
 import galaconomy.universe.traffic.*;
@@ -19,7 +19,7 @@ public class BuyShipWindow extends Stage {
     private final ComboBox<ObservableList<ShipClass>> shipClassCB;
     private final ComboBox<ObservableList<Star>> locationCB;
     
-    public BuyShipWindow(PlayerPane parent) {
+    public BuyShipWindow(PlayerFrame parent) {
         super.setTitle("Select ship to buy");
         super.initModality(Modality.APPLICATION_MODAL);
         super.initOwner((Stage) parent.getScene().getWindow());

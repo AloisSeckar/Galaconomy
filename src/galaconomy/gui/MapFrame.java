@@ -1,5 +1,6 @@
 package galaconomy.gui;
 
+import galaconomy.gui.pane.InfoPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.systems.Star;
@@ -11,7 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
-public class MapPane extends AnchorPane implements IEngineSubscriber {
+public class MapFrame extends AnchorPane implements IEngineSubscriber {
     
     public static int zoomMultiplier = 8;
     public static int mapBorderOffset = 8;
@@ -22,7 +23,7 @@ public class MapPane extends AnchorPane implements IEngineSubscriber {
     
     public final InfoPane infoPaneReference;
     
-    public MapPane(int width, int height, InfoPane infoPane) {
+    public MapFrame(int width, int height, InfoPane infoPane) {
         super.setMinWidth(width);
         super.setMinHeight(height);
         
