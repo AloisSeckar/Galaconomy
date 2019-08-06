@@ -8,9 +8,9 @@ import javafx.scene.paint.Color;
 
 public class InfoFrame extends AnchorPane implements IEngineSubscriber {
     
-    private final InfoDisplayPane infoPane;
-    private final InfoEngineSpeedPane engineSpeedPane;
-    private final InfoStellarTimePane stellarTimePane;
+    private final BasicDisplayPane infoPane;
+    private final BasicEngineSpeedPane engineSpeedPane;
+    private final BasicStellarTimePane stellarTimePane;
     
     public InfoFrame(int width) {
         super.setMinWidth(width + 20);
@@ -18,17 +18,17 @@ public class InfoFrame extends AnchorPane implements IEngineSubscriber {
         super.setBackground(new Background(new BackgroundFill(Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");
         
-        infoPane = new InfoDisplayPane(width);
+        infoPane = new BasicDisplayPane(width);
         super.getChildren().add(infoPane);
         AnchorPane.setLeftAnchor(infoPane, 5d);
         AnchorPane.setTopAnchor(infoPane, 5d);
         
-        engineSpeedPane = new InfoEngineSpeedPane();
+        engineSpeedPane = new BasicEngineSpeedPane();
         super.getChildren().add(engineSpeedPane);
         AnchorPane.setLeftAnchor(engineSpeedPane, 5d);
         AnchorPane.setBottomAnchor(engineSpeedPane, 40d);
         
-        stellarTimePane = new InfoStellarTimePane();
+        stellarTimePane = new BasicStellarTimePane();
         stellarTimePane.setMaxWidth(width);
         stellarTimePane.getStyleClass().add("pane-info-name");
         super.getChildren().add(stellarTimePane);
@@ -38,7 +38,7 @@ public class InfoFrame extends AnchorPane implements IEngineSubscriber {
         infoPane.setElementToDisplay(null);
     }
 
-    public InfoDisplayPane getInfoPane() {
+    public BasicDisplayPane getInfoPane() {
         return infoPane;
     }
 

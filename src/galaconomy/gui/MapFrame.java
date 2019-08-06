@@ -1,6 +1,6 @@
 package galaconomy.gui;
 
-import galaconomy.gui.pane.InfoDisplayPane;
+import galaconomy.gui.pane.BasicDisplayPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.systems.Star;
@@ -21,9 +21,9 @@ public class MapFrame extends AnchorPane implements IEngineSubscriber {
     public List<Line> activeRoutes = new ArrayList<>();
     public List<Circle> activeShips = new ArrayList<>();
     
-    public final InfoDisplayPane infoPaneReference;
+    public final BasicDisplayPane infoPaneReference;
     
-    public MapFrame(int width, int height, InfoDisplayPane infoPane) {
+    public MapFrame(int width, int height, BasicDisplayPane infoPane) {
         super.setMinWidth(width);
         super.setMinHeight(height);
         

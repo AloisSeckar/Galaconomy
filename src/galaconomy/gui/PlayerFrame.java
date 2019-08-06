@@ -1,6 +1,6 @@
 package galaconomy.gui;
 
-import galaconomy.gui.pane.InfoDisplayPane;
+import galaconomy.gui.pane.BasicDisplayPane;
 import galaconomy.gui.window.*;
 import galaconomy.universe.*;
 import galaconomy.universe.player.Player;
@@ -25,13 +25,13 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
     private final ImageView playerImage;
     private final Label playerCredits;
     
-    private final InfoDisplayPane infoBox;
+    private final BasicDisplayPane infoBox;
     private final TilePane shipBox;
     
     private final Button getShipButton = new Button("Get a ship");
     private final List<Button> shipDetailButtons = new ArrayList<>();
     
-    public PlayerFrame(InfoDisplayPane info) {
+    public PlayerFrame(BasicDisplayPane info) {
         super.setMinHeight(155);
         super.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");
