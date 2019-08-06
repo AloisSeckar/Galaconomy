@@ -1,6 +1,6 @@
 package galaconomy.gui;
 
-import galaconomy.gui.pane.InfoPane;
+import galaconomy.gui.pane.InfoDisplayPane;
 import galaconomy.gui.window.*;
 import galaconomy.universe.*;
 import galaconomy.universe.player.Player;
@@ -25,13 +25,13 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
     private final ImageView playerImage;
     private final Label playerCredits;
     
-    private final InfoPane infoBox;
+    private final InfoDisplayPane infoBox;
     private final TilePane shipBox;
     
     private final Button getShipButton = new Button("Get a ship");
     private final List<Button> shipDetailButtons = new ArrayList<>();
     
-    public PlayerFrame(InfoPane info) {
+    public PlayerFrame(InfoDisplayPane info) {
         super.setMinHeight(155);
         super.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");
@@ -63,7 +63,7 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
         AnchorPane.setTopAnchor(shipBox, 5d);
         
         getShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            BuyShipWindow window = new BuyShipWindow(this);
+            ShipBuyWindow window = new ShipBuyWindow(this);
             window.show();
         });
         getShipButton.setVisible(false);
@@ -99,7 +99,7 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
         newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
             infoBox.setElementToDisplay(newShip);
             if (newShip.getCurrentLocation() != null) {
-                DispatchShipWindow window = new DispatchShipWindow(this, newShip);
+                ShipDispatchWindow window = new ShipDispatchWindow(this, newShip);
                 window.show();
             } else {
                 InfoUtils.showMessage(newShip.displayName() + " is under way...");

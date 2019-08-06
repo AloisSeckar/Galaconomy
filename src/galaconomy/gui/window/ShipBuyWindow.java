@@ -13,13 +13,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
-public class BuyShipWindow extends Stage {
+public class ShipBuyWindow extends Stage {
     
     private final TextField shipNameTF;
     private final ComboBox<ObservableList<ShipClass>> shipClassCB;
     private final ComboBox<ObservableList<Star>> locationCB;
     
-    public BuyShipWindow(PlayerFrame parent) {
+    public ShipBuyWindow(PlayerFrame parent) {
         super.setTitle("Select ship to buy");
         super.initModality(Modality.APPLICATION_MODAL);
         super.initOwner((Stage) parent.getScene().getWindow());

@@ -1,6 +1,6 @@
 package galaconomy.gui.pane;
 
-import galaconomy.gui.pane.EngineSpeedPane;
+import galaconomy.gui.pane.InfoEngineSpeedPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import javafx.geometry.Insets;
@@ -9,7 +9,7 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class InfoPane extends AnchorPane {
+public class InfoDisplayPane extends AnchorPane {
     
     private final Label nameText;
     private final TextArea dscrText;
@@ -17,7 +17,7 @@ public class InfoPane extends AnchorPane {
     
     private IDisplayable elementToDisplay;
     
-    public InfoPane(int width) {
+    public InfoDisplayPane(int width) {
         super.setMinWidth(width);
         super.setMaxWidth(width);
         super.setBackground(new Background(new BackgroundFill(Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));

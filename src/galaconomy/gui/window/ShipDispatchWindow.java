@@ -13,13 +13,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
-public class DispatchShipWindow extends Stage {
+public class ShipDispatchWindow extends Stage {
     
     private final Label shipNameLabel;
     private final Label locationLabel;
     private final ComboBox<ObservableList<Star>> destinationCB;
     
-    public DispatchShipWindow(PlayerFrame parent, Ship ship) {
+    public ShipDispatchWindow(PlayerFrame parent, Ship ship) {
         super.setTitle("Dispatch ship");
         super.initModality(Modality.APPLICATION_MODAL);
         super.initOwner((Stage) parent.getScene().getWindow());

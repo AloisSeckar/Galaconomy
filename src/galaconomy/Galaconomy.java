@@ -1,6 +1,6 @@
 package galaconomy;
 
-import galaconomy.gui.pane.InfoPane;
+import galaconomy.gui.pane.InfoDisplayPane;
 import galaconomy.constants.Constants;
 import galaconomy.gui.*;
 import galaconomy.universe.*;

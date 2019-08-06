@@ -3,11 +3,11 @@ package galaconomy.gui.pane;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-public class StellarTimePane extends AnchorPane {
+public class InfoStellarTimePane extends AnchorPane {
     
     private final Label stellarTimeText;
     
-    public StellarTimePane() {
+    public InfoStellarTimePane() {
         stellarTimeText = new Label();
         stellarTimeText.getStyleClass().add("pane-info-name");
         super.getChildren().add(stellarTimeText);
