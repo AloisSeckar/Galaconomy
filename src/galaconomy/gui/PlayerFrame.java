@@ -3,10 +3,11 @@ package galaconomy.gui;
 import galaconomy.gui.pane.BasicDisplayPane;
 import galaconomy.gui.window.*;
 import galaconomy.universe.*;
+import galaconomy.universe.economy.Cargo;
+import galaconomy.universe.economy.Goods;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.systems.Star;
 import galaconomy.universe.traffic.*;
-import galaconomy.utils.InfoUtils;
 import galaconomy.utils.MathUtils;
 import java.util.*;
 import javafx.geometry.Insets;
@@ -29,6 +30,8 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
     private final TilePane shipBox;
     
     private final Button getShipButton = new Button("Get a ship");
+    private final Button quickShipButton = new Button("Quick ship");  // TODO delete
+    
     private final List<Button> shipDetailButtons = new ArrayList<>();
     
     public PlayerFrame(BasicDisplayPane info) {
@@ -70,6 +73,15 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
         super.getChildren().add(getShipButton);
         AnchorPane.setLeftAnchor(getShipButton, 150d);
         AnchorPane.setTopAnchor(getShipButton, 5d);
+        
+        // TODO delete
+        quickShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+            buyShip("USS Test", ShipGenerator.getShipClassById(0), UniverseUtils.getRandomSystem());
+        });
+        quickShipButton.setVisible(false);
+        super.getChildren().add(quickShipButton);
+        AnchorPane.setLeftAnchor(quickShipButton, 150d);
+        AnchorPane.setTopAnchor(quickShipButton, 35d);
     }
 
     @Override
@@ -87,6 +99,7 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
         playerImage.setImage(playerImg);
         
         getShipButton.setVisible(true);
+        quickShipButton.setVisible(true);
     }
     
     public void buyShip(String shipName, ShipClass shipClass, Star location) {
@@ -94,16 +107,27 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
         
         Ship newShip = new Ship(shipName, shipClass, location);
         newShip.addOwner(player);
+        
+        // TODO delete
+        Star origin = UniverseUtils.getRandomSystem();
+        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Metal"), 10, 150, origin, 10000));
+        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Chips"), 10, 200, origin, 10000));
+        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Food"), 10, 101, origin, 10000));
+        //
+        
+        Image newShipImage = new Image(getClass().getResourceAsStream(newShip.getImage()));
+        ImageView newShipImageView = new ImageView(newShipImage);
+        newShipImageView.setFitWidth(64);
+        newShipImageView.setFitHeight(64);
 
-        Button newShipButton = new Button(newShip.displayName());
+        Button newShipButton = new Button();
+        newShipButton.setGraphic(newShipImageView);
+        newShipButton.setTooltip(new Tooltip(newShip.displayName()));
         newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
             infoBox.setElementToDisplay(newShip);
-            if (newShip.getCurrentLocation() != null) {
-                ShipDispatchWindow window = new ShipDispatchWindow(this, newShip);
-                window.show();
-            } else {
-                InfoUtils.showMessage(newShip.displayName() + " is under way...");
-            }
+            
+            ShipWindow window = new ShipWindow(this, newShip);
+            window.show();
         });
         shipDetailButtons.add(newShipButton);
 

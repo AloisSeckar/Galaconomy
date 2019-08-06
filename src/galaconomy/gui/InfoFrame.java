@@ -34,8 +34,6 @@ public class InfoFrame extends AnchorPane implements IEngineSubscriber {
         super.getChildren().add(stellarTimePane);
         AnchorPane.setLeftAnchor(stellarTimePane, 5d);
         AnchorPane.setBottomAnchor(stellarTimePane, 5d);
-        
-        infoPane.setElementToDisplay(null);
     }
 
     public BasicDisplayPane getInfoPane() {
