@@ -1,6 +1,6 @@
 package galaconomy.universe.economy;
 
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import java.util.*;
 
 public class EconomyManager {

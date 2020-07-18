@@ -1,8 +1,8 @@
 package galaconomy.universe;
 
+import galaconomy.universe.map.Star;
 import galaconomy.universe.economy.EconomyManager;
 import galaconomy.universe.player.*;
-import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
 import java.io.*;
 import java.util.*;

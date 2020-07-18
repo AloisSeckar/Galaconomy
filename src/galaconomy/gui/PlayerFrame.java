@@ -6,7 +6,7 @@ import galaconomy.universe.*;
 import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.economy.Goods;
 import galaconomy.universe.player.Player;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.MathUtils;
 import java.util.*;

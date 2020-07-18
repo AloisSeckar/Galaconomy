@@ -1,11 +1,12 @@
 package galaconomy.universe;
 
+import galaconomy.universe.map.StellarObject;
+import galaconomy.universe.map.Star;
 import galaconomy.constants.Constants;
 import galaconomy.db.DBManager;
 import galaconomy.universe.economy.Goods;
 import galaconomy.universe.economy.Supplies;
 import galaconomy.universe.player.Player;
-import galaconomy.universe.systems.*;
 import galaconomy.universe.traffic.*;
 import java.awt.Color;
 import java.util.*;

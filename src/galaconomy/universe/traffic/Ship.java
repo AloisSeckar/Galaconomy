@@ -3,7 +3,7 @@ package galaconomy.universe.traffic;
 import galaconomy.universe.*;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import galaconomy.utils.DisplayUtils;
 import java.io.Serializable;
 import java.util.*;

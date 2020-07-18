@@ -1,7 +1,7 @@
 package galaconomy.universe.economy;
 
 import galaconomy.universe.IDisplayable;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import java.io.Serializable;
 
 public class Cargo implements IDisplayable, Serializable {

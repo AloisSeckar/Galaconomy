@@ -1,4 +1,4 @@
-package galaconomy.universe.systems;
+package galaconomy.universe.map;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.IDisplayable;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import javafx.scene.paint.Paint;
 
-public abstract class MapElement implements IDisplayable, Serializable {
+public abstract class AbstractMapElement implements IDisplayable, Serializable {
     
     private final String name;
     private final String dscr; 
@@ -17,7 +17,7 @@ public abstract class MapElement implements IDisplayable, Serializable {
     private final int xCoord;
     private final int yCoord;
     
-    public MapElement(String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
+    public AbstractMapElement(String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
         if (name != null) {
             this.name = name;
         } else {
@@ -106,7 +106,7 @@ public abstract class MapElement implements IDisplayable, Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final MapElement other = (MapElement) obj;
+        final AbstractMapElement other = (AbstractMapElement) obj;
         if (this.xCoord != other.xCoord) {
             return false;
         }

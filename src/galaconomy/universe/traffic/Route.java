@@ -2,7 +2,7 @@ package galaconomy.universe.traffic;
 
 import galaconomy.universe.*;
 import galaconomy.universe.economy.Cargo;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import java.io.Serializable;
 
 public class Route implements IDisplayable, Serializable {

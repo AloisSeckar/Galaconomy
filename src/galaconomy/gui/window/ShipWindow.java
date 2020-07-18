@@ -3,7 +3,7 @@ package galaconomy.gui.window;
 import galaconomy.gui.PlayerFrame;
 import galaconomy.gui.pane.ShipDispatchPane;
 import galaconomy.universe.economy.Cargo;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.Ship;
 import galaconomy.utils.InfoUtils;
 import javafx.geometry.Pos;

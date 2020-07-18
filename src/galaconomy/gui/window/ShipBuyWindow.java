@@ -2,7 +2,7 @@ package galaconomy.gui.window;
 
 import galaconomy.gui.PlayerFrame;
 import galaconomy.universe.UniverseManager;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.*;
 import javafx.collections.*;

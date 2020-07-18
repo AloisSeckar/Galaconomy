@@ -1,7 +1,7 @@
 package galaconomy.universe.economy;
 
 import galaconomy.universe.player.Player;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.Ship;
 
 public class TradeHelper {

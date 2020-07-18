@@ -1,6 +1,6 @@
 package galaconomy.universe;
 
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import java.awt.Color;
 import java.util.*;
 

@@ -1,7 +1,7 @@
 package galaconomy.gui.pane;
 
 import galaconomy.universe.UniverseManager;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;

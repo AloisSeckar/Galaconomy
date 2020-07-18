@@ -3,7 +3,7 @@ package galaconomy.gui;
 import galaconomy.gui.pane.BasicDisplayPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.Route;
 import java.util.*;
 import javafx.scene.image.Image;

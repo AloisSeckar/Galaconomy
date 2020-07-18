@@ -2,7 +2,7 @@ package galaconomy.universe.traffic;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 import java.util.Random;
 
 public class ShipGenerator {

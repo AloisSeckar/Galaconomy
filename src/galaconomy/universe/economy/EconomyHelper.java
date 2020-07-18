@@ -1,7 +1,7 @@
 package galaconomy.universe.economy;
 
 import galaconomy.universe.UniverseManager;
-import galaconomy.universe.systems.Star;
+import galaconomy.universe.map.Star;
 
 public class EconomyHelper {
     

@@ -1,17 +1,26 @@
-package galaconomy.universe.systems;
+package galaconomy.universe.map;
 
 import galaconomy.universe.economy.*;
 import java.awt.Color;
 import java.util.*;
 
-public class Star extends MapElement {
+public class Base extends AbstractMapElement {
     
-    private final List<StellarObject> stellarObjects = new ArrayList<>();
+    private static final int COLS = 50;
+    private static final int ROWS = 20;
+    
+    private final SurfaceTile[][] surface = new SurfaceTile[COLS][ROWS];
     
     private final Map<String, Supplies> supplies = new HashMap<>();
 
-    public Star(String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
+    public Base(String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
         super(name, dscr, img, color, xCoord, yCoord);
+        
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                surface[col][row] = new SurfaceTile("X", "Y", "", Color.GREEN, col, row);
+            }
+        }
     }
     
     @Override
@@ -34,13 +43,9 @@ public class Star extends MapElement {
         
         return starDscr.toString();
     }
-    
-    public List<StellarObject> getStellarObjects() {
-        return stellarObjects;
-    }
-    
-    public boolean addStellarObject(StellarObject newObject) {
-        return stellarObjects.add(newObject);
+
+    public SurfaceTile[][] getSurface() {
+        return surface;
     }
 
     public Map<String, Supplies> getSupplies() {
