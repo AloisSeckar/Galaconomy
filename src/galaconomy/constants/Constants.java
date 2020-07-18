@@ -16,7 +16,7 @@ public class Constants {
     
     public static final String DEFAULT_IMAGE = "default";
     
-    public static final String FOLDER_RES = "/galaconomy/resources/";
+    public static final String FOLDER_RES = "/resources/";
     public static final String FOLDER_CSS = FOLDER_RES + "css/";
     public static final String FOLDER_IMG = FOLDER_RES + "img/";
     public static final String GOODS_FOLDER = FOLDER_IMG + "goods/";
