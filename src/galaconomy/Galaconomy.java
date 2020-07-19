@@ -4,22 +4,14 @@ import galaconomy.constants.Constants;
 import galaconomy.gui.*;
 import galaconomy.universe.*;
 import galaconomy.utils.LogUtils;
-import java.util.ArrayList;
 import javafx.application.Application;
-import javafx.event.*;
 import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.slf4j.*;
 
 public class Galaconomy extends Application {
     
     private static final Logger LOG = LoggerFactory.getLogger(Galaconomy.class);
-    
-    public static final int SCREEN_X = (Constants.MAX_X + 2) * 8;
-    public static final int SCREEN_Y = (Constants.MAX_Y + 2) * 8;
-    public static final int SIDE_PANEL_X = 250;
     
     private static final String TITLE = Constants.PROGRAM_NAME;
     
@@ -28,74 +20,9 @@ public class Galaconomy extends Application {
         
         LOG.info(TITLE + " started");
         
-        BorderPane gameLayout = new BorderPane();
-        
-        InfoFrame info = new InfoFrame(SIDE_PANEL_X);
-        UniverseMapFrame universeMap = new UniverseMapFrame(SCREEN_X, SCREEN_Y, info.getInfoPane());
-        SystemMapFrame systemMap = new SystemMapFrame(SCREEN_X, SCREEN_Y, info.getInfoPane());
-        PlayerFrame player = new PlayerFrame(info.getInfoPane());
-        
-        HBox menu = new HBox();
-        
-        Button newUniverseBtn = new Button("Generate universe");
-        newUniverseBtn.setOnAction((ActionEvent event) -> {
-            UniverseManager universe = UniverseManager.getInstance();
-            UniverseGenerator.generate(universe);
-            
-            universeMap.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
-            universeMap.paintShipRoutes(universe.getRoutes());
-            
-            player.displayPlayer();
-            player.loadPlayerShips();
-            
-            universe.registerSubscriber(info);
-            universe.registerSubscriber(universeMap);
-            universe.registerSubscriber(systemMap);
-            universe.registerSubscriber(player);
-            universe.startEngine();
-        });
-        menu.getChildren().add(newUniverseBtn);
-        
-        
-        Button saveUniverseBtn = new Button("Save universe");
-        saveUniverseBtn.setOnAction((ActionEvent event) -> {
-            boolean saved = UniverseManager.saveUniverse("sav\\galaconomy.sav");
-            
-            Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setContentText(saved ? "Saved" : "Failed");
-            a.show();
-        });
-        menu.getChildren().add(saveUniverseBtn);
-        
-        Button loadUniverseBtn = new Button("Load universe");
-        loadUniverseBtn.setOnAction((ActionEvent event) -> {
-            boolean loaded = UniverseManager.loadUniverse("sav\\galaconomy.sav");
-            
-            Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setContentText(loaded ? "Loaded" : "Failed");
-            a.show();
-            
-            if (loaded) {
-                UniverseManager universe = UniverseManager.getInstance();
-                universeMap.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
-                universeMap.paintShipRoutes(universe.getRoutes());
+        BasicGameLayout gameLayout = BasicGameLayout.getInstance();
 
-                player.displayPlayer();
-                player.loadPlayerShips();
-
-                universe.registerSubscriber(info);
-                universe.registerSubscriber(universeMap);
-                universe.startEngine();
-            }
-        });
-        menu.getChildren().add(loadUniverseBtn);
-        
-        gameLayout.setTop(menu);
-        gameLayout.setCenter(universeMap);
-        gameLayout.setRight(info);
-        gameLayout.setBottom(player);
-
-        Scene scene = new Scene(gameLayout, SCREEN_X + SIDE_PANEL_X + 20, SCREEN_Y + 50 + 135);
+        Scene scene = new Scene(gameLayout, Constants.SCREEN_X + Constants.SIDE_PANEL_X + 20, Constants.SCREEN_Y + 50 + 135);
         scene.getStylesheets().add(getClass().getResource(Constants.FOLDER_CSS + "galaconomy.css").toExternalForm());
         
         primaryStage.setTitle(TITLE);
