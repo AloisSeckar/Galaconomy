@@ -45,4 +45,10 @@ public class InfoFrame extends AnchorPane implements IEngineSubscriber {
         stellarTimePane.update(stellarTime);
         infoPane.reloadInfoPanel();
     }
+
+    @Override
+    public boolean isActive() {
+        return true;
+    }
+    
 }

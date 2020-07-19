@@ -2,6 +2,9 @@ package galaconomy.utils;
 
 public class DisplayUtils {
     
+    public static final int DEFAULT_ZOOM_MULTIPLIER = 8;
+    public static final int BORDER_OFFSET = 8;
+    
     public static String formatDouble(double input) {
         return String.format("%.2f", input);
     }
@@ -16,5 +19,9 @@ public class DisplayUtils {
         sb.append("] ");
         
         return sb.toString();                   
+    }
+    
+     public static double fitCoordIntoDisplay(double coord) {
+        return coord * DEFAULT_ZOOM_MULTIPLIER + BORDER_OFFSET;
     }
 }

@@ -3,8 +3,7 @@ package galaconomy.gui;
 import galaconomy.gui.pane.BasicDisplayPane;
 import galaconomy.gui.window.*;
 import galaconomy.universe.*;
-import galaconomy.universe.economy.Cargo;
-import galaconomy.universe.economy.Goods;
+import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.*;
@@ -87,6 +86,12 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
     @Override
     public void engineTaskFinished(long stellarTime) {
         // DO NOTHING... ?
+        // TODO should even be a subscriber?
+    }
+
+    @Override
+    public boolean isActive() {
+        return true;
     }
 
     public void displayPlayer() {

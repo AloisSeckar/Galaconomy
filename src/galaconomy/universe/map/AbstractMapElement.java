@@ -76,6 +76,10 @@ public abstract class AbstractMapElement implements IDisplayable, Serializable {
         int b = color.getBlue();
         return javafx.scene.paint.Color.rgb(r, g, b);
     }
+
+    public String getName() {
+        return name;
+    }
     
     public int getX() {
         return xCoord;

@@ -1,6 +1,5 @@
 package galaconomy;
 
-import galaconomy.gui.pane.BasicDisplayPane;
 import galaconomy.constants.Constants;
 import galaconomy.gui.*;
 import galaconomy.universe.*;
@@ -32,7 +31,8 @@ public class Galaconomy extends Application {
         BorderPane gameLayout = new BorderPane();
         
         InfoFrame info = new InfoFrame(SIDE_PANEL_X);
-        MapFrame map = new MapFrame(SCREEN_X, SCREEN_Y, info.getInfoPane());
+        UniverseMapFrame universeMap = new UniverseMapFrame(SCREEN_X, SCREEN_Y, info.getInfoPane());
+        SystemMapFrame systemMap = new SystemMapFrame(SCREEN_X, SCREEN_Y, info.getInfoPane());
         PlayerFrame player = new PlayerFrame(info.getInfoPane());
         
         HBox menu = new HBox();
@@ -42,14 +42,15 @@ public class Galaconomy extends Application {
             UniverseManager universe = UniverseManager.getInstance();
             UniverseGenerator.generate(universe);
             
-            map.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
-            map.paintShipRoutes(universe.getRoutes());
+            universeMap.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
+            universeMap.paintShipRoutes(universe.getRoutes());
             
             player.displayPlayer();
             player.loadPlayerShips();
             
             universe.registerSubscriber(info);
-            universe.registerSubscriber(map);
+            universe.registerSubscriber(universeMap);
+            universe.registerSubscriber(systemMap);
             universe.registerSubscriber(player);
             universe.startEngine();
         });
@@ -76,21 +77,21 @@ public class Galaconomy extends Application {
             
             if (loaded) {
                 UniverseManager universe = UniverseManager.getInstance();
-                map.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
-                map.paintShipRoutes(universe.getRoutes());
+                universeMap.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
+                universeMap.paintShipRoutes(universe.getRoutes());
 
                 player.displayPlayer();
                 player.loadPlayerShips();
 
                 universe.registerSubscriber(info);
-                universe.registerSubscriber(map);
+                universe.registerSubscriber(universeMap);
                 universe.startEngine();
             }
         });
         menu.getChildren().add(loadUniverseBtn);
         
         gameLayout.setTop(menu);
-        gameLayout.setCenter(map);
+        gameLayout.setCenter(universeMap);
         gameLayout.setRight(info);
         gameLayout.setBottom(player);
 

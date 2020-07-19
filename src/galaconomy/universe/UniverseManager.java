@@ -216,7 +216,9 @@ public class UniverseManager implements Serializable {
                 rethinkRoutes();
 
                 for (IEngineSubscriber subscriber : subscribers) {
-                    subscriber.engineTaskFinished(stellarTime);
+                    if (subscriber.isActive()) {
+                        subscriber.engineTaskFinished(stellarTime);
+                    }
                 }
             })
         );

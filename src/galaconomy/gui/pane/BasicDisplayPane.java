@@ -1,11 +1,12 @@
 package galaconomy.gui.pane;
 
-import galaconomy.gui.pane.BasicEngineSpeedPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
+import galaconomy.universe.map.Star;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -14,6 +15,8 @@ public class BasicDisplayPane extends AnchorPane {
     private final Label nameText;
     private final TextArea dscrText;
     private final ImageView imgView;
+    
+    private final Button detailButton;
     
     private IDisplayable elementToDisplay;
     
@@ -34,6 +37,11 @@ public class BasicDisplayPane extends AnchorPane {
         super.getChildren().add(imgView);
         AnchorPane.setTopAnchor(imgView, 35d);
         
+        detailButton = new Button("Detail");
+        detailButton.setDisable(true);
+        super.getChildren().add(detailButton);
+        AnchorPane.setTopAnchor(detailButton, width + 50d);
+        
         dscrText = new TextArea();
         dscrText.setMaxWidth(width);
         dscrText.setMinHeight(250d);
@@ -41,7 +49,8 @@ public class BasicDisplayPane extends AnchorPane {
         dscrText.setEditable(false);
         dscrText.getStyleClass().add("pane-info-dscr");
         super.getChildren().add(dscrText);
-        AnchorPane.setTopAnchor(dscrText, width + 50d);
+        AnchorPane.setTopAnchor(dscrText, width + 75d);
+        
         
         setElementToDisplay(new VoidElement());
     }
@@ -58,6 +67,16 @@ public class BasicDisplayPane extends AnchorPane {
 
             Image defaultImg = new Image(getClass().getResourceAsStream(elementToDisplay.getImage()));
             imgView.setImage(defaultImg);
+            
+            if (elementToDisplay instanceof Star) {
+                detailButton.setDisable(false);
+                detailButton.removeEventHandler(MouseEvent.MOUSE_PRESSED, detailButton.getOnMousePressed());
+                detailButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                    //
+                });
+            } else {
+                detailButton.setDisable(true);
+            }
         } else {
             setElementToDisplay(new VoidElement());
         }
