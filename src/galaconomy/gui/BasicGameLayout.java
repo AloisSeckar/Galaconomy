@@ -96,15 +96,19 @@ public class BasicGameLayout extends BorderPane {
     }
     
     public void switchToGalaxy() {
-        this.setCenter(universeMap);
         universeMap.setActive(true);
         systemMap.setActive(false);
+        
+        this.setCenter(universeMap);
     }
     
     public void switchToSystem(Star star) {
-        this.setCenter(systemMap);
+        systemMap.paintSystemMap(star);
+        
         systemMap.setActive(true);
         universeMap.setActive(false);
+        
+        this.setCenter(systemMap);
     }
     
     public void switchToBase(Base base) {

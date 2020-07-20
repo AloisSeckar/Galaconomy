@@ -41,27 +41,11 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         systemObjects.clear();
         
         currentSystem = starSystem.getName();
+        
+        addObject(starSystem);
                 
         for (StellarObject stellarObject : starSystem.getStellarObjects()) {
-            
-            ImageView object = new ImageView();
-            object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 5);
-            object.setPreserveRatio(true);
-            object.setSmooth(true);
-            object.setCache(true);
-            
-            Image objectImg = new Image(getClass().getResourceAsStream(stellarObject.getImage()));
-            object.setImage(objectImg);
-            
-            object.setX(DisplayUtils.fitCoordIntoDisplay(stellarObject.getX()));
-            object.setY(DisplayUtils.fitCoordIntoDisplay(stellarObject.getY()));
-            
-            object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.setElementToDisplay(stellarObject);
-            });
-            
-            this.getChildren().add(object);
-            systemObjects.add(object);
+            addObject(stellarObject);
         }
     }
 
@@ -131,5 +115,28 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     @Override
     public void engineTaskFinished(long stellarTime) {
         paintShipRoutes(UniverseManager.getInstance().getRoutes());
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    private void addObject(AbstractMapElement stellarObject) {
+        ImageView object = new ImageView();
+        object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 5);
+        object.setPreserveRatio(true);
+        object.setSmooth(true);
+        object.setCache(true);
+
+        Image objectImg = new Image(getClass().getResourceAsStream(stellarObject.getImage()));
+        object.setImage(objectImg);
+
+        object.setX(DisplayUtils.fitCoordIntoDisplay(stellarObject.getX()));
+        object.setY(DisplayUtils.fitCoordIntoDisplay(stellarObject.getY()));
+
+        object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+            infoPaneReference.setElementToDisplay(stellarObject);
+        });
+
+        this.getChildren().add(object);
+        systemObjects.add(object);
     }
 }
