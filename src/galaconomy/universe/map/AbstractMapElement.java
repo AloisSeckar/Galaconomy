@@ -45,13 +45,13 @@ public abstract class AbstractMapElement implements IDisplayable, Serializable {
         if (xCoord <= Constants.MAX_X) {
             this.xCoord = xCoord;
         } else {
-            throw new IllegalArgumentException("Given xCoord is out of universe bounds");
+            throw new IllegalArgumentException("Given xCoord is out of map bounds");
         }
         
         if (yCoord <= Constants.MAX_Y) {
             this.yCoord = yCoord;
         } else {
-            throw new IllegalArgumentException("Given yCoord is out of universe bounds");
+            throw new IllegalArgumentException("Given yCoord is out of map bounds");
         }
     }
 

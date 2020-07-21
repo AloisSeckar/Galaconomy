@@ -121,7 +121,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     
     private void addObject(AbstractMapElement stellarObject) {
         ImageView object = new ImageView();
-        object.setPreserveRatio(true);
+        object.setPreserveRatio(false);
         object.setSmooth(true);
         object.setCache(true);
 
@@ -129,13 +129,13 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         object.setImage(objectImg);
 
         if (stellarObject instanceof Star) {
-            object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 12);
-            object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 12);
-            object.setX(DisplayUtils.fitCoordIntoDisplay(Constants.MAX_X / 2) - DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 6);
-            object.setY(DisplayUtils.fitCoordIntoDisplay(Constants.MAX_Y / 2) - DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 6);
+            object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 10);
+            object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 10);
+            object.setX(DisplayUtils.fitCoordIntoDisplay(Constants.MAX_X / 2 + 1) - DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 5);
+            object.setY(DisplayUtils.fitCoordIntoDisplay(Constants.MAX_Y / 2 + 1) - DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 5);
         } else { 
-            object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 7);
-            object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 7);
+            object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 4);
+            object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 4);
             object.setX(DisplayUtils.fitCoordIntoDisplay(stellarObject.getX()));
             object.setY(DisplayUtils.fitCoordIntoDisplay(stellarObject.getY()));
         }

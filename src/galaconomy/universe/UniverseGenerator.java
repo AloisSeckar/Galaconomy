@@ -58,12 +58,30 @@ public class UniverseGenerator {
                 newStar.updateSupplies(new Supplies(availableGoods.get(3), rand.nextInt(2000) + 1));
                 newStar.updateSupplies(new Supplies(availableGoods.get(4), rand.nextInt(2000) + 1));
                 
-                int numberOfPlanets = rand.nextInt(13);
+                int numberOfPlanets = rand.nextInt(5); 
+                if (rand.nextInt(10) % 2 == 0) {
+                    numberOfPlanets += rand.nextInt(5);
+                }
+                if (rand.nextInt(10) % 3 == 0) {
+                    numberOfPlanets += rand.nextInt(5);
+                }
+                numberOfPlanets = 12;
+                int centerX = Constants.MAX_X / 2 + 1;
+                int centerY = Constants.MAX_Y / 2 + 1;
                 for (int j = 1; j <= numberOfPlanets; j++) {
-                    String planetName = newStar.displayName()+ " " + UniverseUtils.getPlanetOrder(j);
+                    String planetName = newStar.getName() + " " + UniverseUtils.getPlanetOrder(j);
                     String planetImg = Constants.PLANETS_FOLDER + "planet" + UniverseUtils.getRandomImageOrder(rand, Constants.AVAILABLE_PLANETS) + ".jpg";
 
-                    newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, UniverseUtils.getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y)));
+                    // x = r * sin(θ), y = r * cos(θ)
+                    int angle = rand.nextInt(360);
+                    double radius = 9 + (1 + rand.nextDouble() * 2) * j;
+                    Double randomX = centerX + (radius * Math.sin(angle)); 
+                    Double randomY = centerY + (radius * Math.cos(angle));
+                    
+                    int xCoord = Math.min(randomX.intValue(), Constants.MAX_X);
+                    int yCoord = Math.min(randomY.intValue(), Constants.MAX_Y);
+                    
+                    newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, UniverseUtils.getRandomColor(rand.nextInt(12)), xCoord, yCoord));
                 }
 
                 universeManager.addStar(newStar);

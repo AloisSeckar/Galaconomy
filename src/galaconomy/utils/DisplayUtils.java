@@ -21,7 +21,7 @@ public class DisplayUtils {
         return sb.toString();                   
     }
     
-     public static double fitCoordIntoDisplay(double coord) {
+    public static double fitCoordIntoDisplay(double coord) {
         return coord * DEFAULT_ZOOM_MULTIPLIER + BORDER_OFFSET;
     }
 }
