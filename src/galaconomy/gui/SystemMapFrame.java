@@ -44,9 +44,9 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         
         addObject(starSystem);
                 
-        for (StellarObject stellarObject : starSystem.getStellarObjects()) {
+        starSystem.getStellarObjects().forEach((stellarObject) -> {
             addObject(stellarObject);
-        }
+        });
     }
 
     @Override
@@ -64,7 +64,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         this.getChildren().removeAll(activeShips);
         activeShips.clear();
         
-        for (Route route : routes) {
+        routes.forEach((route) -> {
             Line routeLine = new Line();
             routeLine.getStyleClass().add("ship-route");
             
@@ -109,7 +109,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
             activeShips.add(ship);
             
             routeLine.toBack();
-        }
+        });
     }
 
     @Override
@@ -121,7 +121,6 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     
     private void addObject(AbstractMapElement stellarObject) {
         ImageView object = new ImageView();
-        object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 5);
         object.setPreserveRatio(true);
         object.setSmooth(true);
         object.setCache(true);
@@ -129,8 +128,17 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         Image objectImg = new Image(getClass().getResourceAsStream(stellarObject.getImage()));
         object.setImage(objectImg);
 
-        object.setX(DisplayUtils.fitCoordIntoDisplay(stellarObject.getX()));
-        object.setY(DisplayUtils.fitCoordIntoDisplay(stellarObject.getY()));
+        if (stellarObject instanceof Star) {
+            object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 12);
+            object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 12);
+            object.setX(DisplayUtils.fitCoordIntoDisplay(Constants.MAX_X / 2) - DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 6);
+            object.setY(DisplayUtils.fitCoordIntoDisplay(Constants.MAX_Y / 2) - DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 6);
+        } else { 
+            object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 7);
+            object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 7);
+            object.setX(DisplayUtils.fitCoordIntoDisplay(stellarObject.getX()));
+            object.setY(DisplayUtils.fitCoordIntoDisplay(stellarObject.getY()));
+        }
 
         object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
             infoPaneReference.setElementToDisplay(stellarObject);
