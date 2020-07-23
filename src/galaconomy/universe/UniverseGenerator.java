@@ -34,7 +34,7 @@ public class UniverseGenerator {
             
             List<Goods> availableGoods = Goods.getAvailableGoods();
             
-            Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "sicopia.jpg", Color.ORANGE, 45, 45);
+            Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "star09.png", Color.ORANGE, 45, 45);
             sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(5000) + 1));
             sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(5000) + 1));
             sicopiaSystem.updateSupplies(new Supplies(availableGoods.get(2), rand.nextInt(5000) + 1));
@@ -48,9 +48,11 @@ public class UniverseGenerator {
 
             for (int i = 0; i < numberOfStars; i++) {
                 String starName = names.get(rand.nextInt(names.size()));
-                String starImg = Constants.STARS_FOLDER + "star" + UniverseUtils.getRandomImageOrder(rand, Constants.AVAILABLE_STARS) + ".jpg";
+                
+                int randStarImg = rand.nextInt(Constants.AVAILABLE_STARS) + 1;
+                String starImg = Constants.STARS_FOLDER + "star" + String.format("%02d" , randStarImg) + ".png";
 
-                Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, UniverseUtils.getRandomColor(rand.nextInt(12)), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y));
+                Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, UniverseUtils.getStarColor(randStarImg), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y));
 
                 newStar.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(2000) + 1));
                 newStar.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(2000) + 1));
@@ -65,12 +67,13 @@ public class UniverseGenerator {
                 if (rand.nextInt(10) % 3 == 0) {
                     numberOfPlanets += rand.nextInt(5);
                 }
-                numberOfPlanets = 12;
                 int centerX = Constants.MAX_X / 2 + 1;
                 int centerY = Constants.MAX_Y / 2 + 1;
                 for (int j = 1; j <= numberOfPlanets; j++) {
                     String planetName = newStar.getName() + " " + UniverseUtils.getPlanetOrder(j);
-                    String planetImg = Constants.PLANETS_FOLDER + "planet" + UniverseUtils.getRandomImageOrder(rand, Constants.AVAILABLE_PLANETS) + ".jpg";
+                    
+                    int randPlanetImg = rand.nextInt(Constants.AVAILABLE_PLANETS) + 1;
+                    String planetImg = Constants.PLANETS_FOLDER + "planet" + String.format("%02d" , randPlanetImg) + ".png";
 
                     // x = r * sin(θ), y = r * cos(θ)
                     int angle = rand.nextInt(360);
@@ -81,7 +84,7 @@ public class UniverseGenerator {
                     int xCoord = Math.min(randomX.intValue(), Constants.MAX_X);
                     int yCoord = Math.min(randomY.intValue(), Constants.MAX_Y);
                     
-                    newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, UniverseUtils.getRandomColor(rand.nextInt(12)), xCoord, yCoord));
+                    newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, Color.WHITE, xCoord, yCoord));
                 }
 
                 universeManager.addStar(newStar);

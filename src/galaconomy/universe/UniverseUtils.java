@@ -51,46 +51,61 @@ public class UniverseUtils {
         return ret;
     }
     
-    public static Color getRandomColor(int color) {
+    public static Color getStarColor(int starType) {
         Color ret = Color.YELLOW;
         
-        switch (color) {
+        switch (starType) {
             case 1:
-            case 8:
-                ret = Color.WHITE;
-                break;
             case 2:
-                ret = Color.BLUE;
-                break;
             case 3:
-                ret = Color.RED;
-                break;
             case 4:
-            case 9:
-                ret = Color.ORANGE;
-                break;
             case 5:
-                ret = Color.GREEN;
-                break;
             case 6:
+            case 7:
+            case 8:
                 ret = Color.CYAN;
                 break;
-            case 7:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+                ret = Color.ORANGE;
+                break;
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+                ret = Color.RED;
+                break;
+            case 21:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 27:
+            case 28:
+                ret = Color.WHITE;
+                break;
+            case 29:
+            case 30:
+            case 31:
+            case 32:
+                ret = Color.YELLOW;
+                break;
+            case 33:
+            case 34:
+                ret = Color.GREEN;
+                break;
+            case 35:
+            case 36:
                 ret = Color.MAGENTA;
                 break;
         }
-        
-        return ret;
-    }
-    
-    public static String getRandomImageOrder(Random rand, int options) {
-        String ret = "";
-        
-        int randValue = rand.nextInt(options) + 1;
-        if (randValue < 10) {
-            ret += "0";
-        }
-        ret += String.valueOf(randValue);
         
         return ret;
     }
