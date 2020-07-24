@@ -1,5 +1,6 @@
 package galaconomy.universe;
 
+import galaconomy.universe.map.RiftGate;
 import galaconomy.universe.map.Star;
 import java.awt.Color;
 import java.util.*;
@@ -118,6 +119,21 @@ public class UniverseUtils {
         int random = rand.nextInt(systems.size());
        
         return systems.get(random);
+    }
+    
+    public static boolean hasRiftConnection(Star from, Star to) {
+        boolean ret = false;
+        
+        if (from != null && to != null) {
+            for (RiftGate gate : from.getRiftGates()) {
+                if (to.equals(gate.getTarget())) {
+                    ret = true;
+                    break;
+                }
+            }
+        }
+        
+        return ret;
     }
 
 }

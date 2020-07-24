@@ -1,13 +1,10 @@
 package galaconomy.gui.pane;
 
 import galaconomy.constants.Constants;
-import galaconomy.gui.BasicGameLayout;
 import galaconomy.universe.*;
-import galaconomy.universe.map.Star;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 

@@ -9,7 +9,7 @@ public class Constants {
     public static final int AVAILABLE_PLANETS = 51;
     public static final int AVAILABLE_PLAYERS = 8;
     public static final int AVAILABLE_SHIPS = 5;
-    public static final int AVAILABLE_STARS = 38;
+    public static final int AVAILABLE_STARS = 36;
     
     public static final int MAX_X = 97;
     public static final int MAX_Y = 77;

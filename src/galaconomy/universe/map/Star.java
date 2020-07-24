@@ -8,6 +8,9 @@ public class Star extends AbstractMapElement {
     
     private final List<StellarObject> stellarObjects = new ArrayList<>();
     
+    private RiftPortal riftPortal;
+    private final List<RiftGate> riftGates = new ArrayList<>();
+    
     private final Map<String, Supplies> supplies = new HashMap<>();
 
     public Star(String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
@@ -79,5 +82,21 @@ public class Star extends AbstractMapElement {
         if (currentSupply.getAmount() < 1) {
             supplies.remove(goodsName);
         }
+    }
+
+    public RiftPortal getRiftPortal() {
+        return riftPortal;
+    }
+
+    public void setRiftPortal(RiftPortal riftPortal) {
+        this.riftPortal = riftPortal;
+    }
+    
+    public List<RiftGate> getRiftGates() {
+        return riftGates;
+    }
+    
+    public boolean addRiftGate(RiftGate newObject) {
+        return riftGates.add(newObject);
     }
 }

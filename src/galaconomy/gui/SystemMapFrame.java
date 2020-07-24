@@ -46,6 +46,15 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
                 
         starSystem.getStellarObjects().forEach((stellarObject) -> {
             addObject(stellarObject);
+        });  
+        
+        RiftPortal riftPortal = starSystem.getRiftPortal();
+        if (riftPortal != null) {
+            addObject(riftPortal);
+        }
+        
+        starSystem.getRiftGates().forEach((riftGate) -> {
+            addObject(riftGate);
         });
     }
 
@@ -119,16 +128,16 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     
     ////////////////////////////////////////////////////////////////////////////
     
-    private void addObject(AbstractMapElement stellarObject) {
+    private void addObject(AbstractMapElement mapObject) {
         ImageView object = new ImageView();
         object.setPreserveRatio(false);
         object.setSmooth(true);
         object.setCache(true);
 
-        Image objectImg = new Image(getClass().getResourceAsStream(stellarObject.getImage()));
+        Image objectImg = new Image(getClass().getResourceAsStream(mapObject.getImage()));
         object.setImage(objectImg);
 
-        if (stellarObject instanceof Star) {
+        if (mapObject instanceof Star) {
             object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 10);
             object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 10);
             object.setX(DisplayUtils.fitCoordIntoDisplay(Constants.MAX_X / 2 + 1) - DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 5);
@@ -136,12 +145,12 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         } else { 
             object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 4);
             object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 4);
-            object.setX(DisplayUtils.fitCoordIntoDisplay(stellarObject.getX()));
-            object.setY(DisplayUtils.fitCoordIntoDisplay(stellarObject.getY()));
+            object.setX(DisplayUtils.fitCoordIntoDisplay(mapObject.getX()));
+            object.setY(DisplayUtils.fitCoordIntoDisplay(mapObject.getY()));
         }
 
         object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            infoPaneReference.setElementToDisplay(stellarObject);
+            infoPaneReference.setElementToDisplay(mapObject);
         });
 
         this.getChildren().add(object);

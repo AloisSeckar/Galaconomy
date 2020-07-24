@@ -1,11 +1,9 @@
 package galaconomy.universe;
 
-import galaconomy.universe.map.StellarObject;
-import galaconomy.universe.map.Star;
 import galaconomy.constants.Constants;
 import galaconomy.db.DBManager;
-import galaconomy.universe.economy.Goods;
-import galaconomy.universe.economy.Supplies;
+import galaconomy.universe.economy.*;
+import galaconomy.universe.map.*;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.traffic.*;
 import java.awt.Color;
@@ -86,13 +84,38 @@ public class UniverseGenerator {
                     
                     newStar.addStellarObject(new StellarObject(planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, Color.WHITE, xCoord, yCoord));
                 }
-
+                
+                if (rand.nextInt() % 2 == 0) {
+                    newStar.setRiftPortal(new RiftPortal("Rift portal", "Can be used to travel to any other system", Constants.MAX_X / 2 + 1, 5));
+                }
+                
                 universeManager.addStar(newStar);
                 names.remove(starName);
             }
             
             List<Star> systems = new ArrayList<>( UniverseManager.getInstance().getStars().values());
             int maxInt = systems.size();
+            
+            int numberOfGates = (rand.nextInt(maxInt) + 1) * 2; 
+            for (int j = 1; j <= numberOfGates; j++) {
+                Star randomOrigin;
+                Star randomDestination;
+                do {
+                    randomOrigin = UniverseUtils.getRandomSystem();
+                    do {
+                        randomDestination = UniverseUtils.getRandomSystem();
+                    } while (randomOrigin.equals(randomDestination));
+                } while (UniverseUtils.hasRiftConnection(randomOrigin, randomDestination));
+
+                String riftGateName1 = "Rift gate to " + randomDestination.getName();
+                String riftGateName2 = "Rift gate to " + randomOrigin.getName();
+                
+                int xCoord = 10 * j;
+                int yCoord = 12;
+                
+                randomOrigin.addRiftGate(new RiftGate(riftGateName1, "A connector betwen two systems", xCoord, yCoord, randomDestination));
+                randomDestination.addRiftGate(new RiftGate(riftGateName2, "A connector betwen two systems", xCoord, yCoord, randomOrigin));
+            }
             
             centralAI.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), systems.get(rand.nextInt(maxInt))));
             centralAI.addShip(new Ship("GLS Beta", ShipGenerator.getRandomShipClass(rand), systems.get(rand.nextInt(maxInt))));
