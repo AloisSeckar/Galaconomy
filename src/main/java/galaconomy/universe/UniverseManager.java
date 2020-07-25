@@ -82,6 +82,13 @@ public class UniverseManager implements Serializable {
         return stars;
     }
     
+    public List<Star> getAvailableStars() {
+        List<Star> ret = new ArrayList<>();
+        ret.addAll(stars.values());
+        Collections.shuffle(ret);
+        return ret;
+    }
+    
     public Star findStar(String starName) {
         return stars.get(starName);
     }

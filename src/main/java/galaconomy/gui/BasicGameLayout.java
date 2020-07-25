@@ -32,8 +32,8 @@ public class BasicGameLayout extends BorderPane {
         
         Button newUniverseBtn = new Button("Generate universe");
         newUniverseBtn.setOnAction((ActionEvent event) -> {
+            UniverseGenerator.generate();
             UniverseManager universe = UniverseManager.getInstance();
-            UniverseGenerator.generate(universe);
             
             List<Star> stars = new ArrayList<>(universe.getStars().values());
             List<Connector> gates = universe.getGates();
