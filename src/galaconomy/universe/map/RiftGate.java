@@ -9,7 +9,11 @@ public class RiftGate extends AbstractMapElement {
 
     public RiftGate(String name, String dscr, int xCoord, int yCoord, Star target) throws Exception {
         super(name, dscr, Constants.FOLDER_IMG + "rift_gate.png", Color.GRAY, xCoord, yCoord);
-        this.target = target;
+        if (target != null) {
+            this.target = target;
+        } else {
+            throw new Exception("Target cannot be NULL");
+        }
     }
 
     public Star getTarget() {

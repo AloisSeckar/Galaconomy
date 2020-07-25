@@ -1,5 +1,6 @@
 package galaconomy.universe;
 
+import galaconomy.universe.map.Connector;
 import galaconomy.universe.map.Star;
 import galaconomy.universe.economy.EconomyManager;
 import galaconomy.universe.player.*;
@@ -26,6 +27,7 @@ public class UniverseManager implements Serializable {
     private final Map<String, Player> aiPlayers = new HashMap<>();
     
     private final Map<String, Star> stars = new HashMap<>();
+    private final List<Connector> gates = new ArrayList<>();
     private final List<Route> routes = new ArrayList<>();
     
     private UniverseManager() {
@@ -111,6 +113,15 @@ public class UniverseManager implements Serializable {
         LOG.info("AI Player added: " + newPlayer.displayName());
     }
 
+    public List<Connector> getGates() {
+        return gates;
+    }
+    
+    public void addGate(Connector newGate) {
+        gates.add(newGate);
+        LOG.info("Gate added: " + newGate.displayName());
+    }
+
     public List<Route> getRoutes() {
         return routes;
     }
@@ -125,6 +136,7 @@ public class UniverseManager implements Serializable {
         
         stars.clear();
         aiPlayers.clear();
+        gates.clear();
         routes.clear();
         
         stellarTime = 100000;

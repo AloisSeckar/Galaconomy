@@ -3,13 +3,10 @@ package galaconomy.gui;
 import galaconomy.gui.pane.BasicDisplayPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
-import galaconomy.universe.map.RiftGate;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.Route;
 import galaconomy.utils.DisplayUtils;
 import java.util.*;
-import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -48,33 +45,31 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
         this.active = active;
     }
     
-    public void paintUniverseMap(List<Star> stars) {
+    public void paintUniverseMap(List<Star> stars, List<Connector> gates) {
         this.getChildren().removeAll(activeStars);
         activeStars.clear();
         this.getChildren().removeAll(activeConnections);
         activeConnections.clear();
         
         // first draw rift gates connectors
-        for (Star system : stars) {
-            for (RiftGate gate : system.getRiftGates()) {
-                Line riftLine = new Line();
-                riftLine.getStyleClass().add("rift-route");
-                
-                Star departure = system;
-                riftLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()));
-                riftLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()));
-                
-                Star arrival = gate.getTarget();
-                riftLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()));
-                riftLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
-                
-                riftLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                    infoPaneReference.setElementToDisplay(gate);
-                });
+        for (Connector gate : gates) {
+            Line riftLine = new Line();
+            riftLine.getStyleClass().add("rift-route");
 
-                this.getChildren().add(riftLine);
-                activeConnections.add(riftLine);
-            }
+            Star point1 = gate.getPoint1();
+            riftLine.setStartX(DisplayUtils.fitCoordIntoDisplay(point1.getX()));
+            riftLine.setStartY(DisplayUtils.fitCoordIntoDisplay(point1.getY()));
+
+            Star point2 = gate.getPoint2();
+            riftLine.setEndX(DisplayUtils.fitCoordIntoDisplay(point2.getX()));
+            riftLine.setEndY(DisplayUtils.fitCoordIntoDisplay(point2.getY()));
+
+            riftLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                infoPaneReference.setElementToDisplay(gate);
+            });
+
+            this.getChildren().add(riftLine);
+            activeConnections.add(riftLine);
         }
         
         // then overlay lines with star images

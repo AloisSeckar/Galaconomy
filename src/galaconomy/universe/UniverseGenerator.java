@@ -117,6 +117,8 @@ public class UniverseGenerator {
                 
                 randomOrigin.addRiftGate(new RiftGate(riftGateName1, "Permanent rift connector betwen two systems", xCoord1, yCoord, randomDestination));
                 randomDestination.addRiftGate(new RiftGate(riftGateName2, "Permanent rift connector betwen two systems", xCoord2, yCoord, randomOrigin));
+                
+                universeManager.addGate(new Connector(randomOrigin, randomDestination));
             }
             
             centralAI.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), systems.get(rand.nextInt(maxInt))));

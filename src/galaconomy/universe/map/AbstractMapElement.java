@@ -123,6 +123,4 @@ public abstract class AbstractMapElement implements IDisplayable, Serializable {
         return true;
     }
     
-    
-    
 }

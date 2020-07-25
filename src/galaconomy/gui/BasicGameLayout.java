@@ -4,8 +4,10 @@ import galaconomy.constants.Constants;
 import galaconomy.universe.UniverseGenerator;
 import galaconomy.universe.UniverseManager;
 import galaconomy.universe.map.Base;
+import galaconomy.universe.map.Connector;
 import galaconomy.universe.map.Star;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -33,7 +35,9 @@ public class BasicGameLayout extends BorderPane {
             UniverseManager universe = UniverseManager.getInstance();
             UniverseGenerator.generate(universe);
             
-            universeMap.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
+            List<Star> stars = new ArrayList<>(universe.getStars().values());
+            List<Connector> gates = universe.getGates();
+            universeMap.paintUniverseMap(stars, gates);
             universeMap.paintShipRoutes(universe.getRoutes());
             
             player.displayPlayer();
@@ -68,7 +72,10 @@ public class BasicGameLayout extends BorderPane {
             
             if (loaded) {
                 UniverseManager universe = UniverseManager.getInstance();
-                universeMap.paintUniverseMap(new ArrayList<>(universe.getStars().values()));
+                
+                List<Star> stars = new ArrayList<>(universe.getStars().values());
+                List<Connector> gates = universe.getGates();
+                universeMap.paintUniverseMap(stars, gates);
                 universeMap.paintShipRoutes(universe.getRoutes());
 
                 player.displayPlayer();
