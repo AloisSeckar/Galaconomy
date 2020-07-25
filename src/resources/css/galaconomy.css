@@ -20,3 +20,9 @@
     -fx-stroke: yellow;
     -fx-stroke-width: 2px;
 }
+
+.rift-route {
+    -fx-stroke: green;
+    -fx-stroke-dash-array: 2 12 12 2;
+    -fx-stroke-width: 2px;
+}

@@ -3,10 +3,13 @@ package galaconomy.gui;
 import galaconomy.gui.pane.BasicDisplayPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
+import galaconomy.universe.map.RiftGate;
 import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.Route;
 import galaconomy.utils.DisplayUtils;
 import java.util.*;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -16,8 +19,10 @@ import javafx.scene.shape.*;
 public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
     
     public List<Circle> activeStars = new ArrayList<>();
-    public List<Line> activeRoutes = new ArrayList<>();
+    public List<Line> activeConnections = new ArrayList<>();
+    
     public List<Circle> activeShips = new ArrayList<>();
+    public List<Line> activeRoutes = new ArrayList<>();
     
     public final BasicDisplayPane infoPaneReference;
     
@@ -46,7 +51,33 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
     public void paintUniverseMap(List<Star> stars) {
         this.getChildren().removeAll(activeStars);
         activeStars.clear();
+        this.getChildren().removeAll(activeConnections);
+        activeConnections.clear();
+        
+        // first draw rift gates connectors
+        for (Star system : stars) {
+            for (RiftGate gate : system.getRiftGates()) {
+                Line riftLine = new Line();
+                riftLine.getStyleClass().add("rift-route");
                 
+                Star departure = system;
+                riftLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()));
+                riftLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()));
+                
+                Star arrival = gate.getTarget();
+                riftLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()));
+                riftLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
+                
+                riftLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                    infoPaneReference.setElementToDisplay(gate);
+                });
+
+                this.getChildren().add(riftLine);
+                activeConnections.add(riftLine);
+            }
+        }
+        
+        // then overlay lines with star images
         for (Star system : stars) {
             Circle star = new Circle(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER);
             star.setCenterX(DisplayUtils.fitCoordIntoDisplay(system.getX()));
@@ -112,6 +143,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
             this.getChildren().add(ship);
             activeShips.add(ship);
             
+            // TODO this causes routes being hidden behind rift connectors
             routeLine.toBack();
         }
     }

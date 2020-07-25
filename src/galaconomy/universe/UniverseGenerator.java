@@ -107,14 +107,16 @@ public class UniverseGenerator {
                     } while (randomOrigin.equals(randomDestination));
                 } while (UniverseUtils.hasRiftConnection(randomOrigin, randomDestination));
 
-                String riftGateName1 = "Rift gate to " + randomDestination.getName();
-                String riftGateName2 = "Rift gate to " + randomOrigin.getName();
+                String riftGateName1 = "Gate to " + randomDestination.getName();
+                String riftGateName2 = "Gate to " + randomOrigin.getName();
                 
-                int xCoord = 10 * j;
                 int yCoord = 12;
                 
-                randomOrigin.addRiftGate(new RiftGate(riftGateName1, "A connector betwen two systems", xCoord, yCoord, randomDestination));
-                randomDestination.addRiftGate(new RiftGate(riftGateName2, "A connector betwen two systems", xCoord, yCoord, randomOrigin));
+                int xCoord1 = 10 + 10 * randomOrigin.getRiftGates().size();
+                int xCoord2 = 10 + 10 * randomDestination.getRiftGates().size();
+                
+                randomOrigin.addRiftGate(new RiftGate(riftGateName1, "Permanent rift connector betwen two systems", xCoord1, yCoord, randomDestination));
+                randomDestination.addRiftGate(new RiftGate(riftGateName2, "Permanent rift connector betwen two systems", xCoord2, yCoord, randomOrigin));
             }
             
             centralAI.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), systems.get(rand.nextInt(maxInt))));
