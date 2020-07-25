@@ -6,12 +6,14 @@ import java.awt.Color;
 
 public class Connector extends AbstractMapElement {
     
+    private static long created = 0;
+    
     private final Star point1;
     private final Star point2;
     private final double distance;
 
     public Connector(Star point1, Star point2) throws Exception {
-        super("Connector", "Permanent rift connection between two systems", Constants.FOLDER_IMG + "rift_gate.png", Color.GRAY, 0, 0);
+        super("Connector" + created++, "Permanent rift connection between two systems", Constants.FOLDER_IMG + "rift_gate.png", Color.GRAY, 0, 0);
         if (point1 != null && point2 != null) {
             this.point1 = point1;
             this.point2 = point2;
