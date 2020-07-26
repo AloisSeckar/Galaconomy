@@ -5,7 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class BasicEngineSpeedPane extends AnchorPane {
+public class EngineSpeedPane extends AnchorPane {
     
     private static final double BUTTON_WIDTH = 45;
     private static final double ZERO_ANCHOR = 0;
@@ -17,7 +17,7 @@ public class BasicEngineSpeedPane extends AnchorPane {
     private final Button normalSpeedButton;
     private final Button doubleSpeedButton;
     
-    public BasicEngineSpeedPane() {
+    public EngineSpeedPane() {
         
         engineSpeedText = new Label();
         engineSpeedText.getStyleClass().add("pane-info-name");

@@ -1,7 +1,6 @@
 package galaconomy.gui.window;
 
-import galaconomy.gui.PlayerFrame;
-import galaconomy.gui.pane.ShipDispatchPane;
+import galaconomy.gui.pane.*;
 import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.Ship;
@@ -20,7 +19,7 @@ public class ShipWindow extends Stage {
     
     private final ShipDispatchPane shipDispatchPane;
     
-    public ShipWindow(PlayerFrame parent, Ship ship) {
+    public ShipWindow(PlayerPane parent, Ship ship) {
         super.setTitle(ship.displayName());
         super.initModality(Modality.APPLICATION_MODAL);
         super.initOwner((Stage) parent.getScene().getWindow());

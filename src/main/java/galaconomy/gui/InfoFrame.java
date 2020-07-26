@@ -1,5 +1,6 @@
 package galaconomy.gui;
 
+import galaconomy.constants.Constants;
 import galaconomy.gui.pane.*;
 import galaconomy.universe.*;
 import javafx.geometry.Insets;
@@ -8,41 +9,35 @@ import javafx.scene.paint.Color;
 
 public class InfoFrame extends AnchorPane implements IEngineSubscriber {
     
-    private final BasicDisplayPane infoPane;
-    private final BasicEngineSpeedPane engineSpeedPane;
-    private final BasicStellarTimePane stellarTimePane;
+    private final DisplayPane infoPane;
     
-    public InfoFrame(int width) {
-        super.setMinWidth(width + 20);
-        super.setMaxWidth(width + 20);
+    private static InfoFrame INSTANCE;
+    
+    public static InfoFrame getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new InfoFrame();
+        }
+        return INSTANCE;
+    }
+    
+    private InfoFrame() {
+        super.setMinWidth(Constants.SIDE_PANEL_X + 20);
+        super.setMaxWidth(Constants.SIDE_PANEL_X + 20);
         super.setBackground(new Background(new BackgroundFill(Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");
         
-        infoPane = new BasicDisplayPane(width);
+        infoPane = new DisplayPane(Constants.SIDE_PANEL_X);
         super.getChildren().add(infoPane);
         AnchorPane.setLeftAnchor(infoPane, 5d);
         AnchorPane.setTopAnchor(infoPane, 5d);
-        
-        engineSpeedPane = new BasicEngineSpeedPane();
-        super.getChildren().add(engineSpeedPane);
-        AnchorPane.setLeftAnchor(engineSpeedPane, 5d);
-        AnchorPane.setBottomAnchor(engineSpeedPane, 40d);
-        
-        stellarTimePane = new BasicStellarTimePane();
-        stellarTimePane.setMaxWidth(width);
-        stellarTimePane.getStyleClass().add("pane-info-name");
-        super.getChildren().add(stellarTimePane);
-        AnchorPane.setLeftAnchor(stellarTimePane, 5d);
-        AnchorPane.setBottomAnchor(stellarTimePane, 5d);
     }
-
-    public BasicDisplayPane getInfoPane() {
+    
+    public DisplayPane getInfoPane() {
         return infoPane;
     }
 
     @Override
     public void engineTaskFinished(long stellarTime) {
-        stellarTimePane.update(stellarTime);
         infoPane.reloadInfoPanel();
     }
 
@@ -51,4 +46,7 @@ public class InfoFrame extends AnchorPane implements IEngineSubscriber {
         return true;
     }
     
+    public final void setElementToDisplay(IDisplayable elementToDisplay) {
+        infoPane.setElementToDisplay(elementToDisplay);
+    }
 }

@@ -8,18 +8,15 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class BasicDisplayPane extends AnchorPane {
+public class DisplayPane extends AnchorPane {
     
     private final Label nameText;
     private final TextArea dscrText;
     private final ImageView imgView;
     
-    
-    private final SwitchDisplayPane switchDisplayPane;
-    
     private IDisplayable elementToDisplay;
     
-    public BasicDisplayPane(int width) {
+    public DisplayPane(int width) {
         super.setMinWidth(width);
         super.setMaxWidth(width);
         super.setBackground(new Background(new BackgroundFill(Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -36,18 +33,14 @@ public class BasicDisplayPane extends AnchorPane {
         super.getChildren().add(imgView);
         AnchorPane.setTopAnchor(imgView, 35d);
         
-        switchDisplayPane = new SwitchDisplayPane();
-        super.getChildren().add(switchDisplayPane);
-        AnchorPane.setTopAnchor(switchDisplayPane, width + 50d);
-        
         dscrText = new TextArea();
         dscrText.setMaxWidth(width);
-        dscrText.setMinHeight(250d);
+        dscrText.setMinHeight(300d);
         dscrText.setWrapText(true);
         dscrText.setEditable(false);
         dscrText.getStyleClass().add("pane-info-dscr");
         super.getChildren().add(dscrText);
-        AnchorPane.setTopAnchor(dscrText, width + 75d);
+        AnchorPane.setTopAnchor(dscrText, width + 50d);
         
         setElementToDisplay(new VoidElement());
     }
@@ -55,7 +48,6 @@ public class BasicDisplayPane extends AnchorPane {
     public final void setElementToDisplay(IDisplayable elementToDisplay) {
         this.elementToDisplay = elementToDisplay;
         reloadInfoPanel();
-        switchDisplayPane.setElementToDisplay(elementToDisplay);
     }
     
     public final void reloadInfoPanel() {

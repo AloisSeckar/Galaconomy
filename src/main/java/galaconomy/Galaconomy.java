@@ -22,7 +22,7 @@ public class Galaconomy extends Application {
         
         BasicGameLayout gameLayout = BasicGameLayout.getInstance();
 
-        Scene scene = new Scene(gameLayout, Constants.SCREEN_X + Constants.SIDE_PANEL_X + 20, Constants.SCREEN_Y + 50 + 135);
+        Scene scene = new Scene(gameLayout, Constants.SCREEN_X + Constants.SIDE_PANEL_X + 20, Constants.SCREEN_Y + 50 + Constants.BOTTOM_PANEL_Y);
         scene.getStylesheets().add(getClass().getResource(Constants.FOLDER_CSS + "galaconomy.css").toExternalForm());
         
         primaryStage.setTitle(TITLE);

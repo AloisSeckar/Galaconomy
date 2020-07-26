@@ -16,7 +16,8 @@ public class Constants {
     
     public static final int SCREEN_X = (Constants.MAX_X + 2) * 8;
     public static final int SCREEN_Y = (Constants.MAX_Y + 2) * 8;
-    public static final int SIDE_PANEL_X = 250;
+    public static final int SIDE_PANEL_X = 275;
+    public static final int BOTTOM_PANEL_Y = 250;
     
     public static final String DEFAULT_IMAGE = "default";
     

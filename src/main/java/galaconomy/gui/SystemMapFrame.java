@@ -1,6 +1,5 @@
 package galaconomy.gui;
 
-import galaconomy.gui.pane.BasicDisplayPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.map.*;
@@ -19,16 +18,21 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     public List<Line> activeRoutes = new ArrayList<>();
     public List<Circle> activeShips = new ArrayList<>();
     
-    public final BasicDisplayPane infoPaneReference;
-    
     public String currentSystem = null;
     public boolean active = true;
     
-    public SystemMapFrame(int width, int height, BasicDisplayPane infoPane) {
-        super.setMinWidth(width);
-        super.setMinHeight(height);
-        
-        this.infoPaneReference = infoPane;
+    private static SystemMapFrame INSTANCE;
+    
+    public static SystemMapFrame getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new SystemMapFrame();
+        }
+        return INSTANCE;
+    }
+    
+    private SystemMapFrame() {
+        super.setMinWidth(Constants.SCREEN_X);
+        super.setMinHeight(Constants.SCREEN_Y);
         
         // TODO system-specific backgrounds
         Image universe = new Image(getClass().getResourceAsStream(Constants.FOLDER_IMG + "universe.png"));
@@ -99,7 +103,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
             routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
             
             routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.setElementToDisplay(route);
+                setElementToDisplay(route);
             });
             
             this.getChildren().add(routeLine);
@@ -111,7 +115,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
             ship.setFill(Color.DARKMAGENTA);
             
             ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.setElementToDisplay(route);
+                setElementToDisplay(route);
             });
             
             this.getChildren().add(ship);
@@ -151,10 +155,17 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         }
 
         object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            infoPaneReference.setElementToDisplay(mapObject);
+            setElementToDisplay(mapObject);
         });
 
         this.getChildren().add(object);
         systemObjects.add(object);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+
+    private void setElementToDisplay(IDisplayable object) {
+        InfoFrame.getInstance().setElementToDisplay(object);
+        ControlsFrame.getInstance().setElementToDisplay(object);
     }
 }

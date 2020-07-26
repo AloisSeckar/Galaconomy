@@ -1,6 +1,6 @@
 package galaconomy.gui;
 
-import galaconomy.gui.pane.BasicDisplayPane;
+import galaconomy.gui.pane.DisplayPane;
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.map.*;
@@ -23,15 +23,20 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
     public List<Circle> activeShips = new ArrayList<>();
     public List<Line> activeTravels = new ArrayList<>();
     
-    public final BasicDisplayPane infoPaneReference;
-    
     public boolean active = true;
     
-    public UniverseMapFrame(int width, int height, BasicDisplayPane infoPane) {
-        super.setMinWidth(width);
-        super.setMinHeight(height);
-        
-        this.infoPaneReference = infoPane;
+    private static UniverseMapFrame INSTANCE;
+    
+    public static UniverseMapFrame getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new UniverseMapFrame();
+        }
+        return INSTANCE;
+    }
+    
+    private UniverseMapFrame() {
+        super.setMinWidth(Constants.SCREEN_X);
+        super.setMinHeight(Constants.SCREEN_Y);
         
         Image universe = new Image(getClass().getResourceAsStream(Constants.FOLDER_IMG + "universe.png"));
         BackgroundImage bgImage = new BackgroundImage(universe, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
@@ -67,7 +72,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
             riftLine.setEndY(DisplayUtils.fitCoordIntoDisplay(point2.getY()));
 
             riftLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.setElementToDisplay(gate);
+                setElementToDisplay(gate);
             });
 
             this.getChildren().add(riftLine);
@@ -82,7 +87,8 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
             star.setFill(system.getFXColor());
             
             star.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.setElementToDisplay(system);
+                setElementToDisplay(system);
+                
             });
             
             this.getChildren().add(star);
@@ -134,7 +140,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
                 routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
 
                 routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                    infoPaneReference.setElementToDisplay(travel);
+                    setElementToDisplay(travel);
                 });
 
                 this.getChildren().add(routeLine);
@@ -147,7 +153,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
                     ship.setFill(Color.DARKMAGENTA);
 
                     ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                        infoPaneReference.setElementToDisplay(travel);
+                        setElementToDisplay(travel);
                     });
 
                     this.getChildren().add(ship);
@@ -163,5 +169,12 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
     @Override
     public void engineTaskFinished(long stellarTime) {
         paintShipTravels(UniverseManager.getInstance().getTravels());
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+
+    private void setElementToDisplay(IDisplayable object) {
+        InfoFrame.getInstance().setElementToDisplay(object);
+        ControlsFrame.getInstance().setElementToDisplay(object);
     }
 }

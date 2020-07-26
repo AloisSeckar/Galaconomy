@@ -1,6 +1,6 @@
-package galaconomy.gui;
+package galaconomy.gui.pane;
 
-import galaconomy.gui.pane.BasicDisplayPane;
+import galaconomy.gui.*;
 import galaconomy.gui.window.*;
 import galaconomy.universe.*;
 import galaconomy.universe.economy.*;
@@ -16,15 +16,15 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.slf4j.*;
 
-public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
+public class PlayerPane extends AnchorPane {
     
-    private static final Logger LOG = LoggerFactory.getLogger(PlayerFrame.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PlayerPane.class);
     
     private final Label playerName;
     private final ImageView playerImage;
     private final Label playerCredits;
     
-    private final BasicDisplayPane infoBox;
+    private final InfoFrame infoBox;
     private final TilePane shipBox;
     
     private final Button getShipButton = new Button("Get a ship");
@@ -32,12 +32,12 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
     
     private final List<Button> shipDetailButtons = new ArrayList<>();
     
-    public PlayerFrame(BasicDisplayPane info) {
+    public PlayerPane() {
         super.setMinHeight(155);
         super.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");
         
-        this.infoBox = info;
+        this.infoBox = InfoFrame.getInstance();
         
         playerName = new Label();
         playerName.getStyleClass().add("pane-info-name");
@@ -80,17 +80,6 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
         super.getChildren().add(quickShipButton);
         AnchorPane.setLeftAnchor(quickShipButton, 150d);
         AnchorPane.setTopAnchor(quickShipButton, 35d);
-    }
-
-    @Override
-    public void engineTaskFinished(long stellarTime) {
-        // DO NOTHING... ?
-        // TODO should even be a subscriber?
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
     }
 
     public void displayPlayer() {

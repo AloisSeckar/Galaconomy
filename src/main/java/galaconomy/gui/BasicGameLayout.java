@@ -1,6 +1,7 @@
 package galaconomy.gui;
 
 import galaconomy.constants.Constants;
+import galaconomy.gui.pane.PlayerPane;
 import galaconomy.universe.UniverseGenerator;
 import galaconomy.universe.UniverseManager;
 import galaconomy.universe.map.Base;
@@ -23,10 +24,13 @@ public class BasicGameLayout extends BorderPane {
     
     private BasicGameLayout() {
         
-        InfoFrame info = new InfoFrame(Constants.SIDE_PANEL_X);
-        universeMap = new UniverseMapFrame(Constants.SCREEN_X, Constants.SCREEN_Y, info.getInfoPane());
-        systemMap = new SystemMapFrame(Constants.SCREEN_X, Constants.SCREEN_Y, info.getInfoPane());
-        PlayerFrame player = new PlayerFrame(info.getInfoPane());
+        InfoFrame info = InfoFrame.getInstance();
+        universeMap = UniverseMapFrame.getInstance();
+        systemMap = SystemMapFrame.getInstance();
+        ControlsFrame controls = ControlsFrame.getInstance();
+        
+        // TODO change this to avoid exposing class to outer world...
+        PlayerPane player = controls.getPlayerPane();
         
         HBox menu = new HBox();
         
@@ -46,7 +50,7 @@ public class BasicGameLayout extends BorderPane {
             universe.registerSubscriber(info);
             universe.registerSubscriber(universeMap);
             universe.registerSubscriber(systemMap);
-            universe.registerSubscriber(player);
+            universe.registerSubscriber(controls);
             universe.startEngine();
         });
         menu.getChildren().add(newUniverseBtn);
@@ -91,9 +95,8 @@ public class BasicGameLayout extends BorderPane {
         this.setTop(menu);
         this.setCenter(universeMap);
         this.setRight(info);
-        this.setBottom(player);
+        this.setBottom(controls);
     }
-    
     
     public static BasicGameLayout getInstance() {
         if (INSTANCE == null) {
