@@ -123,7 +123,8 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
 
     @Override
     public void engineTaskFinished(long stellarTime) {
-        paintShipRoutes(UniverseManager.getInstance().getRoutes());
+        // TODO inner-system travels
+        // paintShipRoutes(UniverseManager.getInstance().getRoutes());
     }
     
     ////////////////////////////////////////////////////////////////////////////

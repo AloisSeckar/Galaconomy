@@ -1,42 +1,35 @@
 package galaconomy.universe.traffic;
 
+import galaconomy.constants.Constants;
 import galaconomy.universe.*;
-import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.map.Star;
+import galaconomy.utils.MathUtils;
 import java.io.Serializable;
 
 public class Route implements IDisplayable, Serializable {
     
-    private final Ship ship;
     private final Star departure;
     private final Star arrival;
+    private final double speed;
     
     private final double distanceTotal;
     private double distanceElapsed;
     
-    private final long eta;
-    private final long started;
-    private long finished;
+    private TravelStatus status;
 
-    public Route(Ship ship, Star departure, Star arrival, double distanceTotal) {
-        this.ship = ship;
+    public Route(Star departure, Star arrival, double speed) {
         this.departure = departure;
         this.arrival = arrival;
-        this.distanceTotal = distanceTotal;
+        this.speed = speed;
         
+        this.distanceTotal = MathUtils.getDistanceBetween(departure, arrival);
         this.distanceElapsed = 0;
-        this.started = UniverseManager.getInstance().getStellarTime();
-        this.finished = -1;
-        
-        this.eta = started + new Double(Math.ceil(distanceTotal / ship.getSpeed())).intValue();
-        
-        this.ship.setIdle(false);
-        this.ship.setCurrentLocation(null);
+        this.status = TravelStatus.SCHEDULED;
     }
 
     @Override
     public String displayName() {
-        return ship.displayName();
+        return departure.displayName() + " TO " + arrival.displayName();
     }
 
     @Override
@@ -46,20 +39,12 @@ public class Route implements IDisplayable, Serializable {
         if (isFinished()) {
             routeDscr.append("Travelled from ").append(departure.displayName());
             routeDscr.append("to ").append(arrival.displayName()).append("system\n");
-            routeDscr.append("Landed: ").append(finished).append("\n");
         } else {
             routeDscr.append("Traveling from ").append(departure.displayName());
             routeDscr.append("to ").append(arrival.displayName()).append("system\n");
             routeDscr.append("Distance: ").append(String.format("%.2f", distanceTotal)).append("\n");
             routeDscr.append("Elapsed: ").append(String.format("%.2f", distanceElapsed)).append("\n");
-            routeDscr.append("Speed: ").append(String.format("%.2f", ship.getSpeed())).append("\n");
-            routeDscr.append("ETA: ").append(eta).append("\n\n");
-            
-            routeDscr.append("CARGO").append("\n");
-            routeDscr.append("----------").append("\n");
-            for (Cargo goods : ship.getCargoList()) {
-                routeDscr.append(goods.displayName()).append("\n");
-            }
+            routeDscr.append("Speed: ").append(String.format("%.2f", speed)).append("\n\n");
         }
 
         return routeDscr.toString();
@@ -67,11 +52,7 @@ public class Route implements IDisplayable, Serializable {
 
     @Override
     public String getImage() {
-        return ship.getImage();
-    }
-
-    public Ship getShip() {
-        return ship;
+        return Constants.FOLDER_IMG + "rift_travel.png";
     }
     
     public Star getDeparture() {
@@ -89,23 +70,24 @@ public class Route implements IDisplayable, Serializable {
     public double getDistanceElapsed() {
         return distanceElapsed;
     }
+
+    public TravelStatus getStatus() {
+        return status;
+    }
+    
+    public void start() {
+        status = TravelStatus.ONGOING;
+    }
     
     public void progress() {
-        double elapsed = ship.getSpeed();
-        this.distanceElapsed += elapsed;
-        
-        if (distanceElapsed > distanceTotal) {
-            ship.increaseMileage(elapsed - (distanceElapsed - distanceTotal));
-            ship.setIdle(true);
-            ship.setCurrentLocation(arrival);
-            finished = UniverseManager.getInstance().getStellarTime();
+        this.distanceElapsed += this.speed;
+        if (distanceElapsed >= distanceTotal) {
             distanceElapsed = distanceTotal;
-        } else {
-            ship.increaseMileage(elapsed);
+            status = TravelStatus.FINISHED;
         }
     }
     
     public boolean isFinished() {
-        return finished > -1;
+        return status == TravelStatus.FINISHED;
     }
 }

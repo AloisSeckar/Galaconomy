@@ -28,7 +28,7 @@ public class UniverseManager implements Serializable {
     
     private final Map<String, Star> stars = new HashMap<>();
     private final List<Connector> gates = new ArrayList<>();
-    private final List<Route> routes = new ArrayList<>();
+    private final List<Travel> travels = new ArrayList<>();
     
     private UniverseManager() {
         setUpEngine();
@@ -129,13 +129,13 @@ public class UniverseManager implements Serializable {
         LOG.info("Gate added: " + newGate.displayName());
     }
 
-    public List<Route> getRoutes() {
-        return routes;
+    public List<Travel> getTravels() {
+        return travels;
     }
     
-    public void addRoute(Route newRoute) {
-        routes.add(newRoute);
-        LOG.info("Route added: " + newRoute.displayName());
+    public void addTravel(Travel newTravel) {
+        travels.add(newTravel);
+        LOG.info("Travel added: " + newTravel.displayName());
     }
     
     public void resetUniverse() {
@@ -144,7 +144,7 @@ public class UniverseManager implements Serializable {
         stars.clear();
         aiPlayers.clear();
         gates.clear();
-        routes.clear();
+        travels.clear();
         
         stellarTime = 100000;
         enginePeriod = 1;
@@ -231,8 +231,8 @@ public class UniverseManager implements Serializable {
                 stellarTime++;
                 
                 recalcSupplies();
-                recalcRoutes();
-                rethinkRoutes();
+                recalcTravels();
+                rethinkTravels();
 
                 for (IEngineSubscriber subscriber : subscribers) {
                     if (subscriber.isActive()) {
@@ -256,17 +256,17 @@ public class UniverseManager implements Serializable {
         EconomyManager.recalcSupplies(stars.values());
     }
     
-    private void recalcRoutes() {
-        List<Route> finishedRoutes = TrafficManager.recalcRoutes(routes);
-        for (Route finishedRoute : finishedRoutes) {
-            routes.remove(finishedRoute);
+    private void recalcTravels() {
+        List<Travel> finishedTravels = TrafficManager.recalcTravels(travels);
+        for (Travel finishedTravel : finishedTravels) {
+            travels.remove(finishedTravel);
         }
     }
     
-    private void rethinkRoutes() {
-        List<Route> newRoutes = PlayerManager.rethinkRoutes(aiPlayers);
-        for (Route newRoute : newRoutes) {
-            routes.add(newRoute);
+    private void rethinkTravels() {
+        List<Travel> newTravels = PlayerManager.rethinkTravels(aiPlayers);
+        for (Travel newTravel : newTravels) {
+            travels.add(newTravel);
         }
     }
 }

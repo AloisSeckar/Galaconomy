@@ -7,7 +7,6 @@ import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.*;
-import galaconomy.utils.MathUtils;
 import java.util.*;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -145,13 +144,11 @@ public class PlayerFrame extends AnchorPane implements IEngineSubscriber {
         LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + player.displayName() + " bought new " + shipClass.displayName() + " caalled " + shipName);            
     }
 
-    public void planRoute(Ship ship, Star arrival) {
+    public void planTravel(Ship ship, Star arrival) {
         Star departure = ship.getCurrentLocation();
 
-        double distance = MathUtils.getDistance(departure.getX(), departure.getY(), arrival.getX(), arrival.getY());
-
-        Route newRoute = new Route(ship, departure, arrival, distance);
-        UniverseManager.getInstance().addRoute(newRoute);
+        Travel newTravel = new Travel(ship, departure, arrival);
+        UniverseManager.getInstance().addTravel(newTravel);
 
         LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + ship.displayName() + " set off from " + departure.displayName() + " system to " + arrival.displayName());             
     }

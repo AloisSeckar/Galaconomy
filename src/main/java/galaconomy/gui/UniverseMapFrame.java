@@ -5,6 +5,8 @@ import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.Route;
+import galaconomy.universe.traffic.Travel;
+import galaconomy.universe.traffic.TravelStatus;
 import galaconomy.utils.DisplayUtils;
 import java.util.*;
 import javafx.scene.image.Image;
@@ -19,7 +21,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
     public List<Line> activeConnections = new ArrayList<>();
     
     public List<Circle> activeShips = new ArrayList<>();
-    public List<Line> activeRoutes = new ArrayList<>();
+    public List<Line> activeTravels = new ArrayList<>();
     
     public final BasicDisplayPane infoPaneReference;
     
@@ -88,63 +90,78 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
         }
     }
     
-    public void paintShipRoutes(List<Route> routes) {
-        this.getChildren().removeAll(activeRoutes);
-        activeRoutes.clear();
+    public void paintShipTravels(List<Travel> travels) {
+        this.getChildren().removeAll(activeTravels);
+        activeTravels.clear();
         this.getChildren().removeAll(activeShips);
         activeShips.clear();
         
-        for (Route route : routes) {
-            Line routeLine = new Line();
-            routeLine.getStyleClass().add("ship-route");
-            
-            Star departure = route.getDeparture();
-            Star arrival = route.getArrival();
-            double total = route.getDistanceTotal();
-            double elapsed = route.getDistanceElapsed();
-            double distance = elapsed / total;
-            
-            if (elapsed > 0) {
-                int vectorX = arrival.getX() - departure.getX();
-                int vectorY = arrival.getY() - departure.getY();
-                double newX = departure.getX() +  distance * vectorX;
-                routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX));
-                double newY = departure.getY() +  distance * vectorY;
-                routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY));
-            } else {
-                routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()));
-                routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()));
+        for (Travel travel : travels) {
+            for (Route route : travel.getRoutes()) {
+                Line routeLine = new Line();
+
+                Star departure = route.getDeparture();
+                Star arrival = route.getArrival();
+                double total = route.getDistanceTotal();
+                double elapsed = route.getDistanceElapsed();
+                double distance = elapsed / total;
+                
+                TravelStatus status = route.getStatus();
+                switch (status) {
+                    case ONGOING:
+                        routeLine.getStyleClass().add("ship-route-ongoing");
+                        break;
+                    case FINISHED:
+                        routeLine.getStyleClass().add("ship-route-finished");
+                        break;
+                    default:
+                        routeLine.getStyleClass().add("ship-route");
+                }
+                
+                if (elapsed > 0) {
+                    int vectorX = arrival.getX() - departure.getX();
+                    int vectorY = arrival.getY() - departure.getY();
+                    double newX = departure.getX() +  distance * vectorX;
+                    routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX));
+                    double newY = departure.getY() +  distance * vectorY;
+                    routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY));
+                } else {
+                    routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()));
+                    routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()));
+                }
+
+                routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()));
+                routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
+
+                routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                    infoPaneReference.setElementToDisplay(travel);
+                });
+
+                this.getChildren().add(routeLine);
+                activeTravels.add(routeLine);
+
+                if (status == TravelStatus.ONGOING) {
+                    Circle ship = new Circle(5);
+                    ship.setCenterX(routeLine.getStartX());
+                    ship.setCenterY(routeLine.getStartY());
+                    ship.setFill(Color.DARKMAGENTA);
+
+                    ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                        infoPaneReference.setElementToDisplay(travel);
+                    });
+
+                    this.getChildren().add(ship);
+                    activeShips.add(ship);
+                }
+
+                // TODO this causes routes being hidden behind rift connectors
+                routeLine.toBack();
             }
-            
-            routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()));
-            routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
-            
-            routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.setElementToDisplay(route);
-            });
-            
-            this.getChildren().add(routeLine);
-            activeRoutes.add(routeLine);
-            
-            Circle ship = new Circle(5);
-            ship.setCenterX(routeLine.getStartX());
-            ship.setCenterY(routeLine.getStartY());
-            ship.setFill(Color.DARKMAGENTA);
-            
-            ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                infoPaneReference.setElementToDisplay(route);
-            });
-            
-            this.getChildren().add(ship);
-            activeShips.add(ship);
-            
-            // TODO this causes routes being hidden behind rift connectors
-            routeLine.toBack();
         }
     }
 
     @Override
     public void engineTaskFinished(long stellarTime) {
-        paintShipRoutes(UniverseManager.getInstance().getRoutes());
+        paintShipTravels(UniverseManager.getInstance().getTravels());
     }
 }

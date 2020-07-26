@@ -36,7 +36,7 @@ public class Ship implements IDisplayable, Serializable {
     private final List<Cargo> cargoList = new ArrayList<>();
     
     private final List<Player> owners = new ArrayList<>();
-    private final List<Route> routes = new ArrayList<>();
+    private final List<Travel> travels = new ArrayList<>();
 
     public Ship(String name, ShipClass shipClass, Star location) {
         this.name = name;
@@ -112,12 +112,12 @@ public class Ship implements IDisplayable, Serializable {
         currentOwner = newOwner;
     }
 
-    public List<Route> getRoutes() {
-        return routes;
+    public List<Travel> getTravels() {
+        return travels;
     }
     
-    public void addRoute(Route newRoute) {
-        routes.add(0, newRoute);
+    public void addTravel(Travel newTravel) {
+        travels.add(0, newTravel);
     }
 
     public List<Cargo> getCargoList() {

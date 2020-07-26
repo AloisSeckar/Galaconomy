@@ -38,7 +38,7 @@ public class BasicGameLayout extends BorderPane {
             List<Star> stars = new ArrayList<>(universe.getStars().values());
             List<Connector> gates = universe.getGates();
             universeMap.paintUniverseMap(stars, gates);
-            universeMap.paintShipRoutes(universe.getRoutes());
+            universeMap.paintShipTravels(universe.getTravels());
             
             player.displayPlayer();
             player.loadPlayerShips();
@@ -76,7 +76,7 @@ public class BasicGameLayout extends BorderPane {
                 List<Star> stars = new ArrayList<>(universe.getStars().values());
                 List<Connector> gates = universe.getGates();
                 universeMap.paintUniverseMap(stars, gates);
-                universeMap.paintShipRoutes(universe.getRoutes());
+                universeMap.paintShipTravels(universe.getTravels());
 
                 player.displayPlayer();
                 player.loadPlayerShips();

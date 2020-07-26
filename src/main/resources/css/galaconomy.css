@@ -21,8 +21,18 @@
     -fx-stroke-width: 2px;
 }
 
+.ship-route-ongoing {
+    -fx-stroke: cyan;
+    -fx-stroke-width: 3px;
+}
+
+.ship-route-finished {
+    -fx-stroke: gray;
+    -fx-stroke-width: 2px;
+}
+
 .rift-route {
     -fx-stroke: green;
     -fx-stroke-dash-array: 2 12 12 2;
-    -fx-stroke-width: 2px;
+    -fx-stroke-width: 1px;
 }

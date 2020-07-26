@@ -71,7 +71,7 @@ public class ShipWindow extends Stage {
             
             if (destination != null) {
                 if (true /*TODO route plaing restrictions*/) {
-                    parent.planRoute(ship, destination);
+                    parent.planTravel(ship, destination);
                     close();
                 } else {
                     InfoUtils.showMessage("Cannot depart! TODO why");
