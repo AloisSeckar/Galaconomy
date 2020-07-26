@@ -82,8 +82,8 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
             Line routeLine = new Line();
             routeLine.getStyleClass().add("ship-route");
             
-            Star departure = route.getDeparture();
-            Star arrival = route.getArrival();
+            Star departure = (Star) route.getDeparture();
+            Star arrival = (Star) route.getArrival();
             double total = route.getDistanceTotal();
             double elapsed = route.getDistanceElapsed();
             double distance = elapsed / total;

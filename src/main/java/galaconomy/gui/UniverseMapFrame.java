@@ -104,8 +104,8 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
             for (Route route : travel.getRoutes()) {
                 Line routeLine = new Line();
 
-                Star departure = route.getDeparture();
-                Star arrival = route.getArrival();
+                Star departure = (Star) route.getDeparture();
+                Star arrival = (Star) route.getArrival();
                 double total = route.getDistanceTotal();
                 double elapsed = route.getDistanceElapsed();
                 double distance = elapsed / total;

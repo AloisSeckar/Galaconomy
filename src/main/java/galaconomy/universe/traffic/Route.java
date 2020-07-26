@@ -2,24 +2,32 @@ package galaconomy.universe.traffic;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.*;
 import galaconomy.utils.MathUtils;
 import java.io.Serializable;
 
 public class Route implements IDisplayable, Serializable {
     
-    private final Star departure;
-    private final Star arrival;
+    private final AbstractMapElement departure;
+    private final AbstractMapElement arrival;
     private final double speed;
     
     private final double distanceTotal;
     private double distanceElapsed;
     
     private TravelStatus status;
+    private final RouteType type;
 
-    public Route(Star departure, Star arrival, double speed) {
+    public Route(AbstractMapElement departure, AbstractMapElement arrival, double speed) {
         this.departure = departure;
         this.arrival = arrival;
+        
+        if (departure instanceof Star && arrival instanceof Star) {
+            type = RouteType.RIFT_DRIVE;
+        } else {
+            type = RouteType.WITHIN_SYSTEM;
+        }
+        
         this.speed = speed;
         
         this.distanceTotal = MathUtils.getDistanceBetween(departure, arrival);
@@ -55,11 +63,11 @@ public class Route implements IDisplayable, Serializable {
         return Constants.FOLDER_IMG + "rift_travel.png";
     }
     
-    public Star getDeparture() {
+    public AbstractMapElement getDeparture() {
         return departure;
     }
 
-    public Star getArrival() {
+    public AbstractMapElement getArrival() {
         return arrival;
     }
 
@@ -73,6 +81,10 @@ public class Route implements IDisplayable, Serializable {
 
     public TravelStatus getStatus() {
         return status;
+    }
+
+    public RouteType getType() {
+        return type;
     }
     
     public void start() {
