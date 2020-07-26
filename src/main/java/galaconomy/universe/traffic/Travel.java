@@ -38,7 +38,7 @@ public class Travel implements IDisplayable, Serializable {
         for (int i = 0; i < itinerary.size() - 1; i++) {
             Star stageDep = itinerary.get(i);
             Star stageArr = itinerary.get(i + 1);
-            Route stage = new Route(stageDep, stageArr, ship.getSpeed());
+            Route stage = new Route(stageDep, stageArr, ship.getRiftSpeed());
             routes.add(stage);
             totalDistance += stage.getDistanceTotal();
         }
@@ -50,7 +50,7 @@ public class Travel implements IDisplayable, Serializable {
         this.started = UniverseManager.getInstance().getStellarTime();
         this.finished = -1;
         
-        this.eta = started + new Double(Math.ceil(distanceTotal / ship.getSpeed())).intValue();
+        this.eta = started + new Double(Math.ceil(distanceTotal / ship.getRiftSpeed())).intValue();
         
         this.ship.setIdle(false);
         this.ship.setCurrentLocation(null);
@@ -74,7 +74,7 @@ public class Travel implements IDisplayable, Serializable {
             routeDscr.append("to ").append(arrival.displayName()).append("system\n");
             routeDscr.append("Distance: ").append(String.format("%.2f", distanceTotal)).append("\n");
             routeDscr.append("Elapsed: ").append(String.format("%.2f", distanceElapsed)).append("\n");
-            routeDscr.append("Speed: ").append(String.format("%.2f", ship.getSpeed())).append("\n");
+            routeDscr.append("Speed: ").append(String.format("%.2f", ship.getRiftSpeed())).append("\n");
             routeDscr.append("ETA: ").append(eta).append("\n\n");
             
             routeDscr.append("CARGO").append("\n");
@@ -117,7 +117,7 @@ public class Travel implements IDisplayable, Serializable {
     }
     
     public void progress() {
-        double elapsed = ship.getSpeed();
+        double elapsed = ship.getRiftSpeed();
         this.distanceElapsed += elapsed;
         
         Route activeRoute = getActiveRoute();

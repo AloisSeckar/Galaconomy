@@ -23,7 +23,8 @@ public class Ship implements IDisplayable, Serializable {
     
     private int hull;
     private int cargo;
-    private double speed;
+    private double riftSpeed;
+    private double pulseSpeed;
     
     private final long comissioned;
     
@@ -49,7 +50,7 @@ public class Ship implements IDisplayable, Serializable {
         this.upkeep = shipClass.getUpkeep();
         this.hull = shipClass.getHull();
         this.cargo = shipClass.getCargo();
-        this.speed = shipClass.getSpeed();
+        this.riftSpeed = shipClass.getRiftSpeed();
         
         this.comissioned = UniverseManager.getInstance().getStellarTime();
         
@@ -87,7 +88,7 @@ public class Ship implements IDisplayable, Serializable {
         shipDscr.append("Upkeep: ").append(upkeep).append("\n");
         shipDscr.append("Hull: ").append(hull).append("\n");
         shipDscr.append("Cargo: ").append(cargo).append("\n");
-        shipDscr.append("Speed: ").append(DisplayUtils.formatDouble(speed)).append("\n\n");
+        shipDscr.append("Speed: ").append(DisplayUtils.formatDouble(riftSpeed)).append("\n\n");
         
         shipDscr.append(dscr);
            
@@ -206,12 +207,20 @@ public class Ship implements IDisplayable, Serializable {
         this.cargo = cargo;
     }
 
-    public double getSpeed() {
-        return speed;
+    public double getRiftSpeed() {
+        return riftSpeed;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    public void setRiftSpeed(double riftSpeed) {
+        this.riftSpeed = riftSpeed;
+    }
+
+    public double getPulseSpeed() {
+        return pulseSpeed;
+    }
+
+    public void setPulseSpeed(double pulseSpeed) {
+        this.pulseSpeed = pulseSpeed;
     }
     
     public double getMileage() {

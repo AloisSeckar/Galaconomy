@@ -14,9 +14,10 @@ public class ShipClass implements IDisplayable {
     
     private final int hull;
     private final int cargo;
-    private final double speed;
+    private final double riftSpeed;
+    private final double pulseSpeed;
 
-    public ShipClass(String name, String dscr, String img, int price, int upkeep, int hull, int cargo, double speed) {
+    public ShipClass(String name, String dscr, String img, int price, int upkeep, int hull, int cargo, double riftSpeed, double pulseSpeed) {
         this.name = name;
         this.dscr = dscr;
         this.img = img;
@@ -26,7 +27,8 @@ public class ShipClass implements IDisplayable {
         
         this.hull = hull;
         this.cargo = cargo;
-        this.speed = speed;
+        this.riftSpeed = riftSpeed;
+        this.pulseSpeed = pulseSpeed;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class ShipClass implements IDisplayable {
         shipDscr.append("Upkeep: ").append(upkeep).append("\n");
         shipDscr.append("Hull: ").append(hull).append("\n");
         shipDscr.append("Cargo: ").append(cargo).append("\n");
-        shipDscr.append("Speed: ").append(DisplayUtils.formatDouble(speed)).append("\n\n");
+        shipDscr.append("Speed: ").append(DisplayUtils.formatDouble(riftSpeed)).append("\n\n");
         
         shipDscr.append(dscr);
         
@@ -78,8 +80,12 @@ public class ShipClass implements IDisplayable {
         return cargo;
     }
 
-    public double getSpeed() {
-        return speed;
+    public double getRiftSpeed() {
+        return riftSpeed;
+    }
+
+    public double getPulseSpeed() {
+        return pulseSpeed;
     }
 
     @Override
