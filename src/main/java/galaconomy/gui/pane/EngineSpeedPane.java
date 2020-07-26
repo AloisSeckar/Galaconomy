@@ -17,8 +17,16 @@ public class EngineSpeedPane extends AnchorPane {
     private final Button normalSpeedButton;
     private final Button doubleSpeedButton;
     
-    public EngineSpeedPane() {
-        
+    private static EngineSpeedPane INSTANCE;
+    
+    public static EngineSpeedPane getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new EngineSpeedPane();
+        }
+        return INSTANCE;
+    }
+    
+    private EngineSpeedPane() {
         engineSpeedText = new Label();
         engineSpeedText.getStyleClass().add("pane-info-name");
         super.getChildren().add(engineSpeedText);

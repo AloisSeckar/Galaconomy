@@ -1,12 +1,10 @@
 package galaconomy.gui;
 
-import galaconomy.gui.pane.DisplayPane;
 import galaconomy.constants.Constants;
+import galaconomy.gui.pane.*;
 import galaconomy.universe.*;
 import galaconomy.universe.map.*;
-import galaconomy.universe.traffic.Route;
-import galaconomy.universe.traffic.Travel;
-import galaconomy.universe.traffic.TravelStatus;
+import galaconomy.universe.traffic.*;
 import galaconomy.utils.DisplayUtils;
 import java.util.*;
 import javafx.scene.image.Image;
@@ -174,7 +172,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
     ////////////////////////////////////////////////////////////////////////////
 
     private void setElementToDisplay(IDisplayable object) {
-        InfoFrame.getInstance().setElementToDisplay(object);
-        ControlsFrame.getInstance().setElementToDisplay(object);
+        DisplayPane.getInstance().setElementToDisplay(object);
+        SwitchDisplayPane.getInstance().setElementToDisplay(object);
     }
 }

@@ -24,7 +24,6 @@ public class PlayerPane extends AnchorPane {
     private final ImageView playerImage;
     private final Label playerCredits;
     
-    private final InfoFrame infoBox;
     private final TilePane shipBox;
     
     private final Button getShipButton = new Button("Get a ship");
@@ -32,12 +31,19 @@ public class PlayerPane extends AnchorPane {
     
     private final List<Button> shipDetailButtons = new ArrayList<>();
     
-    public PlayerPane() {
+    private static PlayerPane INSTANCE;
+    
+    public static PlayerPane getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new PlayerPane();
+        }
+        return INSTANCE;
+    }
+    
+    private PlayerPane() {
         super.setMinHeight(155);
         super.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");
-        
-        this.infoBox = InfoFrame.getInstance();
         
         playerName = new Label();
         playerName.getStyleClass().add("pane-info-name");
@@ -118,7 +124,7 @@ public class PlayerPane extends AnchorPane {
         newShipButton.setGraphic(newShipImageView);
         newShipButton.setTooltip(new Tooltip(newShip.displayName()));
         newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            infoBox.setElementToDisplay(newShip);
+            DisplayPane.getInstance().setElementToDisplay(newShip);
             
             ShipWindow window = new ShipWindow(this, newShip);
             window.show();
@@ -158,7 +164,7 @@ public class PlayerPane extends AnchorPane {
             newShipButton.setGraphic(newShipImageView);
             newShipButton.setTooltip(new Tooltip(ship.displayName()));
             newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-                infoBox.setElementToDisplay(ship);
+                DisplayPane.getInstance().setElementToDisplay(ship);
 
                 ShipWindow window = new ShipWindow(this, ship);
                 window.show();

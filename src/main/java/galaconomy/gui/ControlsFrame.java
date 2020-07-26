@@ -13,10 +13,10 @@ public class ControlsFrame extends BorderPane implements IEngineSubscriber {
     
     private static final Logger LOG = LoggerFactory.getLogger(ControlsFrame.class);
     
-    private final PlayerPane playerPane;
-    private final EngineSpeedPane engineSpeedPane;
-    private final StellarTimePane stellarTimePane;
-    private final SwitchDisplayPane switchDisplayPane;
+    private final PlayerPane playerPane = PlayerPane.getInstance();
+    private final EngineSpeedPane engineSpeedPane = EngineSpeedPane.getInstance();
+    private final StellarTimePane stellarTimePane = StellarTimePane.getInstance();
+    private final SwitchDisplayPane switchDisplayPane = SwitchDisplayPane.getInstance();
     
     private static ControlsFrame INSTANCE;
     
@@ -32,8 +32,6 @@ public class ControlsFrame extends BorderPane implements IEngineSubscriber {
         super.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");
         
-        this.playerPane = new PlayerPane();
-        
         Tab playerTab = new Tab("Player", playerPane);
         
         TabPane controlsTabsheet = new TabPane(playerTab);
@@ -42,19 +40,16 @@ public class ControlsFrame extends BorderPane implements IEngineSubscriber {
         
         AnchorPane bottomPane = new AnchorPane();
         
-        engineSpeedPane = new EngineSpeedPane();
         bottomPane.getChildren().add(engineSpeedPane);
         AnchorPane.setLeftAnchor(engineSpeedPane, 5d);
         AnchorPane.setBottomAnchor(engineSpeedPane, 2d);
         
-        stellarTimePane = new StellarTimePane();
         stellarTimePane.setMaxWidth(250);
         stellarTimePane.getStyleClass().add("pane-info-name");
         bottomPane.getChildren().add(stellarTimePane);
         AnchorPane.setLeftAnchor(stellarTimePane, 250d);
         AnchorPane.setBottomAnchor(stellarTimePane, 2d);
         
-        switchDisplayPane = new SwitchDisplayPane();
         bottomPane.getChildren().add(switchDisplayPane);
         AnchorPane.setRightAnchor(switchDisplayPane, 5d);
         AnchorPane.setBottomAnchor(switchDisplayPane, 2d);
@@ -74,9 +69,5 @@ public class ControlsFrame extends BorderPane implements IEngineSubscriber {
 
     public PlayerPane getPlayerPane() {
         return playerPane;
-    }
-    
-    public final void setElementToDisplay(IDisplayable elementToDisplay) {
-        switchDisplayPane.setElementToDisplay(elementToDisplay);
     }
 }

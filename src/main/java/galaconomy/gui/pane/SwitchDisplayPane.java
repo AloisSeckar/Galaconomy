@@ -18,7 +18,16 @@ public class SwitchDisplayPane extends AnchorPane {
     
     private IDisplayable elementToDisplay;
 
-    public SwitchDisplayPane() {
+    private static SwitchDisplayPane INSTANCE;
+    
+    public static SwitchDisplayPane getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new SwitchDisplayPane();
+        }
+        return INSTANCE;
+    }
+    
+    private SwitchDisplayPane() {
         switchToGalaxyButton = new Button("Universe");
         switchToGalaxyButton.setMinWidth(BUTTON_WIDTH);
         switchToGalaxyButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {

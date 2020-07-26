@@ -1,6 +1,7 @@
 package galaconomy.gui;
 
 import galaconomy.constants.Constants;
+import galaconomy.gui.pane.*;
 import galaconomy.universe.*;
 import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.Route;
@@ -165,7 +166,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     ////////////////////////////////////////////////////////////////////////////
 
     private void setElementToDisplay(IDisplayable object) {
-        InfoFrame.getInstance().setElementToDisplay(object);
-        ControlsFrame.getInstance().setElementToDisplay(object);
+        DisplayPane.getInstance().setElementToDisplay(object);
+        SwitchDisplayPane.getInstance().setElementToDisplay(object);
     }
 }

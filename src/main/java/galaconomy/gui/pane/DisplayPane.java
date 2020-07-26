@@ -10,37 +10,48 @@ import javafx.scene.paint.Color;
 
 public class DisplayPane extends AnchorPane {
     
+    private static final int WIDTH = Constants.SIDE_PANEL_X;
+    
     private final Label nameText;
     private final TextArea dscrText;
     private final ImageView imgView;
     
     private IDisplayable elementToDisplay;
     
-    public DisplayPane(int width) {
-        super.setMinWidth(width);
-        super.setMaxWidth(width);
+    private static DisplayPane INSTANCE;
+    
+    public static DisplayPane getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new DisplayPane();
+        }
+        return INSTANCE;
+    }
+    
+    private DisplayPane() {
+        super.setMinWidth(WIDTH);
+        super.setMaxWidth(WIDTH);
         super.setBackground(new Background(new BackgroundFill(Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));
         
         nameText = new Label();
-        nameText.setMaxWidth(width);
+        nameText.setMaxWidth(WIDTH);
         nameText.getStyleClass().add("pane-info-name");
         super.getChildren().add(nameText);
         
         imgView = new ImageView();
-        imgView.setFitWidth(width);
-        imgView.setFitHeight(width);
+        imgView.setFitWidth(WIDTH);
+        imgView.setFitHeight(WIDTH);
         imgView.getStyleClass().add("pane-info-img");
         super.getChildren().add(imgView);
         AnchorPane.setTopAnchor(imgView, 35d);
         
         dscrText = new TextArea();
-        dscrText.setMaxWidth(width);
+        dscrText.setMaxWidth(WIDTH);
         dscrText.setMinHeight(300d);
         dscrText.setWrapText(true);
         dscrText.setEditable(false);
         dscrText.getStyleClass().add("pane-info-dscr");
         super.getChildren().add(dscrText);
-        AnchorPane.setTopAnchor(dscrText, width + 50d);
+        AnchorPane.setTopAnchor(dscrText, WIDTH + 50d);
         
         setElementToDisplay(new VoidElement());
     }

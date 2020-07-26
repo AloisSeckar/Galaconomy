@@ -1,4 +1,4 @@
-package galaconomy.gui.pane;
+package galaconomy.gui.window.pane;
 
 import galaconomy.universe.UniverseManager;
 import galaconomy.universe.map.Star;

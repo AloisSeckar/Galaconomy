@@ -1,5 +1,6 @@
 package galaconomy.gui.window;
 
+import galaconomy.gui.window.pane.ShipDispatchPane;
 import galaconomy.gui.pane.*;
 import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.map.Star;
