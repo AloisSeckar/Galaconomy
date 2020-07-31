@@ -5,6 +5,7 @@ import galaconomy.gui.pane.*;
 import galaconomy.universe.*;
 import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.Route;
+import galaconomy.universe.traffic.Travel;
 import galaconomy.utils.DisplayUtils;
 import java.util.*;
 import javafx.scene.image.*;
@@ -19,7 +20,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     public List<Line> activeRoutes = new ArrayList<>();
     public List<Circle> activeShips = new ArrayList<>();
     
-    public String currentSystem = null;
+    public Star currentSystem = null;
     public boolean active = true;
     
     private static SystemMapFrame INSTANCE;
@@ -45,7 +46,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         this.getChildren().removeAll(systemObjects);
         systemObjects.clear();
         
-        currentSystem = starSystem.getName();
+        currentSystem = starSystem;
         
         addObject(starSystem);
                 
@@ -72,64 +73,72 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         this.active = active;
     }
     
-    public void paintShipRoutes(List<Route> routes) {
+    public void paintShipTravels(List<Travel> travels) {
         this.getChildren().removeAll(activeRoutes);
         activeRoutes.clear();
         this.getChildren().removeAll(activeShips);
         activeShips.clear();
         
-        routes.forEach((route) -> {
-            Line routeLine = new Line();
-            routeLine.getStyleClass().add("ship-route");
+        travels.forEach((travel) -> {
+            Route route = travel.getActiveRoute();
+            if (route != null && !route.isRiftDrive()) {
+                Star system = route.getSystem();
+                if (system != null && system.equals(currentSystem)) {
             
-            Star departure = (Star) route.getDeparture();
-            Star arrival = (Star) route.getArrival();
-            double total = route.getDistanceTotal();
-            double elapsed = route.getDistanceElapsed();
-            double distance = elapsed / total;
-            
-            if (elapsed > 0) {
-                int vectorX = arrival.getX() - departure.getX();
-                int vectorY = arrival.getY() - departure.getY();
-                double newX = departure.getX() +  distance * vectorX;
-                routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX));
-                double newY = departure.getY() +  distance * vectorY;
-                routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY));
-            } else {
-                routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()));
-                routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()));
+                    Line routeLine = new Line();
+                    routeLine.getStyleClass().add("ship-route");
+
+                    AbstractMapElement departure = (AbstractMapElement) route.getDeparture();
+                    AbstractMapElement arrival = (AbstractMapElement) route.getArrival();
+                    
+                    double total = route.getDistanceTotal();
+                    double elapsed = route.getDistanceElapsed();
+                    double distance = elapsed / total;
+
+                    int offset = DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 2;
+                    if (elapsed > 0) {
+                        int vectorX = arrival.getX() - departure.getX();
+                        int vectorY = arrival.getY() - departure.getY();
+                        double newX = departure.getX() +  distance * vectorX;
+                        routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX) + offset);
+                        double newY = departure.getY() +  distance * vectorY;
+                        routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY) + offset);
+                    } else {
+                        routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()) + offset);
+                        routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()) +offset);
+                    }
+
+                    routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()) + offset);
+                    routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()) + offset);
+                    
+                    routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                        setElementToDisplay(route);
+                    });
+
+                    this.getChildren().add(routeLine);
+                    activeRoutes.add(routeLine);
+
+                    Circle ship = new Circle(5);
+                    ship.setCenterX(routeLine.getStartX());
+                    ship.setCenterY(routeLine.getStartY());
+                    ship.setFill(Color.DARKMAGENTA);
+
+                    ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                        setElementToDisplay(route);
+                    });
+
+                    this.getChildren().add(ship);
+                    activeShips.add(ship);
+
+                    routeLine.toBack();
+                }
             }
-            
-            routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()));
-            routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
-            
-            routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                setElementToDisplay(route);
-            });
-            
-            this.getChildren().add(routeLine);
-            activeRoutes.add(routeLine);
-            
-            Circle ship = new Circle(5);
-            ship.setCenterX(routeLine.getStartX());
-            ship.setCenterY(routeLine.getStartY());
-            ship.setFill(Color.DARKMAGENTA);
-            
-            ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                setElementToDisplay(route);
-            });
-            
-            this.getChildren().add(ship);
-            activeShips.add(ship);
-            
-            routeLine.toBack();
         });
     }
 
     @Override
     public void engineTaskFinished(long stellarTime) {
-        // TODO inner-system travels
-        // paintShipRoutes(UniverseManager.getInstance().getRoutes());
+        paintShipTravels(UniverseManager.getInstance().getTravels());
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -168,5 +177,29 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     private void setElementToDisplay(IDisplayable object) {
         DisplayPane.getInstance().setElementToDisplay(object);
         SwitchDisplayPane.getInstance().setElementToDisplay(object);
+    }
+    
+    private boolean isElementPresent(AbstractMapElement element) {
+        boolean ret = false;
+        
+        if (currentSystem != null && element != null) {
+            if (element instanceof RiftGate) {
+                for (RiftGate gate : currentSystem.getRiftGates()) {
+                    if (element.equals(gate)) {
+                        ret = true;
+                        break;
+                    }
+                }
+            } else {
+                for (StellarObject object : currentSystem.getStellarObjects()) {
+                    if (element.equals(object)) {
+                        ret = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return ret;
     }
 }

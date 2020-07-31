@@ -1,7 +1,7 @@
 package galaconomy.gui.window.pane;
 
 import galaconomy.universe.UniverseManager;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.Base;
 import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
@@ -10,7 +10,7 @@ import javafx.scene.layout.*;
 public class ShipDispatchPane extends GridPane {
     
     private final Label locationLabel;
-    private final ComboBox<ObservableList<Star>> destinationCB;
+    private final ComboBox<ObservableList<Base>> destinationCB;
     
     public ShipDispatchPane(String currentLocation) {
         super.setAlignment(Pos.CENTER);
@@ -25,16 +25,16 @@ public class ShipDispatchPane extends GridPane {
         
         super.add(new Label("Select destination:"), 0, 1);
         
-        ObservableList<Star> availableStars = 
+        ObservableList<Base> availableBases = 
             FXCollections.observableArrayList(
-                    UniverseManager.getInstance().getStars().values()
+                    UniverseManager.getInstance().getAvailableBases()
             );
-        destinationCB = new ComboBox(availableStars);
+        destinationCB = new ComboBox(availableBases);
         super.add(destinationCB, 1, 1);
     }
     
-    public Star getDestination() {
-        return (Star) destinationCB.getValue();
+    public Base getDestination() {
+        return (Base) destinationCB.getValue();
     }
 
 }

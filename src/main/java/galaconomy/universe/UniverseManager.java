@@ -3,6 +3,7 @@ package galaconomy.universe;
 import galaconomy.universe.map.Connector;
 import galaconomy.universe.map.Star;
 import galaconomy.universe.economy.EconomyManager;
+import galaconomy.universe.map.Base;
 import galaconomy.universe.player.*;
 import galaconomy.universe.traffic.*;
 import java.io.*;
@@ -27,6 +28,7 @@ public class UniverseManager implements Serializable {
     private final Map<String, Player> aiPlayers = new HashMap<>();
     
     private final Map<String, Star> stars = new HashMap<>();
+    private final List<Base> bases = new ArrayList<>();
     private final List<Connector> gates = new ArrayList<>();
     private final List<Travel> travels = new ArrayList<>();
     
@@ -85,7 +87,13 @@ public class UniverseManager implements Serializable {
     public List<Star> getAvailableStars() {
         List<Star> ret = new ArrayList<>();
         ret.addAll(stars.values());
-        Collections.shuffle(ret);
+        Collections.shuffle(ret); // TODO why this?
+        return ret;
+    }
+    
+    public List<Base> getAvailableBases() {
+        List<Base> ret = Collections.unmodifiableList(bases);
+        Collections.shuffle(ret); // TODO why this?
         return ret;
     }
     
@@ -95,6 +103,7 @@ public class UniverseManager implements Serializable {
     
     public void addStar(Star newStar) {
         stars.put(newStar.displayName(), newStar);
+        bases.addAll(newStar.getBases());
         LOG.info("Star added: " + newStar.displayName());
     }
 
@@ -253,7 +262,7 @@ public class UniverseManager implements Serializable {
     }
 
     private void recalcSupplies() {
-        EconomyManager.recalcSupplies(stars.values());
+        EconomyManager.recalcSupplies(bases);
     }
     
     private void recalcTravels() {

@@ -1,7 +1,7 @@
 package galaconomy.universe.economy;
 
 import galaconomy.universe.IDisplayable;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.Base;
 import java.io.Serializable;
 
 public class Cargo implements IDisplayable, Serializable {
@@ -12,11 +12,11 @@ public class Cargo implements IDisplayable, Serializable {
     
     private final int price;
     
-    private final Star origin;
+    private final Base origin;
     
     private final long purchased;
 
-    public Cargo(Goods goods, int amount, int price, Star origin, long purchased) {
+    public Cargo(Goods goods, int amount, int price, Base origin, long purchased) {
         this.goods = goods;
         this.amount = amount;
         this.price = price;

@@ -11,8 +11,8 @@ public class SurfaceTile extends AbstractMapElement {
     
     private Building building = null; 
 
-    public SurfaceTile(String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
-        super(name, dscr, img, color, xCoord, yCoord);
+    public SurfaceTile(String name, String dscr, String img, Color color, int xCoord, int yCoord, Base parent) throws Exception {
+        super(name, dscr, img, color, xCoord, yCoord, parent);
     }
     
     @Override

@@ -1,7 +1,7 @@
 package galaconomy.universe.economy;
 
 import galaconomy.universe.player.Player;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.Ship;
 
 public class TradeHelper {
@@ -12,7 +12,7 @@ public class TradeHelper {
         if (ret.isEmpty()) {
             
             Player buyer = ship.getCurrentOwner();
-            Star seller = ship.getCurrentLocation();
+            Base seller = ship.getCurrentBase();
             
             if (buyer == null) {
                 ret = "Unknown buyer!"; 
@@ -36,7 +36,7 @@ public class TradeHelper {
         if (ret.isEmpty()) {
             
             Player seller = ship.getCurrentOwner();
-            Star buyer = ship.getCurrentLocation();
+            Star buyer = ship.getCurrentSystem();
             
             if (seller == null) {
                 ret = "Unknown seller!"; 
@@ -90,7 +90,7 @@ public class TradeHelper {
         return ret;
     }
 
-    private static int getAvailableSupplies(Star seller, Goods goods) {
+    private static int getAvailableSupplies(Base seller, Goods goods) {
         int ret = 0;
         
         Supplies currentSupply = seller.findSupplies(goods.displayName());

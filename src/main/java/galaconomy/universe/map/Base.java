@@ -4,8 +4,9 @@ import galaconomy.universe.economy.*;
 import java.awt.Color;
 import java.util.*;
 
-public class Base extends AbstractMapElement {
+public class Base extends StellarObject {
     
+    // TODO different-sized bases
     private static final int COLS = 50;
     private static final int ROWS = 20;
     
@@ -13,12 +14,12 @@ public class Base extends AbstractMapElement {
     
     private final Map<String, Supplies> supplies = new HashMap<>();
 
-    public Base(String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
-        super(name, dscr, img, color, xCoord, yCoord);
+    public Base(Star system, String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
+        super(name, dscr, img, color, xCoord, yCoord, system);
         
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                surface[col][row] = new SurfaceTile("X", "Y", "", Color.GREEN, col, row);
+                surface[col][row] = new SurfaceTile("X", "Y", "", Color.GREEN, col, row, this);
             }
         }
     }

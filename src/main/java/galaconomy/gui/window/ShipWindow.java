@@ -3,6 +3,7 @@ package galaconomy.gui.window;
 import galaconomy.gui.window.pane.ShipDispatchPane;
 import galaconomy.gui.pane.*;
 import galaconomy.universe.economy.Cargo;
+import galaconomy.universe.map.Base;
 import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.Ship;
 import galaconomy.utils.InfoUtils;
@@ -56,7 +57,7 @@ public class ShipWindow extends Stage {
         AnchorPane.setLeftAnchor(cargoPane,115d);
         AnchorPane.setTopAnchor(cargoPane, 5d);
         
-        String location = ship.getCurrentLocation() != null ? ship.getCurrentLocation().displayName() : "Deep space";
+        String location = ship.getCurrentSystem() != null ? ship.getCurrentSystem().displayName() : "Deep space";
         shipDispatchPane = new ShipDispatchPane(location);
         windowLayout.getChildren().add(shipDispatchPane);
         AnchorPane.setLeftAnchor(shipDispatchPane, 115d);
@@ -67,7 +68,7 @@ public class ShipWindow extends Stage {
 
         Button buyButton = new Button("Launch");
         buyButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
-            Star destination = shipDispatchPane.getDestination();
+            Base destination = shipDispatchPane.getDestination();
             
             if (destination != null) {
                 if (true /*TODO route plaing restrictions*/) {

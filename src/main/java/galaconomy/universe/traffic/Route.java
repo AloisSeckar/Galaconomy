@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class Route implements IDisplayable, Serializable {
     
+    private final Star system;
     private final AbstractMapElement departure;
     private final AbstractMapElement arrival;
     private final double speed;
@@ -24,8 +25,10 @@ public class Route implements IDisplayable, Serializable {
         
         if (departure instanceof Star && arrival instanceof Star) {
             type = RouteType.RIFT_DRIVE;
+            system = null;
         } else {
             type = RouteType.WITHIN_SYSTEM;
+            system = (Star) departure.getParent();
         }
         
         this.speed = speed;
@@ -62,6 +65,10 @@ public class Route implements IDisplayable, Serializable {
     public String getImage() {
         return Constants.FOLDER_IMG + "rift_travel.png";
     }
+
+    public Star getSystem() {
+        return system;
+    }
     
     public AbstractMapElement getDeparture() {
         return departure;
@@ -83,8 +90,8 @@ public class Route implements IDisplayable, Serializable {
         return status;
     }
 
-    public RouteType getType() {
-        return type;
+    public boolean isRiftDrive() {
+        return type == RouteType.RIFT_DRIVE;
     }
     
     public void start() {

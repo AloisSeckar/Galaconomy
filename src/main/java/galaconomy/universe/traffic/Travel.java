@@ -2,7 +2,7 @@ package galaconomy.universe.traffic;
 
 import galaconomy.universe.*;
 import galaconomy.universe.economy.Cargo;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.*;
 import galaconomy.utils.TrafficUtils;
 import java.io.Serializable;
 import java.util.*;
@@ -13,36 +13,58 @@ public class Travel implements IDisplayable, Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(Travel.class);
     
     private final Ship ship;
-    private final Star departure;
-    private final Star arrival;
+    private final Base departure;
+    private final Base arrival;
     
     private final List<Route> routes;
     private TravelStatus status;
     
-    private final double distanceTotal;
-    private double distanceElapsed;
+    private final double distanceRiftTotal;
+    private double distanceRiftElapsed;
+    private final double distancePulseTotal;
+    private double distancePulseElapsed;
     
     private final long eta;
     private final long started;
     private long finished;
 
-    public Travel(Ship ship, Star departure, Star arrival) {
+    public Travel(Ship ship, Base departure, Base arrival) {
         this.ship = ship;
         this.departure = departure;
         this.arrival = arrival;
         this.routes = new ArrayList<>();
         this.status = TravelStatus.PROPOSED;
         
-        List<Star> itinerary = TrafficUtils.getPath(departure, arrival);
-        double totalDistance = 0;
+        AbstractMapElement localDep = departure;
+        List<Star> itinerary = TrafficUtils.getPath((Star) departure.getParent(), (Star) arrival.getParent());
         for (int i = 0; i < itinerary.size() - 1; i++) {
             Star stageDep = itinerary.get(i);
             Star stageArr = itinerary.get(i + 1);
-            Route stage = new Route(stageDep, stageArr, ship.getRiftSpeed());
-            routes.add(stage);
-            totalDistance += stage.getDistanceTotal();
+            
+            RiftGate depGate = stageDep.getRiftGateTo(stageArr);
+            
+            Route pulseStage = new Route(localDep, depGate, ship.getPulseSpeed());
+            routes.add(pulseStage);
+            
+            Route riftStage = new Route(stageDep, stageArr, ship.getRiftSpeed());
+            routes.add(riftStage);
+            
+            localDep = stageArr.getRiftGateTo(stageDep);
         }
-        this.distanceTotal = totalDistance;
+        Route lastPulseStage = new Route(localDep, arrival, ship.getPulseSpeed());
+        routes.add(lastPulseStage);
+        
+        double totalRiftDistance = 0;
+        double totalPulseDistance = 0;
+        for (Route stage : routes) { 
+            if (stage.isRiftDrive()) {
+                totalRiftDistance += stage.getDistanceTotal();
+            } else {
+                totalPulseDistance += stage.getDistanceTotal();
+            }
+        }
+        this.distanceRiftTotal = totalRiftDistance;
+        this.distancePulseTotal = totalPulseDistance;
         
         this.status = TravelStatus.SCHEDULED;
         LOG.info(ship.displayName() + ": route from " + departure.displayName() + " to " + arrival.displayName() + " planned");
@@ -50,10 +72,10 @@ public class Travel implements IDisplayable, Serializable {
         this.started = UniverseManager.getInstance().getStellarTime();
         this.finished = -1;
         
-        this.eta = started + new Double(Math.ceil(distanceTotal / ship.getRiftSpeed())).intValue();
+        this.eta = started + new Double(Math.ceil(distanceRiftTotal / ship.getRiftSpeed())).intValue();
         
         this.ship.setIdle(false);
-        this.ship.setCurrentLocation(null);
+        this.ship.setCurrentBase(null);
     }
 
     @Override
@@ -72,8 +94,8 @@ public class Travel implements IDisplayable, Serializable {
         } else {
             routeDscr.append("Traveling from ").append(departure.displayName());
             routeDscr.append("to ").append(arrival.displayName()).append("system\n");
-            routeDscr.append("Distance: ").append(String.format("%.2f", distanceTotal)).append("\n");
-            routeDscr.append("Elapsed: ").append(String.format("%.2f", distanceElapsed)).append("\n");
+            routeDscr.append("Distance: ").append(String.format("%.2f", distanceRiftTotal)).append("\n");
+            routeDscr.append("Elapsed: ").append(String.format("%.2f", distanceRiftElapsed)).append("\n");
             routeDscr.append("Speed: ").append(String.format("%.2f", ship.getRiftSpeed())).append("\n");
             routeDscr.append("ETA: ").append(eta).append("\n\n");
             
@@ -96,54 +118,35 @@ public class Travel implements IDisplayable, Serializable {
         return ship;
     }
     
-    public Star getDeparture() {
+    public Base getDeparture() {
         return departure;
     }
 
-    public Star getArrival() {
+    public Base getArrival() {
         return arrival;
     }
 
-    public double getDistanceTotal() {
-        return distanceTotal;
+    public double getDistanceRiftTotal() {
+        return distanceRiftTotal;
     }
 
-    public double getDistanceElapsed() {
-        return distanceElapsed;
+    public double getDistanceRiftElapsed() {
+        return distanceRiftElapsed;
     }
 
+    public double getDistancePulseTotal() {
+        return distancePulseTotal;
+    }
+
+    public double getDistancePulseElapsed() {
+        return distancePulseElapsed;
+    }
+    
     public List<Route> getRoutes() {
         return routes;
     }
     
-    public void progress() {
-        double elapsed = ship.getRiftSpeed();
-        this.distanceElapsed += elapsed;
-        
-        Route activeRoute = getActiveRoute();
-        if (activeRoute != null) {
-            activeRoute.progress();
-        }
-        
-        if (distanceElapsed >= distanceTotal) {
-            distanceElapsed = distanceTotal;
-            ship.increaseMileage(elapsed - (distanceElapsed - distanceTotal));
-            ship.setIdle(true);
-            ship.setCurrentLocation(arrival);
-            finished = UniverseManager.getInstance().getStellarTime();
-            status = TravelStatus.FINISHED;
-        } else {
-            ship.increaseMileage(elapsed);
-        }
-    }
-    
-    public boolean isFinished() {
-        return status == TravelStatus.FINISHED;
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////
-    
-    private Route getActiveRoute() {
+    public Route getActiveRoute() {
         Route ret = null;
         
         for (Route route : routes) {
@@ -158,5 +161,41 @@ public class Travel implements IDisplayable, Serializable {
         }
         
         return ret;
+    }
+    
+    public void progress() {
+        Route activeRoute = getActiveRoute();
+        if (activeRoute != null) {
+            activeRoute.progress();
+            
+            if (activeRoute.isRiftDrive()) {
+                double elapsed = ship.getRiftSpeed();
+                this.distanceRiftElapsed += elapsed;
+                if (distanceRiftElapsed >= distanceRiftTotal ) {
+                    distanceRiftElapsed = distanceRiftTotal;
+                }
+                if (activeRoute.isFinished()) {
+                    ship.setCurrentSystem((Star) activeRoute.getArrival());
+                }
+            } else {
+                double elapsed = ship.getPulseSpeed();
+                this.distancePulseElapsed += elapsed;
+                if (distancePulseElapsed >= distancePulseTotal ) {
+                    distancePulseElapsed = distancePulseTotal;
+                }
+                if (activeRoute.isFinished()) {
+                    ship.setCurrentSystem(null);
+                }
+            }
+        } else {
+            ship.setIdle(true);
+            ship.setCurrentBase(arrival);
+            finished = UniverseManager.getInstance().getStellarTime();
+            status = TravelStatus.FINISHED;
+        }
+    }
+    
+    public boolean isFinished() {
+        return status == TravelStatus.FINISHED;
     }
 }

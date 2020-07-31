@@ -2,7 +2,7 @@ package galaconomy.gui.window;
 
 import galaconomy.gui.pane.PlayerPane;
 import galaconomy.universe.UniverseManager;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.Base;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.*;
 import javafx.collections.*;
@@ -17,7 +17,7 @@ public class ShipBuyWindow extends Stage {
     
     private final TextField shipNameTF;
     private final ComboBox<ObservableList<ShipClass>> shipClassCB;
-    private final ComboBox<ObservableList<Star>> locationCB;
+    private final ComboBox<ObservableList<Base>> locationCB;
     
     public ShipBuyWindow(PlayerPane parent) {
         super.setTitle("Select ship to buy");
@@ -53,11 +53,11 @@ public class ShipBuyWindow extends Stage {
         Label locationLabel = new Label("Select init. location:");
         inputsGrid.add(locationLabel, 0, 2);
         
-        ObservableList<Star> availableStars = 
+        ObservableList<Base> availableBases = 
             FXCollections.observableArrayList(
-                    UniverseManager.getInstance().getStars().values()
+                    UniverseManager.getInstance().getAvailableBases()
             );
-        locationCB = new ComboBox(availableStars);
+        locationCB = new ComboBox(availableBases);
         inputsGrid.add(locationCB, 1, 2);
         
         HBox menuBox = new HBox(20);
@@ -67,7 +67,7 @@ public class ShipBuyWindow extends Stage {
         buyButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
             String shipName = InputUtils.trimToNull(shipNameTF.getText());
             ShipClass shipClass = (ShipClass) shipClassCB.getValue();
-            Star location = (Star) locationCB.getValue();
+            Base location = (Base) locationCB.getValue();
             
             if (shipName != null && shipClass != null && location != null) {
                 if (UniverseManager.getInstance().getPlayer().getCredits() >= shipClass.getPrice()) {

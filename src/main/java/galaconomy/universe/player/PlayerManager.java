@@ -1,7 +1,8 @@
 package galaconomy.universe.player;
 
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.*;
 import galaconomy.universe.UniverseManager;
+import galaconomy.universe.UniverseUtils;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.traffic.*;
 import java.util.*;
@@ -14,15 +15,15 @@ public class PlayerManager {
     public static List<Travel> rethinkTravels(Map<String, Player> players) {
         List<Travel> newTravels = new ArrayList<>();
         
-        Random rand = new Random(System.currentTimeMillis()); 
+        Random rand = new Random(); 
         List<Star> systems = new ArrayList<>( UniverseManager.getInstance().getStars().values());
         int maxInt = systems.size();
         
         for (Player player : players.values()) {
             for (Ship ship : player.getShips()) {
                 if (ship.isIdle()) {
-                    Star location = ship.getCurrentLocation();
-                    Star destination = null;
+                    Base location = ship.getCurrentBase();
+                    Base destination = null;
                     
                     while (!ship.getCargoList().isEmpty()) {
                         Cargo cargo = ship.getCargoList().get(0);
@@ -55,7 +56,7 @@ public class PlayerManager {
                     } 
                     
                     if (destination == null) {
-                        destination = systems.get(rand.nextInt(maxInt));
+                        destination = UniverseUtils.getRandomBase();
                     }
 
                     Travel newTravel = new Travel(ship, location, destination);

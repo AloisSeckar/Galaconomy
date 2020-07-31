@@ -2,18 +2,14 @@ package galaconomy.universe.traffic;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
-import galaconomy.universe.map.Star;
 import java.util.Random;
 
 public class ShipGenerator {
     
     public static Ship createRandomShip() {
-        Random rand = new Random(System.currentTimeMillis()); 
-        
+        Random rand = new Random(); 
         String randomName = "GLS Random " + UniverseManager.getInstance().getStellarTime();
-        Star randomStar = UniverseUtils.getRandomSystem();
-        
-        return new Ship(randomName, getRandomShipClass(rand), randomStar);
+        return new Ship(randomName, getRandomShipClass(rand), UniverseUtils.getRandomBase());
     }
     
     public static ShipClass getRandomShipClass(Random rand) {

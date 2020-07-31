@@ -1,12 +1,12 @@
 package galaconomy.universe;
 
-import galaconomy.universe.map.Connector;
-import galaconomy.universe.map.RiftGate;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.*;
 import java.awt.Color;
 import java.util.*;
 
 public class UniverseUtils {
+    
+    private static Random rand = new Random();
 
     public static String getPlanetOrder(int order) {
         String ret = "Zero";
@@ -116,10 +116,18 @@ public class UniverseUtils {
         
         List<Star> systems = new ArrayList<>( UniverseManager.getInstance().getStars().values());
         
-        Random rand = new Random(System.currentTimeMillis()); 
         int random = rand.nextInt(systems.size());
        
         return systems.get(random);
+    }
+    
+    public static Base getRandomBase() {
+        
+        List<Base> bases = getRandomSystem().getBases();
+        
+        int random = rand.nextInt(bases.size());
+       
+        return bases.get(random);
     }
     
     public static boolean hasRiftConnection(Star from, Star to) {

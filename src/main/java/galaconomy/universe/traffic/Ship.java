@@ -3,7 +3,7 @@ package galaconomy.universe.traffic;
 import galaconomy.universe.*;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.*;
 import galaconomy.utils.DisplayUtils;
 import java.io.Serializable;
 import java.util.*;
@@ -28,9 +28,9 @@ public class Ship implements IDisplayable, Serializable {
     
     private final long comissioned;
     
-    private Star currentLocation;
+    private Star currentSystem;
+    private Base currentBase;
     
-    private double mileage = 0;
     private boolean idle = true;
     private Player currentOwner = null;
     
@@ -39,7 +39,7 @@ public class Ship implements IDisplayable, Serializable {
     private final List<Player> owners = new ArrayList<>();
     private final List<Travel> travels = new ArrayList<>();
 
-    public Ship(String name, ShipClass shipClass, Star location) {
+    public Ship(String name, ShipClass shipClass, Base location) {
         this.name = name;
         
         this.shipClass = shipClass.getName();
@@ -51,10 +51,12 @@ public class Ship implements IDisplayable, Serializable {
         this.hull = shipClass.getHull();
         this.cargo = shipClass.getCargo();
         this.riftSpeed = shipClass.getRiftSpeed();
+        this.pulseSpeed = shipClass.getPulseSpeed();
         
         this.comissioned = UniverseManager.getInstance().getStellarTime();
         
-        this.currentLocation = location;
+        this.currentBase = location;
+        this.currentSystem = (Star) location.getParent();
     }
     
     @Override
@@ -130,13 +132,13 @@ public class Ship implements IDisplayable, Serializable {
         
         if (ret.isEmpty()) {
             long totalPrice = amount * price;
-            Cargo newCargo  = new Cargo(goods, amount, price, currentLocation, UniverseManager.getInstance().getStellarTime());
+            Cargo newCargo  = new Cargo(goods, amount, price, currentBase, UniverseManager.getInstance().getStellarTime());
             
-            currentLocation.performSale(goods, amount);
+            currentBase.performSale(goods, amount);
             currentOwner.spendCredits(totalPrice);
             cargoList.add(newCargo);
             
-            LOG.info(name + " purchased " + newCargo.displayName() + " at " + currentLocation.displayName() + " for " + totalPrice + " credits");
+            LOG.info(name + " purchased " + newCargo.displayName() + " at " + currentBase.displayName() + " for " + totalPrice + " credits");
         }
         
         return ret;
@@ -149,11 +151,11 @@ public class Ship implements IDisplayable, Serializable {
             int amount = cargo.getAmount();
             long totalPrice = amount * price;
             
-            currentLocation.performPurchase(cargo);
+            currentBase.performPurchase(cargo);
             currentOwner.earnCredits(totalPrice);
             cargoList.remove(cargo);
             
-            LOG.info(name + " sold " + cargo.displayName() + " at " + currentLocation.displayName() + " for " + totalPrice + " credits");
+            LOG.info(name + " sold " + cargo.displayName() + " at " + currentBase.displayName() + " for " + totalPrice + " credits");
         }
         
         return ret;
@@ -167,12 +169,20 @@ public class Ship implements IDisplayable, Serializable {
         this.idle = idle;
     }
 
-    public Star getCurrentLocation() {
-        return currentLocation;
+    public Star getCurrentSystem() {
+        return currentSystem;
     }
 
-    public void setCurrentLocation(Star currentLocation) {
-        this.currentLocation = currentLocation;
+    public void setCurrentSystem(Star currentSystem) {
+        this.currentSystem = currentSystem;
+    }
+
+    public Base getCurrentBase() {
+        return currentBase;
+    }
+
+    public void setCurrentBase(Base currentBase) {
+        this.currentBase = currentBase;
     }
 
     public int getPrice() {
@@ -221,14 +231,6 @@ public class Ship implements IDisplayable, Serializable {
 
     public void setPulseSpeed(double pulseSpeed) {
         this.pulseSpeed = pulseSpeed;
-    }
-    
-    public double getMileage() {
-        return mileage;
-    }
-
-    public void increaseMileage(double distanceElapsed) {
-        this.mileage += mileage;
     }
     
     @Override

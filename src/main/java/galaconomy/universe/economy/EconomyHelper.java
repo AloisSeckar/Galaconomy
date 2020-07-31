@@ -1,15 +1,15 @@
 package galaconomy.universe.economy;
 
 import galaconomy.universe.UniverseManager;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.*;
 
 public class EconomyHelper {
     
-    public static Supplies findLowestPrice(Star star) {
+    public static Supplies findLowestPrice(Base base) {
         Supplies ret = null;
         
-        if (star != null) {
-            for (Supplies current : star.getSupplies().values()) {
+        if (base != null) {
+            for (Supplies current : base.getSupplies().values()) {
                 if (ret == null || current.getPriceSell() < ret.getPriceSell()) {
                     ret = current;
                 }
@@ -19,18 +19,20 @@ public class EconomyHelper {
         return ret;
     }
     
-    public static Star findBestPrice(Goods goods) {
-        Star ret = null;
+    public static Base findBestPrice(Goods goods) {
+        Base ret = null;
         Supplies bestOffer = null;
         
         if (goods != null) {
             String goodsName = goods.displayName();
             for (Star currentStar : UniverseManager.getInstance().getStars().values()) {
-                Supplies currentSupply = currentStar.findSupplies(goodsName);
-                if (currentSupply != null) {
-                    if (bestOffer == null || currentSupply.getPriceBuy() > bestOffer.getPriceBuy()) {
-                        ret = currentStar;
-                        bestOffer = currentSupply;
+                for (Base currentBase : currentStar.getBases()) {
+                    Supplies currentSupply = currentBase.findSupplies(goodsName);
+                    if (currentSupply != null) {
+                        if (bestOffer == null || currentSupply.getPriceBuy() > bestOffer.getPriceBuy()) {
+                            ret = currentBase;
+                            bestOffer = currentSupply;
+                        }
                     }
                 }
             }

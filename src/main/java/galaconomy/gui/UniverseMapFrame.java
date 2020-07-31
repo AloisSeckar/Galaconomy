@@ -102,64 +102,66 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
         
         for (Travel travel : travels) {
             for (Route route : travel.getRoutes()) {
-                Line routeLine = new Line();
+                if (route.isRiftDrive()) {
+                    Line routeLine = new Line();
 
-                Star departure = (Star) route.getDeparture();
-                Star arrival = (Star) route.getArrival();
-                double total = route.getDistanceTotal();
-                double elapsed = route.getDistanceElapsed();
-                double distance = elapsed / total;
-                
-                TravelStatus status = route.getStatus();
-                switch (status) {
-                    case ONGOING:
-                        routeLine.getStyleClass().add("ship-route-ongoing");
-                        break;
-                    case FINISHED:
-                        routeLine.getStyleClass().add("ship-route-finished");
-                        break;
-                    default:
-                        routeLine.getStyleClass().add("ship-route");
-                }
-                
-                if (elapsed > 0) {
-                    int vectorX = arrival.getX() - departure.getX();
-                    int vectorY = arrival.getY() - departure.getY();
-                    double newX = departure.getX() +  distance * vectorX;
-                    routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX));
-                    double newY = departure.getY() +  distance * vectorY;
-                    routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY));
-                } else {
-                    routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()));
-                    routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()));
-                }
+                    Star departure = (Star) route.getDeparture();
+                    Star arrival = (Star) route.getArrival();
+                    double total = route.getDistanceTotal();
+                    double elapsed = route.getDistanceElapsed();
+                    double distance = elapsed / total;
 
-                routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()));
-                routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
+                    TravelStatus status = route.getStatus();
+                    switch (status) {
+                        case ONGOING:
+                            routeLine.getStyleClass().add("ship-route-ongoing");
+                            break;
+                        case FINISHED:
+                            routeLine.getStyleClass().add("ship-route-finished");
+                            break;
+                        default:
+                            routeLine.getStyleClass().add("ship-route");
+                    }
 
-                routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                    setElementToDisplay(travel);
-                });
+                    if (elapsed > 0) {
+                        int vectorX = arrival.getX() - departure.getX();
+                        int vectorY = arrival.getY() - departure.getY();
+                        double newX = departure.getX() +  distance * vectorX;
+                        routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX));
+                        double newY = departure.getY() +  distance * vectorY;
+                        routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY));
+                    } else {
+                        routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()));
+                        routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()));
+                    }
 
-                this.getChildren().add(routeLine);
-                activeTravels.add(routeLine);
+                    routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()));
+                    routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
 
-                if (status == TravelStatus.ONGOING) {
-                    Circle ship = new Circle(5);
-                    ship.setCenterX(routeLine.getStartX());
-                    ship.setCenterY(routeLine.getStartY());
-                    ship.setFill(Color.DARKMAGENTA);
-
-                    ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                    routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
                         setElementToDisplay(travel);
                     });
 
-                    this.getChildren().add(ship);
-                    activeShips.add(ship);
-                }
+                    this.getChildren().add(routeLine);
+                    activeTravels.add(routeLine);
 
-                // TODO this causes routes being hidden behind rift connectors
-                routeLine.toBack();
+                    if (status == TravelStatus.ONGOING) {
+                        Circle ship = new Circle(5);
+                        ship.setCenterX(routeLine.getStartX());
+                        ship.setCenterY(routeLine.getStartY());
+                        ship.setFill(Color.DARKMAGENTA);
+
+                        ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                            setElementToDisplay(travel);
+                        });
+
+                        this.getChildren().add(ship);
+                        activeShips.add(ship);
+                    }
+
+                    // TODO this causes routes being hidden behind rift connectors
+                    routeLine.toBack();
+                }
             }
         }
     }

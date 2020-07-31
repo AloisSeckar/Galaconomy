@@ -16,8 +16,9 @@ public abstract class AbstractMapElement implements IDisplayable, Serializable {
     private final Color color;
     private final int xCoord;
     private final int yCoord;
+    private final AbstractMapElement parent;
     
-    public AbstractMapElement(String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
+    public AbstractMapElement(String name, String dscr, String img, Color color, int xCoord, int yCoord, AbstractMapElement parent) throws Exception {
         if (name != null) {
             this.name = name;
         } else {
@@ -53,6 +54,8 @@ public abstract class AbstractMapElement implements IDisplayable, Serializable {
         } else {
             throw new IllegalArgumentException("Given yCoord is out of map bounds");
         }
+        
+        this.parent = parent;
     }
 
     @Override
@@ -89,6 +92,10 @@ public abstract class AbstractMapElement implements IDisplayable, Serializable {
         return yCoord;
     }
 
+    public AbstractMapElement getParent() {
+        return parent;
+    }
+
     @Override
     public String toString() {
         return displayName();
@@ -118,6 +125,9 @@ public abstract class AbstractMapElement implements IDisplayable, Serializable {
             return false;
         }
         if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.parent, other.parent)) {
             return false;
         }
         return true;

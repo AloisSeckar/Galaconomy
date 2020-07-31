@@ -1,14 +1,14 @@
 package galaconomy.universe.economy;
 
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.Base;
 import java.util.*;
 
 public class EconomyManager {
     
-    public static void recalcSupplies(Collection<Star> stars) {
+    public static void recalcSupplies(List<Base> bases) {
         Random rand = new Random();
-        for (Star star : stars) {
-            for (Supplies current : star.getSupplies().values()) {
+        for (Base base : bases) {
+            for (Supplies current : base.getSupplies().values()) {
                 
                 int amount = current.getAmount();
                 if (amount < 1) {

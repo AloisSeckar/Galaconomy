@@ -4,6 +4,7 @@ import galaconomy.gui.*;
 import galaconomy.gui.window.*;
 import galaconomy.universe.*;
 import galaconomy.universe.economy.*;
+import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.*;
@@ -80,7 +81,7 @@ public class PlayerPane extends AnchorPane {
         
         // TODO delete
         quickShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            buyShip("USS Test", ShipGenerator.getShipClassById(0), UniverseUtils.getRandomSystem());
+            buyShip("USS Test", ShipGenerator.getShipClassById(0), UniverseUtils.getRandomBase());
         });
         quickShipButton.setVisible(false);
         super.getChildren().add(quickShipButton);
@@ -101,7 +102,7 @@ public class PlayerPane extends AnchorPane {
         quickShipButton.setVisible(true);
     }
     
-    public void buyShip(String shipName, ShipClass shipClass, Star location) {
+    public void buyShip(String shipName, ShipClass shipClass, Base location) {
         Player player = UniverseManager.getInstance().getPlayer();
         
         Ship newShip = new Ship(shipName, shipClass, location);
@@ -109,7 +110,7 @@ public class PlayerPane extends AnchorPane {
         player.addShip(newShip);
         
         // TODO delete
-        Star origin = UniverseUtils.getRandomSystem();
+        Base origin = UniverseUtils.getRandomBase();
         newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Metal"), 10, 150, origin, 10000));
         newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Chips"), 10, 200, origin, 10000));
         newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Food"), 10, 101, origin, 10000));
@@ -136,16 +137,16 @@ public class PlayerPane extends AnchorPane {
         player.spendCredits(shipClass.getPrice());
         playerCredits.setText("Credits: " + String.valueOf(player.getCredits()));  
         
-        LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + player.displayName() + " bought new " + shipClass.displayName() + " caalled " + shipName);            
+        LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + player.displayName() + " bought new " + shipClass.displayName() + " called " + shipName);            
     }
 
-    public void planTravel(Ship ship, Star arrival) {
-        Star departure = ship.getCurrentLocation();
+    public void planTravel(Ship ship, Base arrival) {
+        Base departure = ship.getCurrentBase();
 
         Travel newTravel = new Travel(ship, departure, arrival);
         UniverseManager.getInstance().addTravel(newTravel);
 
-        LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + ship.displayName() + " set off from " + departure.displayName() + " system to " + arrival.displayName());             
+        LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + ship.displayName() + " set off from " + departure.displayName() + " to " + arrival.displayName());             
     }
     
     public void loadPlayerShips() {
