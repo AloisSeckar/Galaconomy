@@ -60,7 +60,7 @@ public class UniverseGenerator {
             
             // RANDOM STARS
 
-            int numberOfStars = Math.max(rand.nextInt(availableNames.size() / 2), 15);
+            int numberOfStars = Math.max(rand.nextInt(availableNames.size() / 2), 20);
             for (int i = 0; i < numberOfStars; i++) {
                 String starName = availableNames.get(rand.nextInt(availableNames.size()));
                 Star newStar = generateSystem(starName);
@@ -99,8 +99,15 @@ public class UniverseGenerator {
     private static Star generateSystem(String starName) throws Exception {
         int randStarImg = rand.nextInt(Constants.AVAILABLE_STARS) + 1;
         String starImg = Constants.STARS_FOLDER + "star" + String.format("%02d" , randStarImg) + ".png";
+        
+        int randX;
+        int randY;
+        do {
+            randX = rand.nextInt(Constants.MAX_X - 1) + 1;
+            randY = rand.nextInt(Constants.MAX_Y - 1) + 1;
+        } while (!UniverseUtils.isFreeUniverseSpot(randX, randY));
 
-        Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, UniverseUtils.getStarColor(randStarImg), rand.nextInt(Constants.MAX_X), rand.nextInt(Constants.MAX_Y));
+        Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, UniverseUtils.getStarColor(randStarImg), randX, randY);
 
         int numberOfPlanets = rand.nextInt(5); 
         if (rand.nextInt(10) % 2 == 0) {

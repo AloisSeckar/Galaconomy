@@ -6,7 +6,7 @@ import java.util.*;
 
 public class UniverseUtils {
     
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
 
     public static String getPlanetOrder(int order) {
         String ret = "Zero";
@@ -141,6 +141,22 @@ public class UniverseUtils {
                     ret = true;
                     break;
                 }
+            }
+        }
+        
+        return ret;
+    }
+    
+    public static boolean isFreeUniverseSpot(int x, int y) {
+        boolean ret = true;
+        
+        List<Star> systems = new ArrayList<>( UniverseManager.getInstance().getStars().values());
+        for (Star system : systems) {
+            int xDistance = Math.abs(system.getX() - x);
+            int yDistance = Math.abs(system.getY() - y);
+            if (xDistance < 3 && yDistance < 3) {
+                ret = false;
+                break;
             }
         }
         
