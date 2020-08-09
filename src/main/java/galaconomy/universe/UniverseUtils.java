@@ -150,11 +150,27 @@ public class UniverseUtils {
     public static boolean isFreeUniverseSpot(int x, int y) {
         boolean ret = true;
         
-        List<Star> systems = new ArrayList<>( UniverseManager.getInstance().getStars().values());
+        List<Star> systems = new ArrayList<>(UniverseManager.getInstance().getStars().values());
         for (Star system : systems) {
             int xDistance = Math.abs(system.getX() - x);
             int yDistance = Math.abs(system.getY() - y);
             if (xDistance < 3 && yDistance < 3) {
+                ret = false;
+                break;
+            }
+        }
+        
+        return ret;
+    }
+    
+    public static boolean isFreeSystemSpot(int x, int y, Star system) {
+        boolean ret = true;
+        
+        List<StellarObject> objects = new ArrayList<>(system.getStellarObjects());
+        for (StellarObject object : objects) {
+            int xDistance = Math.abs(object.getX() - x);
+            int yDistance = Math.abs(object.getY() - y);
+            if (xDistance < 6 && yDistance < 6) {
                 ret = false;
                 break;
             }

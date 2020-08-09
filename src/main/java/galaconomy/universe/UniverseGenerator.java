@@ -46,7 +46,7 @@ public class UniverseGenerator {
             
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "star09.png", Color.ORANGE, 45, 45);
             
-            Base newPlanet = new Base(sicopiaSystem, "Sicopia Prime", "GLS Capital", Constants.PLANETS_FOLDER + "planet44.png", Color.WHITE, 20, 35);
+            Base newPlanet = new Base(sicopiaSystem, "Sicopia Prime", "GLS Capital", Constants.PLANETS_FOLDER + "planet44.png", Color.WHITE, 28, 35);
             
             newPlanet.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(2000) + 1));
             newPlanet.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(2000) + 1));
@@ -124,16 +124,18 @@ public class UniverseGenerator {
             int randPlanetImg = rand.nextInt(Constants.AVAILABLE_PLANETS) + 1;
             String planetImg = Constants.PLANETS_FOLDER + "planet" + String.format("%02d" , randPlanetImg) + ".png";
 
-            // x = r * sin(θ), y = r * cos(θ)
-            int angle = rand.nextInt(360);
-            double radius = 9 + (1 + rand.nextDouble() * 2) * j;
-            Double randomX = centerX + (radius * Math.sin(angle)); 
-            Double randomY = centerY + (radius * Math.cos(angle));
+            do {
+                // x = r * sin(θ), y = r * cos(θ)
+                int angle = rand.nextInt(360);
+                double radius = 9 + (1 + rand.nextDouble() * 2) * j;
+                Double randomX = centerX + (radius * Math.sin(angle)); 
+                Double randomY = centerY + (radius * Math.cos(angle));
 
-            int xCoord = Math.min(randomX.intValue(), Constants.MAX_X);
-            int yCoord = Math.min(randomY.intValue(), Constants.MAX_Y);
+                randX = Math.min(randomX.intValue(), Constants.MAX_X);
+                randY = Math.min(randomY.intValue(), Constants.MAX_Y);
+            } while (!UniverseUtils.isFreeSystemSpot(randX, randY, newStar));
             
-            Base newPlanet = new Base(newStar, planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, Color.WHITE, xCoord, yCoord);
+            Base newPlanet = new Base(newStar, planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, Color.WHITE, randX, randY);
             
             newPlanet.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(2000) + 1));
             newPlanet.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(2000) + 1));
