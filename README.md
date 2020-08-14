@@ -12,3 +12,4 @@
 	* https://opengameart.org/content/32-star-sprites
 	* https://opengameart.org/content/space-backgrounds-0
 	* https://opengameart.org/content/animated-portal-or-wormhole-several-variants
+	* https://opengameart.org/content/symphonium-sci-fi-industrial-plant

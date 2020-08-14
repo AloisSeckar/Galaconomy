@@ -2,6 +2,7 @@ package galaconomy.gui.pane;
 
 import galaconomy.gui.BasicGameLayout;
 import galaconomy.universe.IDisplayable;
+import galaconomy.universe.building.Building;
 import galaconomy.universe.map.*;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -16,7 +17,8 @@ public class SwitchDisplayPane extends AnchorPane {
     private final Button switchToSystemButton;
     private final Button switchToBaseButton;
     
-    private IDisplayable elementToDisplay;
+    private Star currentStar = null;
+    private Base currentBase = null;
 
     private static SwitchDisplayPane INSTANCE;
     
@@ -31,6 +33,8 @@ public class SwitchDisplayPane extends AnchorPane {
         switchToGalaxyButton = new Button("Universe");
         switchToGalaxyButton.setMinWidth(BUTTON_WIDTH);
         switchToGalaxyButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+            currentBase = null;
+            currentStar = null;
             BasicGameLayout.getInstance().switchToGalaxy();
         });
         super.getChildren().add(switchToGalaxyButton);
@@ -39,9 +43,9 @@ public class SwitchDisplayPane extends AnchorPane {
         
         switchToSystemButton = new Button("System");
         switchToSystemButton.setMinWidth(BUTTON_WIDTH);
-        switchToSystemButton.setDisable(true);
         switchToSystemButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            BasicGameLayout.getInstance().switchToSystem((Star) elementToDisplay);
+            currentBase = null;
+            BasicGameLayout.getInstance().switchToSystem(currentStar);
         });
         super.getChildren().add(switchToSystemButton);
         AnchorPane.setLeftAnchor(switchToSystemButton, BUTTON_WIDTH);
@@ -49,9 +53,8 @@ public class SwitchDisplayPane extends AnchorPane {
         
         switchToBaseButton = new Button("Base");
         switchToBaseButton.setMinWidth(BUTTON_WIDTH);
-        switchToBaseButton.setDisable(true);
         switchToBaseButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            BasicGameLayout.getInstance().switchToSystem((Star) elementToDisplay);
+            BasicGameLayout.getInstance().switchToBase(currentBase);
         });
         super.getChildren().add(switchToBaseButton);
         AnchorPane.setLeftAnchor(switchToBaseButton, BUTTON_WIDTH * 2);
@@ -59,10 +62,12 @@ public class SwitchDisplayPane extends AnchorPane {
     }
 
     public void setElementToDisplay(IDisplayable elementToDisplay) {
-        this.elementToDisplay = elementToDisplay;
-        
-        switchToSystemButton.setDisable(!(elementToDisplay instanceof Star));
-        switchToBaseButton.setDisable(!(elementToDisplay instanceof Base));
+        if (elementToDisplay instanceof Star) {
+            currentStar = (Star) elementToDisplay;
+        } else if (elementToDisplay instanceof Base) {
+            currentBase = (Base) elementToDisplay;
+            currentStar = (Star) currentBase.getParent();
+        } 
     }
     
 }

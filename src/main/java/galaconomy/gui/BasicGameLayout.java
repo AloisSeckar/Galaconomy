@@ -1,19 +1,13 @@
 package galaconomy.gui;
 
-import galaconomy.constants.Constants;
 import galaconomy.gui.pane.PlayerPane;
-import galaconomy.universe.UniverseGenerator;
-import galaconomy.universe.UniverseManager;
-import galaconomy.universe.map.Base;
-import galaconomy.universe.map.Connector;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.*;
+import galaconomy.universe.map.*;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 public class BasicGameLayout extends BorderPane {
     
@@ -21,12 +15,14 @@ public class BasicGameLayout extends BorderPane {
     
     private UniverseMapFrame universeMap;
     private SystemMapFrame systemMap;
+    private BaseMapFrame baseMap;
     
     private BasicGameLayout() {
         
         InfoFrame info = InfoFrame.getInstance();
         universeMap = UniverseMapFrame.getInstance();
         systemMap = SystemMapFrame.getInstance();
+        baseMap = BaseMapFrame.getInstance();
         ControlsFrame controls = ControlsFrame.getInstance();
         
         // TODO change this to avoid exposing class to outer world...
@@ -50,6 +46,7 @@ public class BasicGameLayout extends BorderPane {
             universe.registerSubscriber(info);
             universe.registerSubscriber(universeMap);
             universe.registerSubscriber(systemMap);
+            universe.registerSubscriber(baseMap);
             universe.registerSubscriber(controls);
             universe.startEngine();
         });
@@ -108,6 +105,7 @@ public class BasicGameLayout extends BorderPane {
     public void switchToGalaxy() {
         universeMap.setActive(true);
         systemMap.setActive(false);
+        baseMap.setActive(false);
         
         this.setCenter(universeMap);
     }
@@ -115,14 +113,21 @@ public class BasicGameLayout extends BorderPane {
     public void switchToSystem(Star star) {
         systemMap.paintSystemMap(star);
         
-        systemMap.setActive(true);
         universeMap.setActive(false);
+        systemMap.setActive(true);
+        baseMap.setActive(false);
         
         this.setCenter(systemMap);
     }
     
     public void switchToBase(Base base) {
-        // class required
+        baseMap.paintBaseMap(base);
+        
+        universeMap.setActive(false);
+        systemMap.setActive(false);
+        baseMap.setActive(true);
+        
+        this.setCenter(baseMap);
     }
     
 }

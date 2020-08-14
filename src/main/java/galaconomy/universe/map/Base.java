@@ -1,14 +1,15 @@
 package galaconomy.universe.map;
 
+import galaconomy.constants.Constants;
+import galaconomy.universe.building.Building;
 import galaconomy.universe.economy.*;
 import java.awt.Color;
 import java.util.*;
 
 public class Base extends StellarObject {
     
-    // TODO different-sized bases
-    private static final int COLS = 50;
-    private static final int ROWS = 20;
+    private static final int COLS = Constants.MAX_X / 3;
+    private static final int ROWS = Constants.MAX_Y / 3;
     
     private final SurfaceTile[][] surface = new SurfaceTile[COLS][ROWS];
     
@@ -19,7 +20,25 @@ public class Base extends StellarObject {
         
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                surface[col][row] = new SurfaceTile("X", "Y", "", Color.GREEN, col, row, this);
+                Random rand = new Random();
+                switch (rand.nextInt() % 4) {
+                    case 3:
+                        surface[col][row] = new SurfaceTile("Mountains", "Brown", Constants.TILES_FOLDER + "04.png", Color.GREEN, col, row, this);
+                        break;
+                    case 2:
+                        surface[col][row] = new SurfaceTile("Water", "Blue", Constants.TILES_FOLDER + "03.png", Color.GREEN, col, row, this);
+                        break;
+                    case 1:
+                        surface[col][row] = new SurfaceTile("Desert", "Yellow", Constants.TILES_FOLDER + "02.png", Color.GREEN, col, row, this);
+                        break;
+                    default:
+                        surface[col][row] = new SurfaceTile("Grass", "Green", Constants.TILES_FOLDER + "01.png", Color.GREEN, col, row, this);
+                }
+                
+                if (rand.nextInt() % 4 == 3) {
+                    Building building = new Building("Base", "Just to have something", Constants.BUILDINGS_FOLDER + "base.png", this);
+                    surface[col][row].setBuilding(building);
+                }
             }
         }
     }

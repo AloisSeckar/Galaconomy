@@ -37,7 +37,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         super.setMinHeight(Constants.SCREEN_Y);
         
         // TODO system-specific backgrounds
-        Image universe = new Image(getClass().getResourceAsStream(Constants.FOLDER_IMG + "universe.png"));
+        Image universe = new Image(getClass().getResourceAsStream(Constants.FOLDER_IMG + "universe.jpg"));
         BackgroundImage bgImage = new BackgroundImage(universe, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         super.setBackground(new Background(bgImage));  
     }
