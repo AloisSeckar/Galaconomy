@@ -44,6 +44,7 @@ public class Goods implements IDisplayable, Serializable {
         
         return ret;
     }
+    
     public static Goods getGoodsByName(String name) {
         Goods ret;
         
@@ -65,6 +66,30 @@ public class Goods implements IDisplayable, Serializable {
                 break;
             default:
                 ret = new Goods("Goods", "Universal whatever...", Constants.GOODS_FOLDER + "goods.jpg");
+        }
+        
+        return ret;
+    }
+    
+    public static Goods getRandomGoods() {
+        Goods ret;
+        
+        Random rand = new Random();
+        switch (rand.nextInt() % 5) {
+            case 4:
+                ret = getGoodsByName("Arms");
+                break;
+            case 3:
+                ret = getGoodsByName("Food");
+                break;
+            case 2:
+                ret = getGoodsByName("Chips");
+                break;
+            case 1:
+                ret = getGoodsByName("Drugs");
+                break;
+            default:
+                ret = getGoodsByName("Metal");
         }
         
         return ret;

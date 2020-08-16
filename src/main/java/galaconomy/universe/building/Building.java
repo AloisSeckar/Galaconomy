@@ -1,12 +1,10 @@
 package galaconomy.universe.building;
 
 import galaconomy.universe.IDisplayable;
-import galaconomy.universe.map.AbstractMapElement;
 import galaconomy.universe.map.Base;
-import java.awt.Color;
 import java.io.Serializable;
 
-public class Building implements IDisplayable, Serializable {
+public abstract class Building implements IDisplayable, Serializable {
     
     private final String name;
     private final String dscr; 

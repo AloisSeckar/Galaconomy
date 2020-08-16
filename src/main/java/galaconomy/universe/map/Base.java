@@ -1,7 +1,7 @@
 package galaconomy.universe.map;
 
 import galaconomy.constants.Constants;
-import galaconomy.universe.building.Building;
+import galaconomy.universe.building.*;
 import galaconomy.universe.economy.*;
 import java.awt.Color;
 import java.util.*;
@@ -35,8 +35,22 @@ public class Base extends StellarObject {
                         surface[col][row] = new SurfaceTile("Grass", "Green", Constants.TILES_FOLDER + "01.png", Color.GREEN, col, row, this);
                 }
                 
-                if (rand.nextInt() % 4 == 3) {
-                    Building building = new Building("Base", "Just to have something", Constants.BUILDINGS_FOLDER + "base.png", this);
+                if (row == 12 && col == 16) {
+                    Building building = new City(this);
+                    surface[col][row].setBuilding(building);
+                } else if (rand.nextInt() % 4 == 3) {
+                    Building building;
+                    switch (rand.nextInt() % 3) {
+                        case 2:
+                            building = new Factory(this);
+                            break;
+                        case 1:
+                            building = new Generator(this);
+                            break;
+                        default:
+                            building = new Warehouse(this);
+                            break;
+                    }
                     surface[col][row].setBuilding(building);
                 }
             }
@@ -49,12 +63,12 @@ public class Base extends StellarObject {
         
         starDscr.append("SUPPLIES").append("\n");
         starDscr.append("----------").append("\n");
-        for (Supplies goods : supplies.values()) {
+        supplies.values().forEach(goods -> {
             starDscr.append(goods.displayName());
             starDscr.append("\tB: ").append(goods.getPriceBuy());
             starDscr.append("\tS: ").append(goods.getPriceSell());
             starDscr.append("\n");
-        }
+        });
         starDscr.append("\n");
         
         starDscr.append("INFO").append("\n");

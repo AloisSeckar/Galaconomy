@@ -13,3 +13,5 @@
 	* https://opengameart.org/content/space-backgrounds-0
 	* https://opengameart.org/content/animated-portal-or-wormhole-several-variants
 	* https://opengameart.org/content/symphonium-sci-fi-industrial-plant
+	* https://opengameart.org/content/200-isometric-cityscapes
+	* https://opengameart.org/content/towers-for-tower-defense
