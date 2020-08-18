@@ -3,13 +3,14 @@ package galaconomy.universe.map;
 import galaconomy.constants.Constants;
 import galaconomy.universe.building.*;
 import galaconomy.universe.economy.*;
+import galaconomy.utils.DisplayUtils;
 import java.awt.Color;
 import java.util.*;
 
 public class Base extends StellarObject {
     
-    private static final int COLS = Constants.MAX_X / 3;
-    private static final int ROWS = Constants.MAX_Y / 3;
+    private static final int COLS = Constants.MAX_X / DisplayUtils.BASE_TILE_SIZE;
+    private static final int ROWS = Constants.MAX_Y / DisplayUtils.BASE_TILE_SIZE;
     
     private final SurfaceTile[][] surface = new SurfaceTile[COLS][ROWS];
     

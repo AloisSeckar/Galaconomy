@@ -61,10 +61,10 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
                 Image objectImg = new Image(getClass().getResourceAsStream(tile.getImage()));
                 object.setImage(objectImg);
                 
-                object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 3);
-                object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 3);
-                object.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * 3));
-                object.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * 3));
+                object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                object.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
+                object.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
                 
                 object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
                     setElementToDisplay(tile);
@@ -83,10 +83,10 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
                     Image buildingImg = new Image(getClass().getResourceAsStream(building.getImage()));
                     buildingObj.setImage(buildingImg);
 
-                    buildingObj.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 3);
-                    buildingObj.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 3);
-                    buildingObj.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * 3));
-                    buildingObj.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * 3));
+                    buildingObj.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                    buildingObj.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                    buildingObj.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
+                    buildingObj.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
 
                     buildingObj.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
                         setElementToDisplay(building);
