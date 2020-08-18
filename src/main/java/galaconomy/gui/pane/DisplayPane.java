@@ -56,6 +56,10 @@ public class DisplayPane extends AnchorPane {
         setElementToDisplay(new VoidElement());
     }
 
+    public IDisplayable getElementToDisplay() {
+        return elementToDisplay;
+    }
+
     public final void setElementToDisplay(IDisplayable elementToDisplay) {
         this.elementToDisplay = elementToDisplay;
         reloadInfoPanel();

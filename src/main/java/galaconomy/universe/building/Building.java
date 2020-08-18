@@ -1,21 +1,31 @@
 package galaconomy.universe.building;
 
+import galaconomy.constants.Constants;
 import galaconomy.universe.IDisplayable;
 import galaconomy.universe.map.Base;
 import java.io.Serializable;
 
 public abstract class Building implements IDisplayable, Serializable {
     
+    private static final String BUILDING = Constants.BUILDINGS_FOLDER;
+    public static final String IMG_CITY = BUILDING + "city.png";
+    public static final String IMG_FACTORY = BUILDING + "factory.png";
+    public static final String IMG_GENERATOR = BUILDING + "generator.png";
+    public static final String IMG_WAREHOUSE = BUILDING + "warehouse.png";
+    
     private final String name;
     private final String dscr; 
     private final String img;
     
-    private final Base parent;
+    private final int price;
+    
+    private Base parent;
 
-    public Building(String name, String dscr, String img, Base parent) {
+    public Building(String name, String dscr, String img, int price, Base parent) {
         this.name = name;
         this.dscr = dscr;
         this.img = img;
+        this.price = price;
         this.parent = parent;
     }
 
@@ -34,8 +44,16 @@ public abstract class Building implements IDisplayable, Serializable {
         return img;
     }
 
+    public int getPrice() {
+        return price;
+    }
+    
     public Base getParent() {
         return parent;
+    }
+
+    public void setParent(Base parent) {
+        this.parent = parent;
     }
     
 }

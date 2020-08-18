@@ -26,6 +26,7 @@ public class PlayerPane extends AnchorPane {
     private final Label playerCredits;
     
     private final TilePane shipBox;
+    private final BuildingPane buildingPane;
     
     private final Button getShipButton = new Button("Get a ship");
     private final Button quickShipButton = new Button("Quick ship");  // TODO delete
@@ -87,6 +88,12 @@ public class PlayerPane extends AnchorPane {
         super.getChildren().add(quickShipButton);
         AnchorPane.setLeftAnchor(quickShipButton, 150d);
         AnchorPane.setTopAnchor(quickShipButton, 35d);
+        
+        buildingPane = BuildingPane.getInstance();
+        buildingPane.setVisible(false);
+        super.getChildren().add(buildingPane);
+        AnchorPane.setRightAnchor(buildingPane, 5d);
+        AnchorPane.setTopAnchor(buildingPane, 5d);
     }
 
     public void displayPlayer() {
@@ -100,6 +107,8 @@ public class PlayerPane extends AnchorPane {
         
         getShipButton.setVisible(true);
         quickShipButton.setVisible(true);
+        
+        buildingPane.setVisible(true);
     }
     
     public void buyShip(String shipName, ShipClass shipClass, Base location) {
@@ -174,5 +183,10 @@ public class PlayerPane extends AnchorPane {
 
             shipBox.getChildren().add(newShipButton);
         }
+    }
+    
+    public void updatePlayerCredits() {
+        Player player = UniverseManager.getInstance().getPlayer();
+        playerCredits.setText("Credits: " + String.valueOf(player.getCredits()));  
     }
 }

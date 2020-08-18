@@ -1,6 +1,5 @@
 package galaconomy.universe.building;
 
-import galaconomy.constants.Constants;
 import galaconomy.universe.economy.Goods;
 import galaconomy.universe.map.Base;
 
@@ -9,7 +8,7 @@ public class Factory extends Building {
     private Goods output;
     
     public Factory(Base base) {
-        super("Factory", "Universal building for harvesting resources and crafting goods", Constants.BUILDINGS_FOLDER + "factory.png", base);
+        super("Factory", "Universal building for harvesting resources and crafting goods", IMG_FACTORY, 1000, base);
         this.output = Goods.getRandomGoods();
     }
 

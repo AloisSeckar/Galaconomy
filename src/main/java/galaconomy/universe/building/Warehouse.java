@@ -1,6 +1,5 @@
 package galaconomy.universe.building;
 
-import galaconomy.constants.Constants;
 import galaconomy.universe.economy.Supplies;
 import galaconomy.universe.map.Base;
 import java.util.*;
@@ -11,7 +10,7 @@ public class Warehouse extends Building {
     private final List<Supplies> storage = new ArrayList<>();
     
     public Warehouse(Base base) {
-        super("Warehouse", "Place for storing excessive goods", Constants.BUILDINGS_FOLDER + "warehouse.png", base);
+        super("Warehouse", "Place for storing excessive goods", IMG_WAREHOUSE, 750, base);
     }
     
     public void increaseCapacity(int increase) {

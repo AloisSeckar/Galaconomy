@@ -38,6 +38,10 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
         super.setBackground(new Background(bgImage));  
     }
     
+    public void paintBaseMap() {
+        paintBaseMap(currentBase);
+    }
+    
     public void paintBaseMap(Base base) {
         this.getChildren().removeAll(baseTiles);
         baseTiles.clear();
