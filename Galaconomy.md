@@ -39,32 +39,42 @@
 	* Lodě v rámci systému se pohybují podsvětelnou rychlostí dle výkonu svých motorů mezi jednotlivými zájmovými body. Systém mohou opustit pouze riftovou branou nebo portálem.
 * Planeta/asteroid/základna (*Base*)
 	* Dostupná rozkliknutím ze systému, ve kterém se nachází
-	* Část ve středu zabírá GLS, která vždy provozuje ubytovací kapacity pro obyvatele a kosmoport.
+	* Část ve středu trvale zabírá GLS
+		* Vždy je zde budova typu "Město" (City), která reprezentuje ubytovací kapacity pro obyvatele a kosmoport
+		* Na některých základných je budova typu "Loděnice" (Shipyard) - pouze na těchto základnách lze pořizovat nové lodě
 	* Poptávka po zboží je určena počtem obyvatel + lokálními modifikátory + aktuální dostupností zboží
 	* Obsahuje n stavebních parcel pro budovy
 	* Stavební parcela
 		* Je vlastněna GLS, dokud ji neodkoupí hráč/firma
 		* Umožňuje postavit právě jednu budou libovolného typu
-		* Obsahuje zásoby surovin, které nejsou předem známé, jejich množství se odkrývá pomocí průzkumu. Informace o surovinách ovlivňují cenu.
+		* Obsahuje zásoby surovin
 		* Má koeficient úrodnosti pro produkci potravin.
+		* Tyto hodnoty nejsou předem známé, jejich množství se odkrývá pomocí průzkumu. Informace o surovinách a úrodnosti ovlivňují prodejní cenu.
 
 ## Budovy
 * Zabírají právě 1 místo na povrchu planety/asteroidu/základny
 * Mají dáno, kolik zabírají nákladového prostoru lodí (velké lodi mohou budovy přenášet mezi planetami a systémy)
 * Plní svou funkci podle typu
 * Jednou postavenou budovu lze za poplatek přesunout jinam, pokud je dostupná transportní kapacita
+	* V případě přesunu v rámci základny není třeba nic
+	* Pro přesun mezi základnami je třeba loď - budova zabírá 50 jednotek nákladového prostoru
 * Budovu lze zrecyklovat na suroviny (menší množství, než stojí výroba)
-* Budovu lze jako celek prodat
+* Budovu lze jako celek prodat jinému hráči nebo odprodat GLS
+* Budovy mají interní sklady na vstupy/výstupy, které lze za poplatek do učité míry navyšovat. Nemá-li kam ukládat výstupy, nemůže těžit
 * Typy budov
+	* Důl (Mine)
+		* Může těžit primární surovinu
+		* Je univerzální a její specializaci lze za určitý poplatek kdykoliv měnit
+		* Těžit surovinu lze, pokud se nachází na parcele a dokud je jí > 0
+		* Důl má interní sklad na výstupní suroviny
 	* Továrna (Factory)
-		* Může buďto produkovat primární surovinu (těžit) nebo zpracovávat 1-n vstupů na vybraný výstup. 
-		* Je univerzální a její specializaci lze za určitý poplatek kdykoliv měnit. 
-		* Těžit surovinu lze, pokud se nachází na parcele a dokud je jí > 0.
-		* Speciální "surovinou" jsou (přírodní) potraviny, které lze produkovat kdykoliv ovšem v závislosti na koeficientu úrodnosti parcely.
-		* Továrna má interní sklady na vstupní a výstupní suroviny, které lze za poplatek do učité míry navyšovat. Nemá-li kam ukládat výstupy, nemůže vyrábět.
+		* Může zpracovávat 1-n vstupů na vybraný výstup
+		* Je univerzální a její specializaci lze za určitý poplatek kdykoliv měnit
+	* Farma (Farm)
+		* Produkuje potraviny v závislosti na své úrovni (lze za poplatek navyšovat) a koeficientu úrodnosti parcely
 	* Sklad (Warehause)
 		* Umožňují ukládat zboží.
-		* Přesun zobží v rámci jedné planety nevyžaduje další prostředky, je-li k dispozici skladovací kapacita (vlastní nebo nasmlouvaná).
+		* Přesun zobží v rámci jedné planety nevyžaduje další prostředky, je-li k dispozici skladovací kapacita (vlastní nebo nasmlouvaná)
 	* Elektrárna (Generator)
 		* Vyrábí energii
 		* V rámci jedné planety nevyžaduje napojení další prostředky

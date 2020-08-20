@@ -36,6 +36,7 @@ public class Goods implements IDisplayable, Serializable {
     public static List<Goods> getAvailableGoods() {
         List<Goods> ret = new ArrayList<>();
         
+        // TODO make types of goods as constants
         ret.add(getGoodsByName("Metal"));
         ret.add(getGoodsByName("Arms"));
         ret.add(getGoodsByName("Food"));

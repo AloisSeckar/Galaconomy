@@ -47,6 +47,7 @@ public class UniverseGenerator {
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "star09.png", Color.ORANGE, 45, 45);
             
             Base newPlanet = new Base(sicopiaSystem, "Sicopia Prime", "GLS Capital", Constants.PLANETS_FOLDER + "planet44.png", Color.WHITE, 28, 35);
+            newPlanet.setShipyard(true);
             
             newPlanet.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(2000) + 1));
             newPlanet.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(2000) + 1));
@@ -136,6 +137,10 @@ public class UniverseGenerator {
             } while (!UniverseUtils.isFreeSystemSpot(randX, randY, newStar));
             
             Base newPlanet = new Base(newStar, planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, Color.WHITE, randX, randY);
+            
+            if (rand.nextInt() % 5 == 0) {
+                newPlanet.setShipyard(true);
+            }
             
             newPlanet.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(2000) + 1));
             newPlanet.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(2000) + 1));

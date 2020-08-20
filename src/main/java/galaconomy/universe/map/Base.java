@@ -15,6 +15,8 @@ public class Base extends StellarObject {
     private final SurfaceTile[][] surface = new SurfaceTile[COLS][ROWS];
     
     private final Map<String, Supplies> supplies = new HashMap<>();
+    
+    private boolean shipyard = false;
 
     public Base(Star system, String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
         super(name, dscr, img, color, xCoord, yCoord, system);
@@ -36,10 +38,11 @@ public class Base extends StellarObject {
                         surface[col][row] = new SurfaceTile("Grass", "Green", Constants.TILES_FOLDER + "01.png", Color.GREEN, col, row, this);
                 }
                 
-                if (row == 12 && col == 16) {
+                if (row == ROWS / 2 && col == COLS / 2) {
                     Building building = new City(this);
                     surface[col][row].setBuilding(building);
                 } else if (rand.nextInt() % 4 == 3) {
+                    // TODO no more random buildings...
                     Building building;
                     switch (rand.nextInt() % 3) {
                         case 2:
@@ -62,6 +65,9 @@ public class Base extends StellarObject {
     public String displayDscr() {
         StringBuilder starDscr = new StringBuilder();
         
+        starDscr.append("\tShipyard: ").append(shipyard);
+        starDscr.append("\n\n");
+        
         starDscr.append("SUPPLIES").append("\n");
         starDscr.append("----------").append("\n");
         supplies.values().forEach(goods -> {
@@ -81,6 +87,20 @@ public class Base extends StellarObject {
 
     public SurfaceTile[][] getSurface() {
         return surface;
+    }
+
+    public boolean isShipyard() {
+        return shipyard;
+    }
+
+    public void setShipyard(boolean shipyard) {
+        this.shipyard = shipyard;
+        
+        if (shipyard) {
+            surface[COLS / 2][ROWS / 2 + 1].setBuilding(new Shipyard(this));
+        } else {
+            surface[COLS / 2][ROWS / 2 + 1].setBuilding(null);
+        }
     }
 
     public Map<String, Supplies> getSupplies() {
