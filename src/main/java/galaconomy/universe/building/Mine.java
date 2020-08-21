@@ -2,13 +2,14 @@ package galaconomy.universe.building;
 
 import galaconomy.universe.economy.Goods;
 import galaconomy.universe.map.Base;
+import galaconomy.universe.player.Player;
 
 public class Mine extends Building {
     
     private Goods output;
     
-    public Mine(Base base) {
-        super("Mine", "Universal platform for harvesting resources", IMG_MINE, 850, base);
+    public Mine(Base base, Player owner) {
+        super("Mine", "Universal platform for harvesting resources", IMG_MINE, 850, base, owner);
         this.output = Goods.getGoodsByName("Metal");
     }
 

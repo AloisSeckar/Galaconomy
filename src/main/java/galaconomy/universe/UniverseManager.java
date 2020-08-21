@@ -25,6 +25,7 @@ public class UniverseManager implements Serializable {
     private double enginePeriod = 1;
     
     private Player player;
+    private Player glsPlayer;
     private final Map<String, Player> aiPlayers = new HashMap<>();
     
     private final Map<String, Star> stars = new HashMap<>();
@@ -115,6 +116,15 @@ public class UniverseManager implements Serializable {
         this.player = player;
         LOG.info("Player updated: " + player.displayName());
     }
+
+    public Player getGLSPlayer() {
+        return glsPlayer;
+    }
+
+    public void updateGLSPlayer(Player glsPlayer) {
+        this.glsPlayer = glsPlayer;
+        LOG.info("GLS Player set up");
+    }
     
     public Map<String, Player> getAIPlayers() {
         return aiPlayers;
@@ -150,8 +160,11 @@ public class UniverseManager implements Serializable {
     public void resetUniverse() {
         stopEngine();
         
-        stars.clear();
+        player = null;
+        glsPlayer = null;
         aiPlayers.clear();
+        
+        stars.clear();
         gates.clear();
         travels.clear();
         
@@ -243,11 +256,9 @@ public class UniverseManager implements Serializable {
                 recalcTravels();
                 rethinkTravels();
 
-                for (IEngineSubscriber subscriber : subscribers) {
-                    if (subscriber.isActive()) {
-                        subscriber.engineTaskFinished(stellarTime);
-                    }
-                }
+                subscribers.stream().filter((subscriber) -> (subscriber.isActive())).forEachOrdered((subscriber) -> {
+                    subscriber.engineTaskFinished(stellarTime);
+                });
             })
         );
         universeEngine.setCycleCount(Timeline.INDEFINITE);
@@ -267,15 +278,15 @@ public class UniverseManager implements Serializable {
     
     private void recalcTravels() {
         List<Travel> finishedTravels = TrafficManager.recalcTravels(travels);
-        for (Travel finishedTravel : finishedTravels) {
+        finishedTravels.forEach((finishedTravel) -> {
             travels.remove(finishedTravel);
-        }
+        });
     }
     
     private void rethinkTravels() {
         List<Travel> newTravels = PlayerManager.rethinkTravels(aiPlayers);
-        for (Travel newTravel : newTravels) {
+        newTravels.forEach((newTravel) -> {
             travels.add(newTravel);
-        }
+        });
     }
 }

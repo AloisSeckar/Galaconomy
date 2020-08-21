@@ -1,8 +1,10 @@
 package galaconomy.universe.map;
 
 import galaconomy.constants.Constants;
+import galaconomy.universe.UniverseManager;
 import galaconomy.universe.building.*;
 import galaconomy.universe.economy.*;
+import galaconomy.universe.player.Player;
 import galaconomy.utils.DisplayUtils;
 import java.awt.Color;
 import java.util.*;
@@ -21,40 +23,27 @@ public class Base extends StellarObject {
     public Base(Star system, String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
         super(name, dscr, img, color, xCoord, yCoord, system);
         
+        Player glsPlayer = UniverseManager.getInstance().getGLSPlayer();
+        
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 Random rand = new Random();
                 switch (rand.nextInt() % 4) {
                     case 3:
-                        surface[col][row] = new SurfaceTile("Mountains", "Brown", Constants.TILES_FOLDER + "04.png", Color.GREEN, col, row, this);
+                        surface[col][row] = new SurfaceTile("Mountains", "Brown", Constants.TILES_FOLDER + "04.png", Color.GREEN, col, row, this, glsPlayer);
                         break;
                     case 2:
-                        surface[col][row] = new SurfaceTile("Water", "Blue", Constants.TILES_FOLDER + "03.png", Color.GREEN, col, row, this);
+                        surface[col][row] = new SurfaceTile("Water", "Blue", Constants.TILES_FOLDER + "03.png", Color.GREEN, col, row, this, glsPlayer);
                         break;
                     case 1:
-                        surface[col][row] = new SurfaceTile("Desert", "Yellow", Constants.TILES_FOLDER + "02.png", Color.GREEN, col, row, this);
+                        surface[col][row] = new SurfaceTile("Desert", "Yellow", Constants.TILES_FOLDER + "02.png", Color.GREEN, col, row, this, glsPlayer);
                         break;
                     default:
-                        surface[col][row] = new SurfaceTile("Grass", "Green", Constants.TILES_FOLDER + "01.png", Color.GREEN, col, row, this);
+                        surface[col][row] = new SurfaceTile("Grass", "Green", Constants.TILES_FOLDER + "01.png", Color.GREEN, col, row, this, glsPlayer);
                 }
                 
                 if (row == ROWS / 2 && col == COLS / 2) {
                     Building building = new City(this);
-                    surface[col][row].setBuilding(building);
-                } else if (rand.nextInt() % 4 == 3) {
-                    // TODO no more random buildings...
-                    Building building;
-                    switch (rand.nextInt() % 3) {
-                        case 2:
-                            building = new Factory(this);
-                            break;
-                        case 1:
-                            building = new Generator(this);
-                            break;
-                        default:
-                            building = new Warehouse(this);
-                            break;
-                    }
                     surface[col][row].setBuilding(building);
                 }
             }

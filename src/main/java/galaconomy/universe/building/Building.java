@@ -3,6 +3,7 @@ package galaconomy.universe.building;
 import galaconomy.constants.Constants;
 import galaconomy.universe.IDisplayable;
 import galaconomy.universe.map.Base;
+import galaconomy.universe.player.Player;
 import java.io.Serializable;
 
 public abstract class Building implements IDisplayable, Serializable {
@@ -23,13 +24,16 @@ public abstract class Building implements IDisplayable, Serializable {
     private final int price;
     
     private Base parent;
+    
+    private Player owner;
 
-    public Building(String name, String dscr, String img, int price, Base parent) {
+    public Building(String name, String dscr, String img, int price, Base parent, Player owner) {
         this.name = name;
         this.dscr = dscr;
         this.img = img;
         this.price = price;
         this.parent = parent;
+        this.owner = owner;
     }
 
     @Override
@@ -39,7 +43,12 @@ public abstract class Building implements IDisplayable, Serializable {
 
     @Override
     public String displayDscr() {
-        return dscr;
+        StringBuilder buildingDscr = new StringBuilder(dscr);
+        buildingDscr.append("\nOwner: ");
+        if (owner != null) {
+            buildingDscr.append(owner.displayName());
+        }
+        return buildingDscr.toString();
     }
 
     @Override
@@ -57,6 +66,14 @@ public abstract class Building implements IDisplayable, Serializable {
 
     public void setParent(Base parent) {
         this.parent = parent;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
     
 }

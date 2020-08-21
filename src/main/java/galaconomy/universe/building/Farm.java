@@ -2,13 +2,14 @@ package galaconomy.universe.building;
 
 import galaconomy.universe.economy.Goods;
 import galaconomy.universe.map.Base;
+import galaconomy.universe.player.Player;
 
 public class Farm extends Building {
     
     private final Goods output;
     
-    public Farm(Base base) {
-        super("Farm", "Food is being produced here", IMG_FARM, 600, base);
+    public Farm(Base base, Player owner) {
+        super("Farm", "Food is being produced here", IMG_FARM, 600, base, owner);
         this.output = Goods.getGoodsByName("Food");
     }
 

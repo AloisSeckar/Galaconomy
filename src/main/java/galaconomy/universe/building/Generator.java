@@ -1,14 +1,15 @@
 package galaconomy.universe.building;
 
 import galaconomy.universe.map.Base;
+import galaconomy.universe.player.Player;
 import java.util.Random;
 
 public class Generator extends Building {
     
     private int output;
     
-    public Generator(Base base) {
-        super("Generator", "Producing energy to power up buildings", IMG_GENERATOR, 500, base);
+    public Generator(Base base, Player owner) {
+        super("Generator", "Producing energy to power up buildings", IMG_GENERATOR, 500, base, owner);
         this.output = new Random().nextInt(25);
     }
 

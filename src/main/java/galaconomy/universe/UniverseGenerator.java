@@ -36,10 +36,14 @@ public class UniverseGenerator {
             
             // PLAYERS
             
+            Player glsPlayer = new Player("GLS Service", "Insert your text here...", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, true);
+            universeManager.updateGLSPlayer(glsPlayer);
+            
             Player humanPlayer = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, false);
             universeManager.updatePlayer(humanPlayer);
         
-            Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, true);
+            // TODO there will be some randomly generated AIs - this moved to "GLSPlayer"
+            Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.png", Color.YELLOW, true);
             universeManager.addAIPlayer(centralAI);
             
             // GENERATED STARS

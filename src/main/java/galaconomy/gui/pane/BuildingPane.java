@@ -36,7 +36,7 @@ public class BuildingPane extends AnchorPane {
         buildFactory.setGraphic(getButtonImage(Building.IMG_FACTORY));
         buildFactory.setTooltip(new Tooltip("Build a new factory"));
         buildFactory.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Factory(null));
+            build(new Factory(null, null));
         });
         
         super.getChildren().add(buildFactory);
@@ -47,7 +47,7 @@ public class BuildingPane extends AnchorPane {
         buildGenerator.setGraphic(getButtonImage(Building.IMG_GENERATOR));
         buildGenerator.setTooltip(new Tooltip("Build a new generator"));
         buildGenerator.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Generator(null));
+            build(new Generator(null, null));
         });
         
         super.getChildren().add(buildGenerator);
@@ -58,7 +58,7 @@ public class BuildingPane extends AnchorPane {
         buildWarehouse.setGraphic(getButtonImage(Building.IMG_WAREHOUSE));
         buildWarehouse.setTooltip(new Tooltip("Build a new warehouse"));
         buildWarehouse.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Warehouse(null));
+            build(new Warehouse(null, null));
         });
         
         super.getChildren().add(buildWarehouse);
@@ -69,7 +69,7 @@ public class BuildingPane extends AnchorPane {
         buildMine.setGraphic(getButtonImage(Building.IMG_MINE));
         buildMine.setTooltip(new Tooltip("Build a new mine"));
         buildMine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Mine(null));
+            build(new Mine(null, null));
         });
         
         super.getChildren().add(buildMine);
@@ -80,7 +80,7 @@ public class BuildingPane extends AnchorPane {
         buildFarm.setGraphic(getButtonImage(Building.IMG_FARM));
         buildFarm.setTooltip(new Tooltip("Build a new farm"));
         buildFarm.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Farm(null));
+            build(new Farm(null, null));
         });
         
         super.getChildren().add(buildFarm);
@@ -114,6 +114,7 @@ public class BuildingPane extends AnchorPane {
                 int price = newBuilding.getPrice();
                 if (price <= player.getCredits()) {
                     newBuilding.setParent((Base) tile.getParent());
+                    newBuilding.setOwner(UniverseManager.getInstance().getPlayer());
                     tile.setBuilding(newBuilding);
                     BaseMapFrame.getInstance().paintBaseMap();
                     DisplayPane.getInstance().setElementToDisplay(newBuilding);
