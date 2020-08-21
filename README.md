@@ -9,6 +9,7 @@
 	* https://opengameart.org/content/planets-pack-8
 	* https://opengameart.org/content/20-cc0-planet-sprites
 	* https://opengameart.org/content/colorful-planets-0
+	* https://opengameart.org/content/27-planets-in-hi-res
 	* https://opengameart.org/content/32-star-sprites
 	* https://opengameart.org/content/space-backgrounds-0
 	* https://opengameart.org/content/animated-portal-or-wormhole-several-variants

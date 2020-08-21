@@ -50,7 +50,7 @@ public class UniverseGenerator {
             
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "star09.png", Color.ORANGE, 45, 45);
             
-            Base newPlanet = new Base(sicopiaSystem, "Sicopia Prime", "GLS Capital", Constants.PLANETS_FOLDER + "planet44.png", Color.WHITE, 28, 35);
+            Base newPlanet = new Base(sicopiaSystem, "Sicopia Prime", "GLS Capital", Constants.PLANETS_FOLDER + "planet52.png", Color.WHITE, 28, 35);
             newPlanet.setShipyard(true);
             
             newPlanet.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(2000) + 1));
