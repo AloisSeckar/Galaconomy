@@ -25,7 +25,7 @@ public class Mine extends Building {
     public String displayDscr() {
         StringBuilder mineDscr = new StringBuilder();
         mineDscr.append(super.displayDscr());
-        mineDscr.append("\n");
+        mineDscr.append("\n\n");
         
         mineDscr.append("OUTPUT:").append("\n");
         mineDscr.append(output.displayName());

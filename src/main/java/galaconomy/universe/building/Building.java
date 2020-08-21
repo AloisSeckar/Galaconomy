@@ -44,7 +44,7 @@ public abstract class Building implements IDisplayable, Serializable {
     @Override
     public String displayDscr() {
         StringBuilder buildingDscr = new StringBuilder(dscr);
-        buildingDscr.append("\nOwner: ");
+        buildingDscr.append("\n\nOwner: ");
         if (owner != null) {
             buildingDscr.append(owner.displayName());
         }

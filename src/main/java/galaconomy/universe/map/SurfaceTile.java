@@ -21,13 +21,13 @@ public class SurfaceTile extends AbstractMapElement {
     
     @Override
     public String displayDscr() {
-        StringBuilder tileDscr = new StringBuilder(super.displayDscr());
+        StringBuilder tileDscr = new StringBuilder();
         
-        tileDscr.append("\nOwner:");
+        tileDscr.append("Owner: ");
         if (owner != null) {
             tileDscr.append(owner.displayName());
         }
-        tileDscr.append("\n");
+        tileDscr.append("\n\n");
                 
         tileDscr.append("SUPPLIES").append("\n");
         tileDscr.append("----------").append("\n");

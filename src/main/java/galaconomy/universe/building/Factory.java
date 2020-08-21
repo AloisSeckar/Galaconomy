@@ -37,7 +37,7 @@ public class Factory extends Building {
     public String displayDscr() {
         StringBuilder factoryDscr = new StringBuilder();
         factoryDscr.append(super.displayDscr());
-        factoryDscr.append("\n");
+        factoryDscr.append("\n\n");
         
         factoryDscr.append("INPUT:").append("\n");
         input.forEach((goods) -> {

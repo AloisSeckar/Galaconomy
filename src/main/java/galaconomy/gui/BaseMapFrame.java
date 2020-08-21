@@ -34,7 +34,7 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
         
         // TODO base-specific backgrounds
         Image universe = new Image(getClass().getResourceAsStream(Constants.FOLDER_IMG + "base.jpg"));
-        BackgroundImage bgImage = new BackgroundImage(universe, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        BackgroundImage bgImage = new BackgroundImage(universe, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         super.setBackground(new Background(bgImage));  
     }
     
@@ -50,52 +50,54 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
         
         currentBase = base;
         
-        for (SurfaceTile[] tileRow : base.getSurface()) {
-            for (SurfaceTile tile : tileRow) {
-                // TODO universal method for creating imageviews
-                ImageView object = new ImageView();
-                object.setPreserveRatio(false);
-                object.setSmooth(true);
-                object.setCache(true);
+        if (base != null) {
+            for (SurfaceTile[] tileRow : base.getSurface()) {
+                for (SurfaceTile tile : tileRow) {
+                    // TODO universal method for creating imageviews
+                    ImageView object = new ImageView();
+                    object.setPreserveRatio(false);
+                    object.setSmooth(true);
+                    object.setCache(true);
 
-                Image objectImg = new Image(getClass().getResourceAsStream(tile.getImage()));
-                object.setImage(objectImg);
-                
-                object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
-                object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
-                object.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
-                object.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
-                
-                object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                    setElementToDisplay(tile);
-                });
+                    Image objectImg = new Image(getClass().getResourceAsStream(tile.getImage()));
+                    object.setImage(objectImg);
 
-                baseTiles.add(object);
-                this.getChildren().add(object);
-                
-                Building building = tile.getBuilding();
-                if (building != null) {
-                    ImageView buildingObj = new ImageView();
-                    buildingObj.setPreserveRatio(false);
-                    buildingObj.setSmooth(true);
-                    buildingObj.setCache(true);
+                    object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                    object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                    object.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
+                    object.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
 
-                    Image buildingImg = new Image(getClass().getResourceAsStream(building.getImage()));
-                    buildingObj.setImage(buildingImg);
-
-                    buildingObj.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
-                    buildingObj.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
-                    buildingObj.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
-                    buildingObj.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
-
-                    buildingObj.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                        setElementToDisplay(building);
+                    object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                        setElementToDisplay(tile);
                     });
-                    
-                    buildingObj.toFront();
 
-                    baseBuildings.add(buildingObj);
-                    this.getChildren().add(buildingObj);
+                    baseTiles.add(object);
+                    this.getChildren().add(object);
+
+                    Building building = tile.getBuilding();
+                    if (building != null) {
+                        ImageView buildingObj = new ImageView();
+                        buildingObj.setPreserveRatio(false);
+                        buildingObj.setSmooth(true);
+                        buildingObj.setCache(true);
+
+                        Image buildingImg = new Image(getClass().getResourceAsStream(building.getImage()));
+                        buildingObj.setImage(buildingImg);
+
+                        buildingObj.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                        buildingObj.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                        buildingObj.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
+                        buildingObj.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
+
+                        buildingObj.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                            setElementToDisplay(building);
+                        });
+
+                        buildingObj.toFront();
+
+                        baseBuildings.add(buildingObj);
+                        this.getChildren().add(buildingObj);
+                    }
                 }
             }
         }

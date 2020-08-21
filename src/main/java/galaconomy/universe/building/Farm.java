@@ -21,7 +21,7 @@ public class Farm extends Building {
     public String displayDscr() {
         StringBuilder farmDscr = new StringBuilder();
         farmDscr.append(super.displayDscr());
-        farmDscr.append("\n");
+        farmDscr.append("\n\n");
         
         farmDscr.append("OUTPUT:").append("\n");
         farmDscr.append(output.displayName());

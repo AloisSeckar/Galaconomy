@@ -48,20 +48,22 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         
         currentSystem = starSystem;
         
-        addObject(starSystem);
-                
-        starSystem.getStellarObjects().forEach((stellarObject) -> {
-            addObject(stellarObject);
-        });  
-        
-        RiftPortal riftPortal = starSystem.getRiftPortal();
-        if (riftPortal != null) {
-            addObject(riftPortal);
+        if (starSystem != null) {
+            addObject(starSystem);
+
+            starSystem.getStellarObjects().forEach((stellarObject) -> {
+                addObject(stellarObject);
+            });  
+
+            RiftPortal riftPortal = starSystem.getRiftPortal();
+            if (riftPortal != null) {
+                addObject(riftPortal);
+            }
+
+            starSystem.getRiftGates().forEach((riftGate) -> {
+                addObject(riftGate);
+            });
         }
-        
-        starSystem.getRiftGates().forEach((riftGate) -> {
-            addObject(riftGate);
-        });
     }
 
     @Override
@@ -79,61 +81,63 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         this.getChildren().removeAll(activeShips);
         activeShips.clear();
         
-        travels.forEach((travel) -> {
-            Route route = travel.getActiveRoute();
-            if (route != null && !route.isRiftDrive()) {
-                Star system = route.getSystem();
-                if (system != null && system.equals(currentSystem)) {
-            
-                    Line routeLine = new Line();
-                    routeLine.getStyleClass().add("ship-route");
+        if (travels != null) {
+            travels.forEach((travel) -> {
+                Route route = travel.getActiveRoute();
+                if (route != null && !route.isRiftDrive()) {
+                    Star system = route.getSystem();
+                    if (system != null && system.equals(currentSystem)) {
 
-                    AbstractMapElement departure = (AbstractMapElement) route.getDeparture();
-                    AbstractMapElement arrival = (AbstractMapElement) route.getArrival();
-                    
-                    double total = route.getDistanceTotal();
-                    double elapsed = route.getDistanceElapsed();
-                    double distance = elapsed / total;
+                        Line routeLine = new Line();
+                        routeLine.getStyleClass().add("ship-route");
 
-                    int offset = DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 2;
-                    if (elapsed > 0) {
-                        int vectorX = arrival.getX() - departure.getX();
-                        int vectorY = arrival.getY() - departure.getY();
-                        double newX = departure.getX() +  distance * vectorX;
-                        routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX) + offset);
-                        double newY = departure.getY() +  distance * vectorY;
-                        routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY) + offset);
-                    } else {
-                        routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()) + offset);
-                        routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()) +offset);
+                        AbstractMapElement departure = (AbstractMapElement) route.getDeparture();
+                        AbstractMapElement arrival = (AbstractMapElement) route.getArrival();
+
+                        double total = route.getDistanceTotal();
+                        double elapsed = route.getDistanceElapsed();
+                        double distance = elapsed / total;
+
+                        int offset = DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 2;
+                        if (elapsed > 0) {
+                            int vectorX = arrival.getX() - departure.getX();
+                            int vectorY = arrival.getY() - departure.getY();
+                            double newX = departure.getX() +  distance * vectorX;
+                            routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX) + offset);
+                            double newY = departure.getY() +  distance * vectorY;
+                            routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY) + offset);
+                        } else {
+                            routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()) + offset);
+                            routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()) +offset);
+                        }
+
+                        routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()) + offset);
+                        routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()) + offset);
+
+                        routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                            setElementToDisplay(route);
+                        });
+
+                        this.getChildren().add(routeLine);
+                        activeRoutes.add(routeLine);
+
+                        Circle ship = new Circle(5);
+                        ship.setCenterX(routeLine.getStartX());
+                        ship.setCenterY(routeLine.getStartY());
+                        ship.setFill(Color.DARKMAGENTA);
+
+                        ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                            setElementToDisplay(route);
+                        });
+
+                        this.getChildren().add(ship);
+                        activeShips.add(ship);
+
+                        routeLine.toBack();
                     }
-
-                    routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()) + offset);
-                    routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()) + offset);
-                    
-                    routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                        setElementToDisplay(route);
-                    });
-
-                    this.getChildren().add(routeLine);
-                    activeRoutes.add(routeLine);
-
-                    Circle ship = new Circle(5);
-                    ship.setCenterX(routeLine.getStartX());
-                    ship.setCenterY(routeLine.getStartY());
-                    ship.setFill(Color.DARKMAGENTA);
-
-                    ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                        setElementToDisplay(route);
-                    });
-
-                    this.getChildren().add(ship);
-                    activeShips.add(ship);
-
-                    routeLine.toBack();
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

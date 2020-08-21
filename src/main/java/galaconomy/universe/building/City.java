@@ -6,7 +6,11 @@ import galaconomy.universe.map.Base;
 public class City extends Building {
 
     public City(Base base) {
-        super(base.displayName(), base.displayDscr(), IMG_CITY, 0, base, UniverseManager.getInstance().getGLSPlayer());
+        super(base.displayName(), "", IMG_CITY, 0, base, UniverseManager.getInstance().getGLSPlayer());
     }
     
+    @Override
+    public String displayDscr() {
+        return getParent().displayDscr();
+    }
 }

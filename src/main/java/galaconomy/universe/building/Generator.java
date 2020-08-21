@@ -21,7 +21,7 @@ public class Generator extends Building {
     public String displayDscr() {
         StringBuilder generatorDscr = new StringBuilder();
         generatorDscr.append(super.displayDscr());
-        generatorDscr.append("\n");
+        generatorDscr.append("\n\n");
         
         generatorDscr.append("OUTPUT: ").append(output);
         

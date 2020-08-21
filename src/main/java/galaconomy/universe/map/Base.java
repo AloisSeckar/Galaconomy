@@ -52,26 +52,26 @@ public class Base extends StellarObject {
     
     @Override
     public String displayDscr() {
-        StringBuilder starDscr = new StringBuilder();
+        StringBuilder baseDscr = new StringBuilder();
         
-        starDscr.append("\tShipyard: ").append(shipyard);
-        starDscr.append("\n\n");
+        baseDscr.append("Shipyard: ").append(shipyard);
+        baseDscr.append("\n\n");
         
-        starDscr.append("SUPPLIES").append("\n");
-        starDscr.append("----------").append("\n");
+        baseDscr.append("SUPPLIES").append("\n");
+        baseDscr.append("----------").append("\n");
         supplies.values().forEach(goods -> {
-            starDscr.append(goods.displayName());
-            starDscr.append("\tB: ").append(goods.getPriceBuy());
-            starDscr.append("\tS: ").append(goods.getPriceSell());
-            starDscr.append("\n");
+            baseDscr.append(goods.displayName());
+            baseDscr.append("\tB: ").append(goods.getPriceBuy());
+            baseDscr.append("\tS: ").append(goods.getPriceSell());
+            baseDscr.append("\n");
         });
-        starDscr.append("\n");
+        baseDscr.append("\n");
         
-        starDscr.append("INFO").append("\n");
-        starDscr.append("----------").append("\n");
-        starDscr.append(super.displayDscr());
+        baseDscr.append("INFO").append("\n");
+        baseDscr.append("----------").append("\n");
+        baseDscr.append(super.displayDscr());
         
-        return starDscr.toString();
+        return baseDscr.toString();
     }
 
     public SurfaceTile[][] getSurface() {
