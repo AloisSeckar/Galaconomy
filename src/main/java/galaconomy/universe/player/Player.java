@@ -2,6 +2,8 @@ package galaconomy.universe.player;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.IDisplayable;
+import galaconomy.universe.building.Building;
+import galaconomy.universe.map.SurfaceTile;
 import galaconomy.universe.traffic.Ship;
 import java.util.*;
 import java.awt.Color;
@@ -21,6 +23,10 @@ public class Player implements IDisplayable, Serializable {
     private long credits;
     
     private final List<Ship> ships = new ArrayList<>();
+    private final List<SurfaceTile> lands = new ArrayList<>();
+    private final List<Building> buildings = new ArrayList<>();
+    
+    // TODO history of transactions
 
     public Player(String name, String dscr, String img,  Color color, boolean ai) {
         this.name = name;
@@ -71,8 +77,22 @@ public class Player implements IDisplayable, Serializable {
     
     public boolean addShip(Ship newShip) {
         LOG.info("Player " + name + " acquired new ship " + newShip.displayName());
-        newShip.addOwner(Player.this);
+        newShip.changeOwner(Player.this);
         return ships.add(newShip);
+    }
+
+    public List<SurfaceTile> getLands() {
+        return lands;
+    }
+    
+    public boolean addLand(SurfaceTile newLand) {
+        LOG.info("Player " + name + " acquired new land " + newLand.displayName());
+        newLand.changeOwner(Player.this);
+        return lands.add(newLand);
+    }
+
+    public List<Building> getBuildings() {
+        return buildings;
     }
 
     public boolean isAi() {

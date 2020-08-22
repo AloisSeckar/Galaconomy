@@ -3,9 +3,12 @@ package galaconomy.gui.pane;
 import galaconomy.gui.BaseMapFrame;
 import galaconomy.universe.*;
 import galaconomy.universe.building.*;
+import static galaconomy.universe.building.Building.*;
+import galaconomy.universe.economy.TradeHelper;
 import galaconomy.universe.map.*;
 import galaconomy.universe.player.Player;
 import galaconomy.utils.InfoUtils;
+import galaconomy.utils.result.ResultBean;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
@@ -36,7 +39,7 @@ public class BuildingPane extends AnchorPane {
         buildFactory.setGraphic(getButtonImage(Building.IMG_FACTORY));
         buildFactory.setTooltip(new Tooltip("Build a new factory"));
         buildFactory.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Factory(null, null));
+            build(FACTORY);
         });
         
         super.getChildren().add(buildFactory);
@@ -47,7 +50,7 @@ public class BuildingPane extends AnchorPane {
         buildGenerator.setGraphic(getButtonImage(Building.IMG_GENERATOR));
         buildGenerator.setTooltip(new Tooltip("Build a new generator"));
         buildGenerator.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Generator(null, null));
+            build(GENERATOR);
         });
         
         super.getChildren().add(buildGenerator);
@@ -58,7 +61,7 @@ public class BuildingPane extends AnchorPane {
         buildWarehouse.setGraphic(getButtonImage(Building.IMG_WAREHOUSE));
         buildWarehouse.setTooltip(new Tooltip("Build a new warehouse"));
         buildWarehouse.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Warehouse(null, null));
+            build(WAREHOUSE);
         });
         
         super.getChildren().add(buildWarehouse);
@@ -69,7 +72,7 @@ public class BuildingPane extends AnchorPane {
         buildMine.setGraphic(getButtonImage(Building.IMG_MINE));
         buildMine.setTooltip(new Tooltip("Build a new mine"));
         buildMine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Mine(null, null));
+            build(MINE);
         });
         
         super.getChildren().add(buildMine);
@@ -80,7 +83,7 @@ public class BuildingPane extends AnchorPane {
         buildFarm.setGraphic(getButtonImage(Building.IMG_FARM));
         buildFarm.setTooltip(new Tooltip("Build a new farm"));
         buildFarm.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            build(new Farm(null, null));
+            build(FARM);
         });
         
         super.getChildren().add(buildFarm);
@@ -105,24 +108,23 @@ public class BuildingPane extends AnchorPane {
         return imageView;
     }
     
-    private void build(Building newBuilding) {
+    private void build(String buildingType) {
         IDisplayable selectedItem = DisplayPane.getInstance().getElementToDisplay();
         if (selectedItem instanceof SurfaceTile) {
             SurfaceTile tile = (SurfaceTile) selectedItem;
             if (tile.getBuilding() == null) {
+                Building newBuilding = GLSFactory.deliverBuilding(buildingType);
                 Player player = UniverseManager.getInstance().getPlayer();
-                int price = newBuilding.getPrice();
-                if (price <= player.getCredits()) {
+                ResultBean tradeResult = TradeHelper.tradeAsset(newBuilding, player);
+                if (tradeResult.isSuccess()) {
                     newBuilding.setParent((Base) tile.getParent());
-                    newBuilding.setOwner(UniverseManager.getInstance().getPlayer());
                     tile.setBuilding(newBuilding);
                     BaseMapFrame.getInstance().paintBaseMap();
                     DisplayPane.getInstance().setElementToDisplay(newBuilding);
-                    player.spendCredits(price);
                     PlayerPane.getInstance().updatePlayerCredits();
                     InfoUtils.showMessage("Building purchased!");
                 } else {
-                    InfoUtils.showMessage("Insufficent credits!");
+                    InfoUtils.showMessage(tradeResult.getMessage());
                 }
             } else {
                 InfoUtils.showMessage("Tile is occupied by another building!");

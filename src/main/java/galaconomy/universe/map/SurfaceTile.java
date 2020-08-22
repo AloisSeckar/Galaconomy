@@ -1,22 +1,32 @@
 package galaconomy.universe.map;
 
+import galaconomy.universe.ITradable;
 import galaconomy.universe.building.Building;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
+import galaconomy.utils.DisplayUtils;
 import java.awt.Color;
 import java.util.*;
 
-public class SurfaceTile extends AbstractMapElement {
+public class SurfaceTile extends AbstractMapElement implements ITradable {
     
     private final Map<String, Supplies> rawMaterials = new HashMap<>();
     
     private Building building = null; 
     
-    private Player owner;
-
+    private int price;
+    private Player currentOwner;
+    private final List<Player> owners = new ArrayList<>();
+    
     public SurfaceTile(String name, String dscr, String img, Color color, int xCoord, int yCoord, Base parent, Player owner) throws Exception {
         super(name, dscr, img, color, xCoord, yCoord, parent);
-        this.owner = owner;
+        this.currentOwner = owner;
+        this.price = 100;
+    }
+    
+    @Override
+    public String displayName() {
+        return getParent().getName() + DisplayUtils.getCoordinates(getX(), getY());
     }
     
     @Override
@@ -24,19 +34,19 @@ public class SurfaceTile extends AbstractMapElement {
         StringBuilder tileDscr = new StringBuilder();
         
         tileDscr.append("Owner: ");
-        if (owner != null) {
-            tileDscr.append(owner.displayName());
+        if (currentOwner != null) {
+            tileDscr.append(currentOwner.displayName());
         }
         tileDscr.append("\n\n");
                 
         tileDscr.append("SUPPLIES").append("\n");
         tileDscr.append("----------").append("\n");
-        for (Supplies goods : rawMaterials.values()) {
+        rawMaterials.values().forEach((goods) -> {
             tileDscr.append(goods.displayName());
             tileDscr.append("\tB: ").append(goods.getPriceBuy());
             tileDscr.append("\tS: ").append(goods.getPriceSell());
             tileDscr.append("\n");
-        }
+        });
         tileDscr.append("\n");
         
         tileDscr.append("INFO").append("\n");
@@ -44,6 +54,32 @@ public class SurfaceTile extends AbstractMapElement {
         tileDscr.append(super.displayDscr());
         
         return tileDscr.toString();
+    }
+
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public void setPrice(int price) {
+        this.price = price;
+    }
+    
+    @Override
+    public Player getCurrentOwner() {
+        return currentOwner;
+    }
+
+    @Override
+    public List<Player> getOwners() {
+        return owners;
+    }
+    
+    @Override
+    public void changeOwner(Player newOwner) {
+        owners.add(0, newOwner);
+        currentOwner = newOwner;
     }
 
     public Map<String, Supplies> getRawMaterialsSupply() {
@@ -84,14 +120,6 @@ public class SurfaceTile extends AbstractMapElement {
 
     public void setBuilding(Building building) {
         this.building = building;
-    }
-
-    public Player getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
     }
     
 }

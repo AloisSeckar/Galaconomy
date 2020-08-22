@@ -10,4 +10,8 @@ public class InfoUtils {
             a.showAndWait();
     }
     
+    public static String getErrorMessage(Exception ex) {
+        return ex.getMessage() != null ? ex.getMessage() : ex.toString();
+    }
+    
 }

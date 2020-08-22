@@ -115,7 +115,7 @@ public class PlayerPane extends AnchorPane {
         Player player = UniverseManager.getInstance().getPlayer();
         
         Ship newShip = new Ship(shipName, shipClass, location);
-        newShip.addOwner(player);
+        newShip.changeOwner(player);
         player.addShip(newShip);
         
         // TODO delete

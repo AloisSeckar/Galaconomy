@@ -1,10 +1,16 @@
 package galaconomy.universe.economy;
 
+import galaconomy.universe.ITradable;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.Ship;
+import galaconomy.utils.InfoUtils;
+import galaconomy.utils.result.ResultBean;
+import org.slf4j.*;
 
 public class TradeHelper {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(TradeHelper.class);
     
     public static String checkPurchase(Ship ship, Goods goods, int amount, int price) {
         String ret = checkInputs(ship, goods, amount, price);
@@ -43,6 +49,41 @@ public class TradeHelper {
             } else if (buyer == null) {
                 ret = "Impossible to trade while in deep space!";
             }
+        }
+        
+        return ret;
+    }
+    
+    public static ResultBean tradeAsset(ITradable asset, Player newOwner) {
+        ResultBean ret = new ResultBean(false, "Operation wasn't performed");
+        
+        try {
+            if (asset != null) {
+                LOG.warn("TradeHelper.tradeAsset - TEST TRIGGER. ASSET IDENTITY = " + asset.getIdentity());
+                if (newOwner != null) {
+                    Player currentOwner = asset.getCurrentOwner();
+                    if (currentOwner != null) {
+                        int price = asset.getPrice();
+                        if (newOwner.getCredits() >= price) {
+                            asset.changeOwner(newOwner);
+                            newOwner.spendCredits(price);
+                            currentOwner.earnCredits(price);
+                            ret.setSuccess(true);
+                        } else {
+                            ret.setMessage("Insufficient credits");
+                        }
+                    } else {
+                        ret.setMessage("Current owner is NULL");
+                    }
+                } else {
+                    ret.setMessage("Given new owner is NULL");
+                }
+            } else {
+                ret.setMessage("Given asset is NULL");
+            }
+        } catch (Exception ex) {
+            LOG.error("TradeHelper.tradeAsset", ex);
+            ret.setMessage(InfoUtils.getErrorMessage(ex));
         }
         
         return ret;

@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.*;
 import org.slf4j.*;
 
-public class Ship implements IDisplayable, Serializable {
+public class Ship implements IDisplayable, ITradable, Serializable {
     
     private static final Logger LOG = LoggerFactory.getLogger(Ship.class);
     
@@ -18,9 +18,11 @@ public class Ship implements IDisplayable, Serializable {
     private final String dscr; 
     private final String img;
     
-    private final int price;
-    private int upkeep;
+    private int price;
+    private Player currentOwner = null;
+    private final List<Player> owners = new ArrayList<>();
     
+    private int upkeep;
     private int hull;
     private int cargo;
     private double riftSpeed;
@@ -32,11 +34,9 @@ public class Ship implements IDisplayable, Serializable {
     private Base currentBase;
     
     private boolean idle = true;
-    private Player currentOwner = null;
     
     private final List<Cargo> cargoList = new ArrayList<>();
     
-    private final List<Player> owners = new ArrayList<>();
     private final List<Travel> travels = new ArrayList<>();
 
     public Ship(String name, ShipClass shipClass, Base location) {
@@ -70,9 +70,9 @@ public class Ship implements IDisplayable, Serializable {
         
         shipDscr.append("CARGO").append("\n");
         shipDscr.append("----------").append("\n");
-        for (Cargo goods : cargoList) {
+        cargoList.forEach((goods) -> {
             shipDscr.append(goods.displayName()).append("\n");
-        }
+        });
         shipDscr.append("\n");
         
         shipDscr.append("INFO").append("\n");
@@ -102,15 +102,28 @@ public class Ship implements IDisplayable, Serializable {
         return img;
     }
 
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    @Override
     public Player getCurrentOwner() {
         return currentOwner;
     }
 
+    @Override
     public List<Player> getOwners() {
         return owners;
     }
     
-    public void addOwner(Player newOwner) {
+    @Override
+    public void changeOwner(Player newOwner) {
         owners.add(0, newOwner);
         currentOwner = newOwner;
     }
@@ -183,10 +196,6 @@ public class Ship implements IDisplayable, Serializable {
 
     public void setCurrentBase(Base currentBase) {
         this.currentBase = currentBase;
-    }
-
-    public int getPrice() {
-        return price;
     }
 
     public long getComissioned() {
