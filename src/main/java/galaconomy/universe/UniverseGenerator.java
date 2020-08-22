@@ -37,6 +37,9 @@ public class UniverseGenerator {
         
             universeManager.resetUniverse();
             
+            Player glsPlayer = new Player("GLS - Galactic League Service", "Insert your text here...", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, null, true, AIFactory.AI_GLS);
+            universeManager.updateGLSPlayer(glsPlayer);
+            
             // GENERATED STARS
             
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "star09.png", Color.ORANGE, Constants.MAX_X / 2, Constants.MAX_Y / 2);
@@ -66,9 +69,6 @@ public class UniverseGenerator {
             
             // PLAYERS
             
-            Player glsPlayer = new Player("GLS Service", "Insert your text here...", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, sicopiaPlanet, true, AIFactory.AI_GLS);
-            universeManager.updateGLSPlayer(glsPlayer);
-            
             Player humanPlayer = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, sicopiaPlanet, false, null);
             universeManager.updatePlayer(humanPlayer);
         
@@ -83,6 +83,8 @@ public class UniverseGenerator {
             
             // SHIPS
             // TODO demo only
+            
+            trader.earnCredits(10000);
             
             trader.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
             trader.addShip(new Ship("GLS Beta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
@@ -99,7 +101,7 @@ public class UniverseGenerator {
             // BUILDINGS
             // TODO demo only
             
-            builder.earnCredits(100000);
+            builder.earnCredits(10000);
             
             for (int i = 5; i < 15; i++) {
                 SurfaceTile land = sicopiaPlanet.getSurfaceTile(i, 3);

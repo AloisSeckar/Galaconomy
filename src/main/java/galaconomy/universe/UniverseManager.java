@@ -258,6 +258,7 @@ public class UniverseManager implements Serializable {
                 
                 recalcSupplies();
                 recalcTravels();
+                rethinkPurchases();
                 rethinkTravels();
 
                 subscribers.stream().filter((subscriber) -> (subscriber.isActive())).forEachOrdered((subscriber) -> {
@@ -292,5 +293,9 @@ public class UniverseManager implements Serializable {
         newTravels.forEach((newTravel) -> {
             travels.add(newTravel);
         });
+    }
+    
+    private void rethinkPurchases() {
+        PlayerManager.rethinkPurchases(aiPlayers);
     }
 }

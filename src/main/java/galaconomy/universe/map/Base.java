@@ -11,8 +11,9 @@ import java.util.*;
 
 public class Base extends StellarObject {
     
-    private static final int COLS = Constants.MAX_X / DisplayUtils.BASE_TILE_SIZE;
-    private static final int ROWS = Constants.MAX_Y / DisplayUtils.BASE_TILE_SIZE;
+    // TODO different sized bases
+    public static final int COLS = Constants.MAX_X / DisplayUtils.BASE_TILE_SIZE;
+    public static final int ROWS = Constants.MAX_Y / DisplayUtils.BASE_TILE_SIZE;
     
     private final SurfaceTile[][] surface = new SurfaceTile[COLS][ROWS];
     

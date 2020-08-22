@@ -122,12 +122,42 @@ public class UniverseUtils {
     }
     
     public static Base getRandomBase() {
-        
-        List<Base> bases = getRandomSystem().getBases();
+        List<Base> bases;
+        do {
+            bases = getRandomSystem().getBases();
+        } while (bases.isEmpty());
         
         int random = rand.nextInt(bases.size());
        
         return bases.get(random);
+    }
+    
+    public static SurfaceTile getRandomFreeTile(Base base) {
+        if (base == null) {
+            base = getRandomBase();
+        }
+        
+        SurfaceTile ret;
+        do {
+            ret = base.getSurfaceTile(rand.nextInt(Base.COLS), rand.nextInt(Base.ROWS));
+        } while (!ret.isEmpty());
+        
+        return ret;
+    }
+    
+    public static SurfaceTile getFreeTileIfExists(List<SurfaceTile> tiles) {
+        SurfaceTile ret = null;
+        
+        if (tiles != null) {
+            for (SurfaceTile tile : tiles) {
+                if (tile.isEmpty()) {
+                    ret = tile;
+                    break;
+                }
+            }
+        }
+        
+        return ret;
     }
     
     public static boolean hasRiftConnection(Star from, Star to) {

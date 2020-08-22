@@ -8,6 +8,7 @@ import galaconomy.universe.traffic.Ship;
 import java.util.*;
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.stream.Collectors;
 import org.slf4j.*;
 
 public class Player implements IDisplayable, Serializable {
@@ -100,15 +101,23 @@ public class Player implements IDisplayable, Serializable {
     public List<SurfaceTile> getLands() {
         return lands;
     }
+
+    public List<SurfaceTile> getLands(Base base) {
+        return lands.stream().filter((land) -> land.getParent().equals(base)).collect(Collectors.toList());
+    }
     
     public boolean addLand(SurfaceTile newLand) {
         LOG.info("Player " + name + " acquired new land " + newLand.displayName());
-        newLand.changeOwner(Player.this);
         return lands.add(newLand);
     }
 
     public List<Building> getBuildings() {
         return buildings;
+    }
+    
+    public boolean addBuilding(Building newBuilding) {
+        LOG.info("Player " + name + " acquired new building " + newBuilding.displayName());
+        return buildings.add(newBuilding);
     }
 
     public boolean isAi() {
