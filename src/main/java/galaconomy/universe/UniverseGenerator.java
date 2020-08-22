@@ -2,10 +2,12 @@ package galaconomy.universe;
 
 import galaconomy.constants.Constants;
 import galaconomy.db.DBManager;
+import galaconomy.universe.building.Building;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.map.*;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.traffic.*;
+import galaconomy.utils.result.ResultBean;
 import java.awt.Color;
 import java.util.*;
 import org.slf4j.*;
@@ -42,24 +44,26 @@ public class UniverseGenerator {
             Player humanPlayer = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, false);
             universeManager.updatePlayer(humanPlayer);
         
-            // TODO there will be some randomly generated AIs - this moved to "GLSPlayer"
-            Player centralAI = new Player("GLC AI", "Computer of Galactic League Command", Constants.PLAYERS_FOLDER + "player00.png", Color.YELLOW, true);
-            universeManager.addAIPlayer(centralAI);
+            Player trader = new Player("Tom the Trader", "Demo player who focuses on ships", Constants.PLAYERS_FOLDER + "player02.png", Color.YELLOW, true);
+            universeManager.addAIPlayer(trader);
+            
+            Player builder = new Player("Bob the Trader", "Demo player who focuses on buildings", Constants.PLAYERS_FOLDER + "player03.png", Color.ORANGE, true);
+            universeManager.addAIPlayer(builder);
             
             // GENERATED STARS
             
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "star09.png", Color.ORANGE, Constants.MAX_X / 2, Constants.MAX_Y / 2);
             
-            Base newPlanet = new Base(sicopiaSystem, "Sicopia Prime", "GLS Capital", Constants.PLANETS_FOLDER + "planet52.png", Color.WHITE, 28, 35);
-            newPlanet.setShipyard(true);
+            Base sicopiaPlanet = new Base(sicopiaSystem, "Sicopia Prime", "GLS Capital", Constants.PLANETS_FOLDER + "planet52.png", Color.WHITE, 28, 35);
+            sicopiaPlanet.setShipyard(true);
             
-            newPlanet.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(2000) + 1));
-            newPlanet.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(2000) + 1));
-            newPlanet.updateSupplies(new Supplies(availableGoods.get(2), rand.nextInt(2000) + 1));
-            newPlanet.updateSupplies(new Supplies(availableGoods.get(3), rand.nextInt(2000) + 1));
-            newPlanet.updateSupplies(new Supplies(availableGoods.get(4), rand.nextInt(2000) + 1));
+            sicopiaPlanet.updateSupplies(new Supplies(availableGoods.get(0), rand.nextInt(2000) + 1));
+            sicopiaPlanet.updateSupplies(new Supplies(availableGoods.get(1), rand.nextInt(2000) + 1));
+            sicopiaPlanet.updateSupplies(new Supplies(availableGoods.get(2), rand.nextInt(2000) + 1));
+            sicopiaPlanet.updateSupplies(new Supplies(availableGoods.get(3), rand.nextInt(2000) + 1));
+            sicopiaPlanet.updateSupplies(new Supplies(availableGoods.get(4), rand.nextInt(2000) + 1));
 
-            sicopiaSystem.addStellarObject(newPlanet);
+            sicopiaSystem.addStellarObject(sicopiaPlanet);
             
             universeManager.addStar(sicopiaSystem);
             
@@ -74,18 +78,42 @@ public class UniverseGenerator {
             }
             
             // SHIPS
+            // TODO demo only
             
-            centralAI.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Beta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Gama", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Delta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Epsilon", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Zeta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Eta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Theta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Iota", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Kappa", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
-            centralAI.addShip(new Ship("GLS Lambda", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Beta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Gama", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Delta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Epsilon", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Zeta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Eta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Theta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Iota", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Kappa", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Lambda", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            
+            // BUILDINGS
+            // TODO demo only
+            
+            builder.earnCredits(100000);
+            
+            for (int i = 5; i < 15; i++) {
+                SurfaceTile land = sicopiaPlanet.getSurfaceTile(i, 3);
+                ResultBean tradeLandResult = TradeHelper.tradeAsset(land, builder);
+                if (tradeLandResult.isSuccess()) {
+                    Building factory = GLSFactory.deliverBuilding(Building.FACTORY);
+                    ResultBean tradeBuildingResult = TradeHelper.tradeAsset(factory, builder);
+                    if (tradeBuildingResult.isSuccess()) {
+                        factory.setParent((Base) land.getParent());
+                        land.setBuilding(factory);
+                        LOG.info("Builder: New factory purchased");
+                    } else {
+                        LOG.warn("Builder: " + tradeBuildingResult.getMessage());
+                    }
+                } else {
+                    LOG.warn("Builder: " + tradeLandResult.getMessage());
+                }
+            }
             
             // DONE
             

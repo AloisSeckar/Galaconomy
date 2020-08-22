@@ -77,6 +77,10 @@ public class Base extends StellarObject {
     public SurfaceTile[][] getSurface() {
         return surface;
     }
+    
+    public SurfaceTile getSurfaceTile(int xCoord, int yCoord) {
+        return surface[xCoord][yCoord];
+    }
 
     public boolean isShipyard() {
         return shipyard;

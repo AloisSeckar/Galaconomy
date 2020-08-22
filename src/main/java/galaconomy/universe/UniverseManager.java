@@ -222,6 +222,10 @@ public class UniverseManager implements Serializable {
     public long getStellarTime() {
         return stellarTime;
     }
+
+    public String getStellarTimeString() {
+        return String.valueOf(stellarTime);
+    }
     
     public boolean isEngineRunning() {
         return universeEngine != null && universeEngine.getStatus() == Animation.Status.RUNNING;

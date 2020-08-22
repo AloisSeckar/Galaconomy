@@ -1,6 +1,7 @@
 package galaconomy.universe.economy;
 
 import galaconomy.universe.ITradable;
+import galaconomy.universe.UniverseManager;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.Ship;
@@ -59,7 +60,6 @@ public class TradeHelper {
         
         try {
             if (asset != null) {
-                LOG.warn("TradeHelper.tradeAsset - TEST TRIGGER. ASSET IDENTITY = " + asset.getIdentity());
                 if (newOwner != null) {
                     Player currentOwner = asset.getCurrentOwner();
                     if (currentOwner != null) {
@@ -68,6 +68,7 @@ public class TradeHelper {
                             asset.changeOwner(newOwner);
                             newOwner.spendCredits(price);
                             currentOwner.earnCredits(price);
+                            logTrade(asset.getIdentity(), currentOwner.displayName(), newOwner.displayName(), price);
                             ret.setSuccess(true);
                         } else {
                             ret.setMessage("Insufficient credits");
@@ -150,5 +151,15 @@ public class TradeHelper {
         }
         
         return ret;
+    }
+    
+    private static void logTrade(String asset, String currentOwner, String newOwner, int price) {
+        StringBuilder sb = new StringBuilder(UniverseManager.getInstance().getStellarTimeString());
+        sb.append(" - Asset trade: ").append(asset);
+        sb.append(" was sold by ").append(currentOwner);
+        sb.append(" to ").append(newOwner);
+        sb.append(" for ").append(price).append(" credits");
+        
+        LOG.info(sb.toString());
     }
 }
