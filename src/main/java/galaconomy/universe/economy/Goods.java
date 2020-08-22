@@ -7,14 +7,31 @@ import java.util.*;
 
 public class Goods implements IDisplayable, Serializable {
     
+    private static final String FOLDER = Constants.GOODS_FOLDER;
+    
+    public static final String ARMS = "Arms";
+    public static final String CELLS = "Energy Cells";
+    public static final String CHIPS = "Chips";
+    public static final String DRUGS = "Drugs";
+    public static final String FOOD = "Food";
+    public static final String GAS = "Gas";
+    public static final String METAL = "Metal";
+    public static final String ORE = "Ore";
+    public static final String ORGANICS = "Organics";
+    public static final String SILICA = "Silica";
+    
     private final String name;
     private final String dscr; 
     private final String img; 
+    private final boolean raw; 
+    private final List<String> inputs; 
 
-    public Goods(String name, String dscr, String img) {
+    public Goods(String name, String dscr, String img, boolean raw, List<String> inputs) {
         this.name = name;
         this.dscr = dscr;
         this.img = img;
+        this.raw = raw;
+        this.inputs = inputs;
     }
     
     @Override
@@ -31,17 +48,50 @@ public class Goods implements IDisplayable, Serializable {
     public String getImage() {
         return img;
     }
-    
+
+    public boolean isRaw() {
+        return raw;
+    }
+
+    public List<String> getInputs() {
+        return inputs;
+    }
     
     public static List<Goods> getAvailableGoods() {
         List<Goods> ret = new ArrayList<>();
         
-        // TODO make types of goods as constants
-        ret.add(getGoodsByName("Metal"));
-        ret.add(getGoodsByName("Arms"));
-        ret.add(getGoodsByName("Food"));
-        ret.add(getGoodsByName("Chips"));
-        ret.add(getGoodsByName("Drugs"));
+        ret.add(getGoodsByName(ARMS));
+        ret.add(getGoodsByName(CELLS));
+        ret.add(getGoodsByName(CHIPS));
+        ret.add(getGoodsByName(DRUGS));
+        ret.add(getGoodsByName(FOOD));
+        ret.add(getGoodsByName(GAS));
+        ret.add(getGoodsByName(METAL));
+        ret.add(getGoodsByName(ORE));
+        ret.add(getGoodsByName(ORGANICS));
+        ret.add(getGoodsByName(SILICA));
+        
+        return ret;
+    }
+    
+    public static List<Goods> getRawMaterials() {
+        List<Goods> ret = new ArrayList<>();
+        
+        ret.add(getGoodsByName(GAS));
+        ret.add(getGoodsByName(ORE));
+        ret.add(getGoodsByName(ORGANICS));
+        ret.add(getGoodsByName(SILICA));
+        
+        return ret;
+    }
+    
+    public static List<Goods> getFactoryProducts() {
+        List<Goods> ret = new ArrayList<>();
+        
+        ret.add(getGoodsByName(ARMS));
+        ret.add(getGoodsByName(METAL));
+        ret.add(getGoodsByName(CHIPS));
+        ret.add(getGoodsByName(DRUGS));
         
         return ret;
     }
@@ -50,23 +100,38 @@ public class Goods implements IDisplayable, Serializable {
         Goods ret;
         
         switch (name) {
-            case "Metal":
-                ret = new Goods("Metal", "High quality alloy", Constants.GOODS_FOLDER + "metal.jpg");
+            case METAL:
+                ret = new Goods(METAL, "High quality alloy", FOLDER + "metal.jpg", false, Arrays.asList(ORE));
                 break;
-            case "Arms":
-                ret = new Goods("Arms", "Military class weapons and stuff", Constants.GOODS_FOLDER + "arms.jpg");
+            case ARMS:
+                ret = new Goods(ARMS, "Military class weapons and stuff", FOLDER + "arms.jpg", false, Arrays.asList(ORE, SILICA));
                 break;
-            case "Food":
-                ret = new Goods("Food", "Basic foods", Constants.GOODS_FOLDER + "food.jpg");
+            case FOOD:
+                ret = new Goods(FOOD, "Basic foods", FOLDER + "food.jpg", true, null);
                 break;
-            case "Chips":
-                ret = new Goods("Chips", "Advanced computer chips", Constants.GOODS_FOLDER + "chips.jpg");
+            case GAS:
+                ret = new Goods(GAS, "Used in chemistry", FOLDER + "gas.jpg", true, null);
                 break;
-            case "Drugs":
-                ret = new Goods("Drugs", "Cure for every possible disease", Constants.GOODS_FOLDER + "drugs.jpg");
+            case CHIPS:
+                ret = new Goods(CHIPS, "Advanced computer chips", FOLDER + "chips.jpg", false, Arrays.asList(METAL, SILICA));
+                break;
+            case DRUGS:
+                ret = new Goods(DRUGS, "Cure for every possible disease", FOLDER + "drugs.jpg", false, Arrays.asList(SILICA, ORGANICS));
+                break;
+            case CELLS:
+                ret = new Goods(CELLS, "Cure for every possible disease", FOLDER + "cells.jpg", true, null);
+                break;
+            case ORE:
+                ret = new Goods(ORE, "To be processed into metal", FOLDER + "ore.jpg", true, null);
+                break;
+            case ORGANICS:
+                ret = new Goods(ORGANICS, "Used in pharmacy", FOLDER + "organics.jpg", true, null);
+                break;
+            case SILICA:
+                ret = new Goods(SILICA, "Various usage", FOLDER + "silica.jpg", true, null);
                 break;
             default:
-                ret = new Goods("Goods", "Universal whatever...", Constants.GOODS_FOLDER + "goods.jpg");
+                ret = new Goods("Goods", "Universal whatever...", FOLDER + "goods.jpg", false, null);
         }
         
         return ret;
@@ -76,21 +141,36 @@ public class Goods implements IDisplayable, Serializable {
         Goods ret;
         
         Random rand = new Random();
-        switch (rand.nextInt() % 5) {
+        switch (rand.nextInt() % 10) {
+            case 9:
+                ret = getGoodsByName(GAS);
+                break;
+            case 8:
+                ret = getGoodsByName(ORGANICS);
+                break;
+            case 7:
+                ret = getGoodsByName(SILICA);
+                break;
+            case 6:
+                ret = getGoodsByName(ORE);
+                break;
+            case 5:
+                ret = getGoodsByName(CELLS);
+                break;
             case 4:
-                ret = getGoodsByName("Arms");
+                ret = getGoodsByName(ARMS);
                 break;
             case 3:
-                ret = getGoodsByName("Food");
+                ret = getGoodsByName(FOOD);
                 break;
             case 2:
-                ret = getGoodsByName("Chips");
+                ret = getGoodsByName(CHIPS);
                 break;
             case 1:
-                ret = getGoodsByName("Drugs");
+                ret = getGoodsByName(DRUGS);
                 break;
             default:
-                ret = getGoodsByName("Metal");
+                ret = getGoodsByName(METAL);
         }
         
         return ret;
