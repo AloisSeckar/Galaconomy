@@ -37,23 +37,6 @@ public class UniverseGenerator {
         
             universeManager.resetUniverse();
             
-            // PLAYERS
-            
-            Player glsPlayer = new Player("GLS Service", "Insert your text here...", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, true, AIFactory.AI_GLS);
-            universeManager.updateGLSPlayer(glsPlayer);
-            
-            Player humanPlayer = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, false, null);
-            universeManager.updatePlayer(humanPlayer);
-        
-            Player trader = new Player("Tom the Trader", "Demo player who focuses on ships", Constants.PLAYERS_FOLDER + "player02.png", Color.YELLOW, true, AIFactory.AI_STAR_TRADER);
-            universeManager.addAIPlayer(trader);
-            
-            Player builder = new Player("Bob the Builder", "Demo player who focuses on buildings", Constants.PLAYERS_FOLDER + "player03.png", Color.ORANGE, true, AIFactory.AI_BUILDER);
-            universeManager.addAIPlayer(builder);
-            
-            Player landlord = new Player("Luke the Landlord", "Demo player who focuses on lands", Constants.PLAYERS_FOLDER + "player04.png", Color.MAGENTA, true, AIFactory.AI_LANDLORD);
-            universeManager.addAIPlayer(landlord);
-            
             // GENERATED STARS
             
             Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "star09.png", Color.ORANGE, Constants.MAX_X / 2, Constants.MAX_Y / 2);
@@ -80,6 +63,23 @@ public class UniverseGenerator {
                 universeManager.addStar(newStar);
                 availableNames.remove(starName);
             }
+            
+            // PLAYERS
+            
+            Player glsPlayer = new Player("GLS Service", "Insert your text here...", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, sicopiaPlanet, true, AIFactory.AI_GLS);
+            universeManager.updateGLSPlayer(glsPlayer);
+            
+            Player humanPlayer = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, sicopiaPlanet, false, null);
+            universeManager.updatePlayer(humanPlayer);
+        
+            Player trader = new Player("Tom the Trader", "Demo player who focuses on ships", Constants.PLAYERS_FOLDER + "player02.png", Color.YELLOW, sicopiaPlanet, true, AIFactory.AI_STAR_TRADER);
+            universeManager.addAIPlayer(trader);
+            
+            Player builder = new Player("Bob the Builder", "Demo player who focuses on buildings", Constants.PLAYERS_FOLDER + "player03.png", Color.ORANGE, sicopiaPlanet, true, AIFactory.AI_BUILDER);
+            universeManager.addAIPlayer(builder);
+            
+            Player landlord = new Player("Luke the Landlord", "Demo player who focuses on lands", Constants.PLAYERS_FOLDER + "player04.png", Color.MAGENTA, sicopiaPlanet, true, AIFactory.AI_LANDLORD);
+            universeManager.addAIPlayer(landlord);
             
             // SHIPS
             // TODO demo only

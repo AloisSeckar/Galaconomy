@@ -3,7 +3,7 @@ package galaconomy.universe.player;
 import galaconomy.constants.Constants;
 import galaconomy.universe.IDisplayable;
 import galaconomy.universe.building.Building;
-import galaconomy.universe.map.SurfaceTile;
+import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.Ship;
 import java.util.*;
 import java.awt.Color;
@@ -19,6 +19,8 @@ public class Player implements IDisplayable, Serializable {
     private final String img;
     private final Color color;
     
+    private Base homeBase;
+    
     private final boolean ai;
     private final AIPersonality aiPersonality;
     
@@ -30,11 +32,13 @@ public class Player implements IDisplayable, Serializable {
     
     // TODO history of transactions
 
-    public Player(String name, String dscr, String img,  Color color, boolean ai, AIPersonality aiPersonality) {
+    public Player(String name, String dscr, String img,  Color color, Base homeBase, boolean ai, AIPersonality aiPersonality) {
         this.name = name;
         this.dscr = dscr;
         this.img = img;
         this.color = color;
+        
+        this.homeBase = homeBase;
         
         this.ai = ai;
         this.aiPersonality = aiPersonality;
@@ -59,6 +63,14 @@ public class Player implements IDisplayable, Serializable {
     
     public Color getColor() {
         return color;
+    }
+
+    public Base getHomeBase() {
+        return homeBase;
+    }
+
+    public void setHomeBase(Base homeBase) {
+        this.homeBase = homeBase;
     }
 
     public long getCredits() {
