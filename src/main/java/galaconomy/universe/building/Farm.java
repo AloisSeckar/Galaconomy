@@ -1,20 +1,13 @@
 package galaconomy.universe.building;
 
-import galaconomy.universe.economy.Goods;
+import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
 
 public class Farm extends Building {
     
-    private final Goods output;
-    
     public Farm(Base base, Player owner) {
-        super("Farm", "Food is being produced here", IMG_FARM, 600, base, owner);
-        this.output = Goods.getGoodsByName("Food");
-    }
-
-    public Goods getOutput() {
-        return output;
+        super(FARM, "Food is being produced here", IMG_FARM, 600, base, owner);
     }
     
     @Override
@@ -23,10 +16,23 @@ public class Farm extends Building {
         farmDscr.append(super.displayDscr());
         farmDscr.append("\n\n");
         
-        farmDscr.append("OUTPUT:").append("\n");
-        farmDscr.append(output.displayName());
+        farmDscr.append("Level:").append(getLevel());
+        farmDscr.append("Productivity:").append(getProductivity());
+        farmDscr.append("\n");
+        
+        farmDscr.append("OUTPUT: ").append(Goods.FOOD);
         
         return farmDscr.toString();
+    }
+    
+    public Supplies produce() {
+        return new Supplies(Goods.getGoodsByName(Goods.FOOD), getProductivity());
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    private int getProductivity() {
+        return getLevel() * 20;
     }
     
 }

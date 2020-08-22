@@ -175,5 +175,26 @@ public class Goods implements IDisplayable, Serializable {
         
         return ret;
     }
+    
+    public static Goods getRandomFactoryProduct() {
+        Goods ret;
+        
+        Random rand = new Random();
+        switch (rand.nextInt() % 4) {
+            case 3:
+                ret = getGoodsByName(ARMS);
+                break;
+            case 2:
+                ret = getGoodsByName(CHIPS);
+                break;
+            case 1:
+                ret = getGoodsByName(DRUGS);
+                break;
+            default:
+                ret = getGoodsByName(METAL);
+        }
+        
+        return ret;
+    }
 
 }

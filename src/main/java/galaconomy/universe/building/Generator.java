@@ -1,31 +1,38 @@
 package galaconomy.universe.building;
 
+import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
-import java.util.Random;
 
 public class Generator extends Building {
-    
-    private int output;
-    
+   
     public Generator(Base base, Player owner) {
-        super("Generator", "Producing energy to power up buildings", IMG_GENERATOR, 500, base, owner);
-        this.output = new Random().nextInt(25);
+        super(GENERATOR, "Producing energy to power up buildings", IMG_GENERATOR, 500, base, owner);
     }
 
-    public void increaseOutput(int increase) {
-        this.output += increase;
-    }
-    
     @Override
     public String displayDscr() {
         StringBuilder generatorDscr = new StringBuilder();
         generatorDscr.append(super.displayDscr());
         generatorDscr.append("\n\n");
         
-        generatorDscr.append("OUTPUT: ").append(output);
+        generatorDscr.append("Level:").append(getLevel());
+        generatorDscr.append("Productivity:").append(getProductivity());
+        generatorDscr.append("\n");
+        
+        generatorDscr.append("OUTPUT: ").append(Goods.CELLS);
         
         return generatorDscr.toString();
+    }
+    
+    public Supplies produce() {
+        return new Supplies(Goods.getGoodsByName(Goods.CELLS), getProductivity());
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    private int getProductivity() {
+        return getLevel() * 25;
     }
     
 }

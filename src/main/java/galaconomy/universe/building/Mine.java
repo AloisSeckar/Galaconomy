@@ -1,24 +1,13 @@
 package galaconomy.universe.building;
 
-import galaconomy.universe.economy.Goods;
+import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
 
 public class Mine extends Building {
     
-    private Goods output;
-    
     public Mine(Base base, Player owner) {
-        super("Mine", "Universal platform for harvesting resources", IMG_MINE, 850, base, owner);
-        this.output = Goods.getGoodsByName("Metal");
-    }
-
-    public Goods getOutput() {
-        return output;
-    }
-
-    public void setOutput(Goods output) {
-        this.output = output;
+        super(MINE, "Universal platform for harvesting resources", IMG_MINE, 850, base, owner);
     }
     
     @Override
@@ -27,10 +16,23 @@ public class Mine extends Building {
         mineDscr.append(super.displayDscr());
         mineDscr.append("\n\n");
         
-        mineDscr.append("OUTPUT:").append("\n");
-        mineDscr.append(output.displayName());
+        mineDscr.append("Level:").append(getLevel());
+        mineDscr.append("Productivity:").append(getProductivity());
+        mineDscr.append("\n");
+        
+        mineDscr.append("OUTPUT: ").append(Goods.ORE);
         
         return mineDscr.toString();
+    }
+    
+    public Supplies produce() {
+        return new Supplies(Goods.getGoodsByName(Goods.ORE), getProductivity());
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    private int getProductivity() {
+        return getLevel() * 10;
     }
     
 }

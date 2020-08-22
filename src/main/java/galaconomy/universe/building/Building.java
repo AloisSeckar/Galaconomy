@@ -9,13 +9,13 @@ import java.util.*;
 
 public abstract class Building implements IDisplayable, ITradable, Serializable {
     
-    public static final String CITY = "city";
-    public static final String FACTORY = "factory";
-    public static final String FARM = "farm";
-    public static final String GENERATOR = "generator";
-    public static final String MINE = "mine";
-    public static final String SHIPYARD = "shipyard";
-    public static final String WAREHOUSE = "warehouse";
+    public static final String CITY = "City";
+    public static final String FACTORY = "Factory";
+    public static final String FARM = "Farm";
+    public static final String GENERATOR = "Generator";
+    public static final String MINE = "Mine";
+    public static final String SHIPYARD = "Shipyard";
+    public static final String WAREHOUSE = "Warehouse";
     
     private static final String BUILDING = Constants.BUILDINGS_FOLDER;
     private static final String PNG = ".png";
@@ -37,6 +37,8 @@ public abstract class Building implements IDisplayable, ITradable, Serializable 
     private final List<Player> owners = new ArrayList<>();
     
     private Base parent;
+    
+    private byte level;
 
     public Building(String name, String dscr, String img, int price, Base parent, Player owner) {
         this.name = name;
@@ -45,6 +47,7 @@ public abstract class Building implements IDisplayable, ITradable, Serializable 
         this.price = price;
         this.parent = parent;
         this.currentOwner = owner;
+        this.level = 1;
     }
 
     @Override
@@ -99,6 +102,14 @@ public abstract class Building implements IDisplayable, ITradable, Serializable 
 
     public void setParent(Base parent) {
         this.parent = parent;
+    }
+
+    public byte getLevel() {
+        return level;
+    }
+
+    public void levelUp() {
+        this.level++;
     }
     
 }
