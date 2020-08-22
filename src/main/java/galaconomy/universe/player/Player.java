@@ -18,7 +18,9 @@ public class Player implements IDisplayable, Serializable {
     private final String dscr;
     private final String img;
     private final Color color;
+    
     private final boolean ai;
+    private final AIPersonality aiPersonality;
     
     private long credits;
     
@@ -28,12 +30,14 @@ public class Player implements IDisplayable, Serializable {
     
     // TODO history of transactions
 
-    public Player(String name, String dscr, String img,  Color color, boolean ai) {
+    public Player(String name, String dscr, String img,  Color color, boolean ai, AIPersonality aiPersonality) {
         this.name = name;
         this.dscr = dscr;
         this.img = img;
         this.color = color;
+        
         this.ai = ai;
+        this.aiPersonality = aiPersonality;
         
         this.credits = Constants.PLAYER_MONEY;
     }
@@ -97,6 +101,10 @@ public class Player implements IDisplayable, Serializable {
 
     public boolean isAi() {
         return ai;
+    }
+
+    public AIPersonality getAiPersonality() {
+        return aiPersonality;
     }
 
     @Override

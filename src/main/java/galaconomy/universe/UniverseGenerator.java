@@ -5,6 +5,7 @@ import galaconomy.db.DBManager;
 import galaconomy.universe.building.Building;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.map.*;
+import galaconomy.universe.player.AIFactory;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.result.ResultBean;
@@ -38,17 +39,20 @@ public class UniverseGenerator {
             
             // PLAYERS
             
-            Player glsPlayer = new Player("GLS Service", "Insert your text here...", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, true);
+            Player glsPlayer = new Player("GLS Service", "Insert your text here...", Constants.PLAYERS_FOLDER + "player00.png", Color.CYAN, true, AIFactory.AI_GLS);
             universeManager.updateGLSPlayer(glsPlayer);
             
-            Player humanPlayer = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, false);
+            Player humanPlayer = new Player("Human player", "Insert your text here...", Constants.PLAYERS_FOLDER + "player01.png", Color.GREEN, false, null);
             universeManager.updatePlayer(humanPlayer);
         
-            Player trader = new Player("Tom the Trader", "Demo player who focuses on ships", Constants.PLAYERS_FOLDER + "player02.png", Color.YELLOW, true);
+            Player trader = new Player("Tom the Trader", "Demo player who focuses on ships", Constants.PLAYERS_FOLDER + "player02.png", Color.YELLOW, true, AIFactory.AI_STAR_TRADER);
             universeManager.addAIPlayer(trader);
             
-            Player builder = new Player("Bob the Trader", "Demo player who focuses on buildings", Constants.PLAYERS_FOLDER + "player03.png", Color.ORANGE, true);
+            Player builder = new Player("Bob the Builder", "Demo player who focuses on buildings", Constants.PLAYERS_FOLDER + "player03.png", Color.ORANGE, true, AIFactory.AI_BUILDER);
             universeManager.addAIPlayer(builder);
+            
+            Player landlord = new Player("Luke the Landlord", "Demo player who focuses on lands", Constants.PLAYERS_FOLDER + "player04.png", Color.MAGENTA, true, AIFactory.AI_LANDLORD);
+            universeManager.addAIPlayer(landlord);
             
             // GENERATED STARS
             
