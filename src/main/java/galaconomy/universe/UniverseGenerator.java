@@ -112,6 +112,7 @@ public class UniverseGenerator {
                     if (tradeBuildingResult.isSuccess()) {
                         factory.setParent((Base) land.getParent());
                         land.setBuilding(factory);
+                        builder.addBuilding(factory);
                         LOG.info("Builder: New factory purchased");
                     } else {
                         LOG.warn("Builder: " + tradeBuildingResult.getMessage());

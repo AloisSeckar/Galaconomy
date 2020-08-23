@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Factory extends Building {
     
-    private List<Goods> input;
+    private final List<Goods> input = new ArrayList<>();
     private Goods output;
     
     public Factory(Base base, Player owner) {
@@ -39,9 +39,8 @@ public class Factory extends Building {
         factoryDscr.append(super.displayDscr());
         factoryDscr.append("\n\n");
         
-        factoryDscr.append("Level:").append(getLevel());
-        factoryDscr.append("Productivity:").append(getProductivity());
-        factoryDscr.append("\n");
+        factoryDscr.append("Level:").append(getLevel()).append("\n");
+        factoryDscr.append("Productivity:").append(getProductivity()).append("\n");
         
         factoryDscr.append("INPUT: ");
         input.forEach((goods) -> {
@@ -55,8 +54,9 @@ public class Factory extends Building {
         return factoryDscr.toString();
     }
     
-    public Supplies produce() {
-        return new Supplies(output, getProductivity());
+    @Override
+    public Cargo produce() {
+        return new Cargo(output, getProductivity(), 100, getParent());
     }
     
     ////////////////////////////////////////////////////////////////////////////

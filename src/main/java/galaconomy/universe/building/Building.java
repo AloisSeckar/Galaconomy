@@ -2,6 +2,7 @@ package galaconomy.universe.building;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
+import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
 import java.io.Serializable;
@@ -111,5 +112,7 @@ public abstract class Building implements IDisplayable, ITradable, Serializable 
     public void levelUp() {
         this.level++;
     }
+    
+    public abstract Cargo produce();
     
 }

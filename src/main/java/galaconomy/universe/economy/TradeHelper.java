@@ -56,7 +56,7 @@ public class TradeHelper {
     }
     
     public static ResultBean tradeAsset(ITradable asset, Player newOwner) {
-        ResultBean ret = new ResultBean(false, "Operation wasn't performed");
+        ResultBean ret = ResultBean.createDefaultBean();
         
         try {
             if (asset != null) {
@@ -68,7 +68,7 @@ public class TradeHelper {
                             asset.changeOwner(newOwner);
                             newOwner.spendCredits(price);
                             currentOwner.earnCredits(price);
-                            logTrade(asset.getIdentity(), currentOwner.displayName(), newOwner.displayName(), price);
+                            logAssetTrade(asset.getIdentity(), currentOwner.displayName(), newOwner.displayName(), price);
                             ret.setSuccess(true);
                         } else {
                             ret.setMessage("Insufficient credits");
@@ -84,6 +84,40 @@ public class TradeHelper {
             }
         } catch (Exception ex) {
             LOG.error("TradeHelper.tradeAsset", ex);
+            ret.setMessage(InfoUtils.getErrorMessage(ex));
+        }
+        
+        return ret;
+    }
+    
+    // TODO allow selling cargo from player to player
+    public static ResultBean sellCargo(Cargo cargo, Player seller, Base buyer) {
+        ResultBean ret = ResultBean.createDefaultBean();
+           
+        try { 
+            String validation = checkInputs(cargo, seller, buyer);
+            if (validation.isEmpty()) {
+                int price;
+                Supplies buyerSupply = buyer.findSupplies(cargo.getId());
+                if (buyerSupply != null) {
+                    price = buyerSupply.getPriceBuy();
+                } else {
+                    price = cargo.getPrice();
+                }
+                int amount = cargo.getAmount();
+                long totalPrice = amount * price;
+
+                buyer.performPurchase(cargo);
+                seller.earnCredits(totalPrice);
+
+                logCargoTrade(cargo.displayName(), seller.displayName(), buyer.displayName(), totalPrice);
+
+                ret.setSuccess(true);
+            } else {
+                ret.setMessage(validation);
+            }
+        } catch (Exception ex) {
+            LOG.error("TradeHelper.sellCargo", ex);
             ret.setMessage(InfoUtils.getErrorMessage(ex));
         }
         
@@ -122,6 +156,20 @@ public class TradeHelper {
         return ret;
     }
     
+    private static String checkInputs(Cargo cargo, Player seller, Base buyer) {
+        String ret = "";
+        
+        if (cargo == null) {
+            ret = "Cargo is not specified!";
+        } else if (seller == null) {
+            ret = "Seller is not specified!";
+        } else if (buyer == null) {
+            ret = "Buyer is not specified!";
+        }
+        
+        return ret;
+    }
+    
     private static long getAvailableCredits(Player buyer) {
         long ret = 0;
         
@@ -153,9 +201,19 @@ public class TradeHelper {
         return ret;
     }
     
-    private static void logTrade(String asset, String currentOwner, String newOwner, int price) {
+    private static void logAssetTrade(String asset, String currentOwner, String newOwner, int price) {
         StringBuilder sb = new StringBuilder(UniverseManager.getInstance().getStellarTimeString());
         sb.append(" - Asset trade: ").append(asset);
+        sb.append(" was sold by ").append(currentOwner);
+        sb.append(" to ").append(newOwner);
+        sb.append(" for ").append(price).append(" credits");
+        
+        LOG.info(sb.toString());
+    }
+    
+    private static void logCargoTrade(String cargo, String currentOwner, String newOwner, long price) {
+        StringBuilder sb = new StringBuilder(UniverseManager.getInstance().getStellarTimeString());
+        sb.append(" - Cargo trade: ").append(cargo);
         sb.append(" was sold by ").append(currentOwner);
         sb.append(" to ").append(newOwner);
         sb.append(" for ").append(price).append(" credits");

@@ -16,17 +16,17 @@ public class Generator extends Building {
         generatorDscr.append(super.displayDscr());
         generatorDscr.append("\n\n");
         
-        generatorDscr.append("Level:").append(getLevel());
-        generatorDscr.append("Productivity:").append(getProductivity());
-        generatorDscr.append("\n");
+        generatorDscr.append("Level:").append(getLevel()).append("\n");
+        generatorDscr.append("Productivity:").append(getProductivity()).append("\n");
         
         generatorDscr.append("OUTPUT: ").append(Goods.CELLS);
         
         return generatorDscr.toString();
     }
     
-    public Supplies produce() {
-        return new Supplies(Goods.getGoodsByName(Goods.CELLS), getProductivity());
+    @Override
+    public Cargo produce() {
+        return new Cargo(Goods.getGoodsByName(Goods.CELLS), getProductivity(), 100, getParent());
     }
     
     ////////////////////////////////////////////////////////////////////////////

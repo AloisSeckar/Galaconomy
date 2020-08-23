@@ -34,7 +34,6 @@ public class UniverseManager implements Serializable {
     private final List<Travel> travels = new ArrayList<>();
     
     private UniverseManager() {
-        setUpEngine();
     }
     
     public static UniverseManager getInstance() {
@@ -69,16 +68,16 @@ public class UniverseManager implements Serializable {
             
             INSTANCE = (UniverseManager) oi.readObject();
 
-            INSTANCE.setUpEngine();
-
             LOG.info("Universe loaded");
+
+            INSTANCE.startEngine();
+            
             ret = true;
         } catch (IOException | ClassNotFoundException ex) {
             LOG.error("UniverseManager.loadUniverse", ex);
         }
         
         return ret;
-        
     }
     
     public Map<String, Star> getStars() {
@@ -245,25 +244,25 @@ public class UniverseManager implements Serializable {
         initEngineInstance();
         universeEngine.play();
     }
-   
-    private void setUpEngine() {
-        startEngine();
-        LOG.info("Engine set up");
-    }
     
     private void initEngineInstance() {
         universeEngine = new Timeline(
             new KeyFrame(Duration.seconds(enginePeriod), e -> {
-                stellarTime++;
-                
-                recalcSupplies();
-                recalcTravels();
-                rethinkPurchases();
-                rethinkTravels();
+                try {
+                    stellarTime++;
 
-                subscribers.stream().filter((subscriber) -> (subscriber.isActive())).forEachOrdered((subscriber) -> {
-                    subscriber.engineTaskFinished(stellarTime);
-                });
+                    harvestProduction();
+                    recalcSupplies();
+                    recalcTravels();
+                    rethinkPurchases();
+                    rethinkTravels();
+
+                    subscribers.stream().filter((subscriber) -> (subscriber.isActive())).forEachOrdered((subscriber) -> {
+                        subscriber.engineTaskFinished(stellarTime);
+                    });
+                } catch (Exception ex) {
+                    LOG.error("UniverseManager.universeEngine", ex);
+                }
             })
         );
         universeEngine.setCycleCount(Timeline.INDEFINITE);
@@ -275,6 +274,13 @@ public class UniverseManager implements Serializable {
         subscribers.clear();
         universeEngine = null;
         LOG.info("Engine torn down");
+    }
+    
+    private void harvestProduction() {
+        List<Player> allPlayers = new ArrayList<>();
+        allPlayers.add(player);
+        allPlayers.addAll(aiPlayers.values());
+        EconomyManager.harvestProduction(allPlayers);
     }
 
     private void recalcSupplies() {

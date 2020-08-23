@@ -15,6 +15,9 @@ public class PlayerManager {
     
     private static final Random rand = new Random();
     
+    private PlayerManager() {
+    }
+    
     public static void rethinkPurchases(Map<String, Player> players) {
         players.values().forEach((player) -> {
             try {
@@ -30,10 +33,10 @@ public class PlayerManager {
                             SurfaceTile land;
                             switch (landsStrategy.getLocationStrategy()) {
                                 case FOCUS_ON_BASE:
-                                    land = UniverseUtils.getRandomFreeTile(player.getHomeBase());
+                                    land = UniverseUtils.getRandomFreeTileIfPossible(player.getHomeBase());
                                     break;
                                 case RANDOM:
-                                    land = UniverseUtils.getRandomFreeTile(null);
+                                    land = UniverseUtils.getRandomFreeTileIfPossible(null);
                                     break;
                                 default:
                                     land = null;

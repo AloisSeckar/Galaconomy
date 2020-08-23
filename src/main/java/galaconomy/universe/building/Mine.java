@@ -6,6 +6,8 @@ import galaconomy.universe.player.Player;
 
 public class Mine extends Building {
     
+    // TODO similar to factory it can mine different raw materials...
+    
     public Mine(Base base, Player owner) {
         super(MINE, "Universal platform for harvesting resources", IMG_MINE, 850, base, owner);
     }
@@ -16,17 +18,17 @@ public class Mine extends Building {
         mineDscr.append(super.displayDscr());
         mineDscr.append("\n\n");
         
-        mineDscr.append("Level:").append(getLevel());
-        mineDscr.append("Productivity:").append(getProductivity());
-        mineDscr.append("\n");
+        mineDscr.append("Level:").append(getLevel()).append("\n");
+        mineDscr.append("Productivity:").append(getProductivity()).append("\n");
         
         mineDscr.append("OUTPUT: ").append(Goods.ORE);
         
         return mineDscr.toString();
     }
     
-    public Supplies produce() {
-        return new Supplies(Goods.getGoodsByName(Goods.ORE), getProductivity());
+    @Override
+    public Cargo produce() {
+        return new Cargo(Goods.getGoodsByName(Goods.ORE), getProductivity(), 100, getParent());
     }
     
     ////////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 package galaconomy.universe.building;
 
-import galaconomy.universe.economy.Supplies;
+import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
 import java.util.*;
@@ -8,7 +8,7 @@ import java.util.*;
 public class Warehouse extends Building {
     
     private int capacity = 100;
-    private final List<Supplies> storage = new ArrayList<>();
+    private final List<Cargo> storage = new ArrayList<>();
     
     public Warehouse(Base base, Player owner) {
         super("Warehouse", "Place for storing excessive goods", IMG_WAREHOUSE, 750, base, owner);
@@ -33,6 +33,11 @@ public class Warehouse extends Building {
         });
         
         return warehouseDscr.toString();
+    }
+
+    @Override
+    public Cargo produce() {
+        return null;
     }
     
 }

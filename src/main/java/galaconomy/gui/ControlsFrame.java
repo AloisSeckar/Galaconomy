@@ -60,6 +60,7 @@ public class ControlsFrame extends BorderPane implements IEngineSubscriber {
     @Override
     public void engineTaskFinished(long stellarTime) {
         stellarTimePane.update(stellarTime);
+        playerPane.updatePlayerCredits();
     }
 
     @Override

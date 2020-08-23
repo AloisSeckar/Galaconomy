@@ -1,6 +1,7 @@
 package galaconomy.universe.economy;
 
 import galaconomy.universe.IDisplayable;
+import galaconomy.universe.UniverseManager;
 import galaconomy.universe.map.Base;
 import java.io.Serializable;
 
@@ -15,6 +16,14 @@ public class Cargo implements IDisplayable, Serializable {
     private final Base origin;
     
     private final long purchased;
+    
+    public Cargo(Goods goods, int amount, int price, Base origin) {
+        this.goods = goods;
+        this.amount = amount;
+        this.price = price;
+        this.origin = origin;
+        this.purchased = UniverseManager.getInstance().getStellarTime();
+    }
 
     public Cargo(Goods goods, int amount, int price, Base origin, long purchased) {
         this.goods = goods;
@@ -22,6 +31,11 @@ public class Cargo implements IDisplayable, Serializable {
         this.price = price;
         this.origin = origin;
         this.purchased = purchased;
+    }
+
+    // TODO rename to make it more obvious...
+    public String getId() {
+        return goods.displayName();
     }
 
     @Override
@@ -52,5 +66,9 @@ public class Cargo implements IDisplayable, Serializable {
 
     public int getAmount() {
         return amount;
+    }
+
+    public int getPrice() {
+        return price;
     }
 }

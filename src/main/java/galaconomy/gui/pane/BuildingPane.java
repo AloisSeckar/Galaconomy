@@ -119,6 +119,7 @@ public class BuildingPane extends AnchorPane {
                 if (tradeResult.isSuccess()) {
                     newBuilding.setParent((Base) tile.getParent());
                     tile.setBuilding(newBuilding);
+                    player.addBuilding(newBuilding);
                     BaseMapFrame.getInstance().paintBaseMap();
                     DisplayPane.getInstance().setElementToDisplay(newBuilding);
                     PlayerPane.getInstance().updatePlayerCredits();

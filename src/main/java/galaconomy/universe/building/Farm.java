@@ -16,17 +16,17 @@ public class Farm extends Building {
         farmDscr.append(super.displayDscr());
         farmDscr.append("\n\n");
         
-        farmDscr.append("Level:").append(getLevel());
-        farmDscr.append("Productivity:").append(getProductivity());
-        farmDscr.append("\n");
+        farmDscr.append("Level:").append(getLevel()).append("\n");
+        farmDscr.append("Productivity:").append(getProductivity()).append("\n");
         
         farmDscr.append("OUTPUT: ").append(Goods.FOOD);
         
         return farmDscr.toString();
     }
     
-    public Supplies produce() {
-        return new Supplies(Goods.getGoodsByName(Goods.FOOD), getProductivity());
+    @Override
+    public Cargo produce() {
+        return new Cargo(Goods.getGoodsByName(Goods.FOOD), getProductivity(), 100, getParent());
     }
     
     ////////////////////////////////////////////////////////////////////////////

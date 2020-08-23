@@ -8,10 +8,6 @@ public class ResultBean {
     public ResultBean() {
     }
 
-    public ResultBean(boolean success) {
-        this.success = success;
-    }
-
     public ResultBean(boolean success, String message) {
         this.success = success;
         this.message = message;
@@ -32,6 +28,10 @@ public class ResultBean {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+    
+    public static ResultBean createDefaultBean() {
+        return new ResultBean(false, "Operation wasn't performed");
     }
     
 }

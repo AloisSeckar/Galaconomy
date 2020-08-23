@@ -28,6 +28,7 @@ public class Supplies implements IDisplayable, Serializable {
         this.priceSell = priceSell;
     }
 
+    // TODO rename to make it more obvious...
     public String getId() {
         return goods.displayName();
     }

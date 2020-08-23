@@ -132,15 +132,19 @@ public class UniverseUtils {
         return bases.get(random);
     }
     
-    public static SurfaceTile getRandomFreeTile(Base base) {
+    public static SurfaceTile getRandomFreeTileIfPossible(Base base) {
         if (base == null) {
             base = getRandomBase();
         }
         
-        SurfaceTile ret;
-        do {
-            ret = base.getSurfaceTile(rand.nextInt(Base.COLS), rand.nextInt(Base.ROWS));
-        } while (!ret.isEmpty());
+        SurfaceTile ret = null;
+        if (hasFreeTile(base.getSurface())) {
+            int tries = 0;
+            do {
+                ret = base.getSurfaceTile(rand.nextInt(Base.COLS), rand.nextInt(Base.ROWS));
+                tries++;
+            } while (!ret.isEmpty() || tries < 10);
+        }
         
         return ret;
     }
@@ -153,6 +157,23 @@ public class UniverseUtils {
                 if (tile.isEmpty()) {
                     ret = tile;
                     break;
+                }
+            }
+        }
+        
+        return ret;
+    }
+    
+    public static boolean hasFreeTile(SurfaceTile[][] surface) {
+        boolean ret = false;
+        
+        if (surface != null) {
+            for (SurfaceTile[] row : surface) {
+                for (SurfaceTile tile : row) {
+                    if (tile.isEmpty()) {
+                        ret = true;
+                        break;
+                    }
                 }
             }
         }

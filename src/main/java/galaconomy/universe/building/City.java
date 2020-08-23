@@ -1,6 +1,7 @@
 package galaconomy.universe.building;
 
 import galaconomy.universe.UniverseManager;
+import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.map.Base;
 
 public class City extends Building {
@@ -13,4 +14,10 @@ public class City extends Building {
     public String displayDscr() {
         return getParent().displayDscr();
     }
+
+    @Override
+    public Cargo produce() {
+        return null;
+    }
+    
 }

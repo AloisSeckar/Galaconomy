@@ -133,5 +133,5 @@ public class Base extends StellarObject {
         if (currentSupply.getAmount() < 1) {
             supplies.remove(goodsName);
         }
-    }
+    }    
 }
