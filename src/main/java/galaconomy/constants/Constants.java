@@ -27,6 +27,7 @@ public class Constants {
     public static final String FOLDER_IMG = FOLDER_RES + "img" + SEPARATOR;
     public static final String BUILDINGS_FOLDER = FOLDER_IMG + "buildings" + SEPARATOR;
     public static final String GOODS_FOLDER = FOLDER_IMG + "goods" + SEPARATOR;
+    public static final String ICONS_FOLDER = FOLDER_IMG + "icons" + SEPARATOR;
     public static final String PLANETS_FOLDER = FOLDER_IMG + "planets" + SEPARATOR;
     public static final String PLAYERS_FOLDER = FOLDER_IMG + "players" + SEPARATOR;
     public static final String SHIPS_FOLDER = FOLDER_IMG + "ships" + SEPARATOR;

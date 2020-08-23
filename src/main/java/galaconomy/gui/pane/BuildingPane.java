@@ -1,5 +1,6 @@
 package galaconomy.gui.pane;
 
+import galaconomy.constants.Constants;
 import galaconomy.gui.BaseMapFrame;
 import galaconomy.universe.*;
 import galaconomy.universe.building.*;
@@ -23,6 +24,7 @@ public class BuildingPane extends AnchorPane {
     private final Button buildWarehouse;
     private final Button buildMine;
     private final Button buildFarm;
+    private final Button buyLand;
     
     private static BuildingPane INSTANCE;
 
@@ -90,6 +92,17 @@ public class BuildingPane extends AnchorPane {
         AnchorPane.setLeftAnchor(buildFarm, 10d + SIZE + 20);
         AnchorPane.setTopAnchor(buildFarm, 5d + SIZE + 15);
         
+        buyLand = new Button();
+        buyLand.setGraphic(getButtonImage(Constants.ICONS_FOLDER + "money.png"));
+        buyLand.setTooltip(new Tooltip("Buy selected land"));
+        buyLand.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
+            buyLand();
+        });
+        
+        super.getChildren().add(buyLand);
+        AnchorPane.setLeftAnchor(buyLand, 10d + SIZE + 20);
+        AnchorPane.setTopAnchor(buyLand, 10d + 2 * SIZE + 30);
+        
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -111,25 +124,65 @@ public class BuildingPane extends AnchorPane {
     private void build(String buildingType) {
         IDisplayable selectedItem = DisplayPane.getInstance().getElementToDisplay();
         if (selectedItem instanceof SurfaceTile) {
-            SurfaceTile tile = (SurfaceTile) selectedItem;
-            if (tile.getBuilding() == null) {
-                Building newBuilding = GLSFactory.deliverBuilding(buildingType);
-                Player player = UniverseManager.getInstance().getPlayer();
-                ResultBean tradeResult = TradeHelper.tradeAsset(newBuilding, player);
-                if (tradeResult.isSuccess()) {
-                    newBuilding.setParent((Base) tile.getParent());
-                    tile.setBuilding(newBuilding);
-                    player.addBuilding(newBuilding);
-                    BaseMapFrame.getInstance().paintBaseMap();
-                    DisplayPane.getInstance().setElementToDisplay(newBuilding);
-                    PlayerPane.getInstance().updatePlayerCredits();
-                    InfoUtils.showMessage("Building purchased!");
+            SurfaceTile land = (SurfaceTile) selectedItem;
+            Player player = UniverseManager.getInstance().getPlayer();
+            Player owner = land.getCurrentOwner();
+            if (player.equals(owner)) {
+                if (land.isEmpty()) {
+                    Building newBuilding = GLSFactory.deliverBuilding(buildingType);
+                    ResultBean tradeResult = TradeHelper.tradeAsset(newBuilding, player);
+                    if (tradeResult.isSuccess()) {
+                        newBuilding.setParent((Base) land.getParent());
+                        land.setBuilding(newBuilding);
+                        player.addBuilding(newBuilding);
+                        BaseMapFrame.getInstance().paintBaseMap();
+                        DisplayPane.getInstance().setElementToDisplay(newBuilding);
+                        PlayerPane.getInstance().updatePlayerCredits();
+                        InfoUtils.showMessage("Building purchased!");
+                    } else {
+                        InfoUtils.showMessage(tradeResult.getMessage());
+                    }
                 } else {
-                    InfoUtils.showMessage(tradeResult.getMessage());
+                    InfoUtils.showMessage("Selected land is occupied by another building!");
                 }
             } else {
-                InfoUtils.showMessage("Tile is occupied by another building!");
+                InfoUtils.showMessage("You must own the land to build on it!");
             }
+        } else {
+            InfoUtils.showMessage("Please select surface tile to build on");
+        }
+    }
+    
+    private void buyLand() {
+        IDisplayable selectedItem = DisplayPane.getInstance().getElementToDisplay();
+        if (selectedItem instanceof SurfaceTile) {
+            SurfaceTile land = (SurfaceTile) selectedItem;
+            Player player = UniverseManager.getInstance().getPlayer();
+            Player owner = land.getCurrentOwner();
+            if (!player.equals(owner)) {
+                if (owner.equals(UniverseManager.getInstance().getGLSPlayer())) {
+                    if (land.isEmpty()) {
+                        ResultBean tradeResult = TradeHelper.tradeAsset(land, player);
+                        if (tradeResult.isSuccess()) {
+                            player.addLand(land);
+                            DisplayPane.getInstance().setElementToDisplay(land);
+                            PlayerPane.getInstance().updatePlayerCredits();
+                            InfoUtils.showMessage("Land purchased!");
+                        } else {
+                            InfoUtils.showMessage(tradeResult.getMessage());
+                        }
+                    } else {
+                        InfoUtils.showMessage("Only empty lands can be purchased");
+                    }
+                } else {
+                    // TODO allow it if player put selected land on the market
+                    InfoUtils.showMessage("Purchasing land from other players is not supported yet");
+                }
+            } else {
+                InfoUtils.showMessage("Selected land is already yours");
+            }
+        } else {
+            InfoUtils.showMessage("Please select surface tile to purchase");
         }
     }
 }
