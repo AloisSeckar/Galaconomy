@@ -87,13 +87,11 @@ public class UniverseManager implements Serializable {
     public List<Star> getAvailableStars() {
         List<Star> ret = new ArrayList<>();
         ret.addAll(stars.values());
-        Collections.shuffle(ret); // TODO why this?
         return ret;
     }
     
     public List<Base> getAvailableBases() {
         List<Base> ret = Collections.unmodifiableList(bases);
-        Collections.shuffle(ret); // TODO why this?
         return ret;
     }
     
@@ -127,6 +125,13 @@ public class UniverseManager implements Serializable {
     
     public Map<String, Player> getAIPlayers() {
         return aiPlayers;
+    }
+    
+    public List<Player> getAllPlayers() {
+        List<Player> allPlayers = new ArrayList<>();
+        allPlayers.add(player);
+        allPlayers.addAll(aiPlayers.values());
+        return allPlayers;
     }
     
     public Player findAIPlayer(String playerName) {
@@ -277,10 +282,7 @@ public class UniverseManager implements Serializable {
     }
     
     private void harvestProduction() {
-        List<Player> allPlayers = new ArrayList<>();
-        allPlayers.add(player);
-        allPlayers.addAll(aiPlayers.values());
-        EconomyManager.harvestProduction(allPlayers);
+        EconomyManager.harvestProduction(getAllPlayers());
     }
 
     private void recalcSupplies() {

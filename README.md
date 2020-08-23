@@ -17,4 +17,6 @@
 	* https://opengameart.org/content/200-isometric-cityscapes
 	* https://opengameart.org/content/towers-for-tower-defense
 
-(Some) icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+(Some) icons were imported from following sources:
+* Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [Flaticon](www.flaticon.com)
+* Icons made by [monkik](https://www.flaticon.com/authors/monkik) from [Flaticon](www.flaticon.com)

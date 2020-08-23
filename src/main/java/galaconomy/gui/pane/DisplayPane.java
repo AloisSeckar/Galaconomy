@@ -2,6 +2,7 @@ package galaconomy.gui.pane;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
+import galaconomy.universe.map.VoidElement;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -74,25 +75,6 @@ public class DisplayPane extends AnchorPane {
             imgView.setImage(defaultImg);
         } else {
             setElementToDisplay(new VoidElement());
-        }
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////
-    
-    private class VoidElement implements IDisplayable {
-        @Override
-        public String displayName() {
-            return "Galaconomy";
-        }
-
-        @Override
-        public String displayDscr() {
-            return "Click onto map element to see details";
-        }
-
-        @Override
-        public String getImage() {
-            return Constants.FOLDER_IMG + "galaconomy.png";
         }
     }
     
