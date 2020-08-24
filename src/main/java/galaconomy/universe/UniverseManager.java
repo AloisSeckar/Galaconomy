@@ -215,11 +215,20 @@ public class UniverseManager implements Serializable {
     }
     
     public void registerSubscriber(IEngineSubscriber newSubscriber) {
-        if (!subscribers.contains(newSubscriber)) {
-            subscribers.add(newSubscriber);
-            LOG.info("Subscriber added: " + newSubscriber.toString());
-        } else {
-            LOG.warn("Subscriber already registered: " + newSubscriber.toString());
+        if (newSubscriber != null) {
+            if (!subscribers.contains(newSubscriber)) {
+                subscribers.add(newSubscriber);
+                LOG.info("Subscriber added: " + newSubscriber.toString());
+            } else {
+                LOG.warn("Subscriber already registered: " + newSubscriber.toString());
+            }
+        }
+    }
+    
+    public void unRegisterSubscriber(IEngineSubscriber subscriber) {
+        if (subscriber != null) {
+            subscribers.remove(subscriber);
+            LOG.info("Subscriber removed: " + subscriber.toString());
         }
     }
     
