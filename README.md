@@ -20,3 +20,4 @@
 (Some) icons were imported from following sources:
 * Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [Flaticon](www.flaticon.com)
 * Icons made by [monkik](https://www.flaticon.com/authors/monkik) from [Flaticon](www.flaticon.com)
+* Icons made by [Skyclick](https://www.flaticon.com/authors/skyclick) from [Flaticon](www.flaticon.com)
