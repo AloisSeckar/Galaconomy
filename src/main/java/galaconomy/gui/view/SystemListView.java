@@ -1,8 +1,9 @@
 package galaconomy.gui.view;
 
 import galaconomy.gui.BasicGameLayout;
-import galaconomy.universe.UniverseManager;
+import galaconomy.universe.*;
 import galaconomy.universe.map.Star;
+import galaconomy.utils.WindowUtils;
 import javafx.beans.value.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
@@ -13,12 +14,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
-import javafx.util.Callback;
  
-public class SystemListView extends Stage {
+public class SystemListView extends Stage implements IEngineSubscriber {
  
     private final TableView<Star> table;
-    private final ObservableList<Star> data;
+    private ObservableList<Star> data;
  
     public SystemListView() {
         super.setTitle("System list");
@@ -30,22 +30,31 @@ public class SystemListView extends Stage {
         table = new TableView();
         table.setItems(data);
  
-        TableColumn nameCol = new TableColumn("Name");
-        nameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Star, String>, ObservableValue<String>>() {
+        TableColumn<Star, String> nameCol = new TableColumn("Name");
+        nameCol.setCellValueFactory((p) -> new ObservableValueBase<String>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Star, String> p) {
-                return new ObservableValueBase<String>() {
-                    @Override
-                    public String getValue() {
-                        return p.getValue().displayName();
-                    }
-                };
+            public String getValue() {
+                return p.getValue().displayName();
+            }
+        });
+        
+        TableColumn<Star, String> systemsCol = new TableColumn("Bases");
+        systemsCol.setCellValueFactory((p) -> new ObservableValueBase<String>() {
+            @Override
+            public String getValue() {
+                return String.valueOf(p.getValue().getBases().size());
+            }
+        });
+        
+        TableColumn<Star, String> shipsCol = new TableColumn("Ships");
+        shipsCol.setCellValueFactory((p) -> new ObservableValueBase<String>() {
+            @Override
+            public String getValue() {
+                return String.valueOf(UniverseUtils.countShipsInSystem(p.getValue()));
             }
         });
  
-        table.getColumns().setAll(nameCol);
-        table.setPrefWidth(250);
-        table.setPrefHeight(400);
+        table.getColumns().setAll(nameCol, systemsCol, shipsCol);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
  
         table.getSelectionModel().select(0);
@@ -54,22 +63,14 @@ public class SystemListView extends Stage {
         table.getSortOrder().add(nameCol);
         table.sort();
         
-        HBox menuBox = new HBox(20);
-        menuBox.setAlignment(Pos.CENTER);
-        
         Button selectButton = new Button("Go to system");
         selectButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
             Star currentStar = table.getSelectionModel().getSelectedItem();
             BasicGameLayout.getInstance().switchToSystem(currentStar);
             close();
         });
-        menuBox.getChildren().add(selectButton);
         
-        Button cancelButton = new Button("Close");
-        cancelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
-            close();
-        });
-        menuBox.getChildren().add(cancelButton);
+        HBox menuBox = WindowUtils.getWindowToolbar(SystemListView.this, SystemListView.this, selectButton);
 
         VBox mainLayout = new VBox(20);
         mainLayout.setAlignment(Pos.CENTER);
@@ -80,5 +81,22 @@ public class SystemListView extends Stage {
         
         super.setScene(dialogScene);
  
+    }
+
+    @Override
+    public void engineTaskFinished(long stellarTime) {
+        getData();
+    }
+
+    @Override
+    public boolean isActive() {
+        return true;
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    private void getData() {
+        data = FXCollections.observableList(UniverseManager.getInstance().getAvailableStars());
+        table.refresh();
     }
 }

@@ -174,6 +174,10 @@ public class Ship implements IDisplayable, ITradable, Serializable {
         return ret;
     }
 
+    public String getShipClass() {
+        return shipClass;
+    }
+
     public boolean isIdle() {
         return idle;
     }

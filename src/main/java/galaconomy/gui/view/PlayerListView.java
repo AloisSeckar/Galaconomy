@@ -2,9 +2,9 @@ package galaconomy.gui.view;
 
 import galaconomy.gui.BasicGameLayout;
 import galaconomy.gui.pane.DisplayPane;
-import galaconomy.universe.IEngineSubscriber;
-import galaconomy.universe.UniverseManager;
+import galaconomy.universe.*;
 import galaconomy.universe.player.Player;
+import galaconomy.utils.WindowUtils;
 import javafx.beans.value.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
@@ -15,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
-import javafx.util.Callback;
  
 public class PlayerListView extends Stage implements IEngineSubscriber {
  
@@ -32,74 +31,47 @@ public class PlayerListView extends Stage implements IEngineSubscriber {
         table = new TableView();
         table.setItems(data);
  
-        TableColumn nameCol = new TableColumn("Name");
-        nameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Player, String>, ObservableValue<String>>() {
+        TableColumn<Player, String> nameCol = new TableColumn("Name");
+        nameCol.setCellValueFactory((p) -> new ObservableValueBase<String>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Player, String> p) {
-                return new ObservableValueBase<String>() {
-                    @Override
-                    public String getValue() {
-                        return p.getValue().displayName();
-                    }
-                };
+            public String getValue() {
+                return p.getValue().displayName();
             }
         });
         
-        TableColumn landsCol = new TableColumn("Lands");
-        landsCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Player, String>, ObservableValue<String>>() {
+        TableColumn<Player, String> landsCol = new TableColumn("Lands");
+        landsCol.setCellValueFactory((p) -> new ObservableValueBase<String>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Player, String> p) {
-                return new ObservableValueBase<String>() {
-                    @Override
-                    public String getValue() {
-                        return String.valueOf(p.getValue().getLands().size());
-                    }
-                };
+            public String getValue() {
+                return String.valueOf(p.getValue().getLands().size());
             }
         });
         
-        TableColumn buildingsCol = new TableColumn("Buildings");
-        buildingsCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Player, String>, ObservableValue<String>>() {
+        TableColumn<Player, String> buildingsCol = new TableColumn("Buildings");
+        buildingsCol.setCellValueFactory((p) -> new ObservableValueBase<String>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Player, String> p) {
-                return new ObservableValueBase<String>() {
-                    @Override
-                    public String getValue() {
-                        return String.valueOf(p.getValue().getBuildings().size());
-                    }
-                };
+            public String getValue() {
+                return String.valueOf(p.getValue().getBuildings().size());
             }
         });
         
-        TableColumn shipsCol = new TableColumn("Ships");
-        shipsCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Player, String>, ObservableValue<String>>() {
+        TableColumn<Player, String> shipsCol = new TableColumn("Ships");
+        shipsCol.setCellValueFactory((p) -> new ObservableValueBase<String>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Player, String> p) {
-                return new ObservableValueBase<String>() {
-                    @Override
-                    public String getValue() {
-                        return String.valueOf(p.getValue().getShips().size());
-                    }
-                };
+            public String getValue() {
+                return String.valueOf(p.getValue().getShips().size());
             }
         });
         
-        TableColumn creditsCol = new TableColumn("Credits");
-        creditsCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Player, String>, ObservableValue<String>>() {
+        TableColumn<Player, String> creditsCol = new TableColumn("Credits");
+        creditsCol.setCellValueFactory((p) -> new ObservableValueBase<String>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Player, String> p) {
-                return new ObservableValueBase<String>() {
-                    @Override
-                    public String getValue() {
-                        return String.valueOf(p.getValue().getCredits());
-                    }
-                };
+            public String getValue() {
+                return String.valueOf(p.getValue().getCredits());
             }
         });
  
         table.getColumns().setAll(nameCol, landsCol, buildingsCol, shipsCol, creditsCol);
-        table.setPrefWidth(600);
-        table.setPrefHeight(400);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
  
         table.getSelectionModel().select(0);
@@ -108,9 +80,6 @@ public class PlayerListView extends Stage implements IEngineSubscriber {
         table.getSortOrder().add(nameCol);
         table.sort();
         
-        HBox menuBox = new HBox(20);
-        menuBox.setAlignment(Pos.CENTER);
-        
         Button selectButton = new Button("View player");
         selectButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
             Player currentPlayer = table.getSelectionModel().getSelectedItem();
@@ -118,15 +87,9 @@ public class PlayerListView extends Stage implements IEngineSubscriber {
             UniverseManager.getInstance().unRegisterSubscriber(PlayerListView.this);
             close();
         });
-        menuBox.getChildren().add(selectButton);
         
-        Button cancelButton = new Button("Close");
-        cancelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e) -> {
-            UniverseManager.getInstance().unRegisterSubscriber(PlayerListView.this);
-            close();
-        });
-        menuBox.getChildren().add(cancelButton);
-
+        HBox menuBox = WindowUtils.getWindowToolbar(PlayerListView.this, PlayerListView.this, selectButton);
+        
         VBox mainLayout = new VBox(20);
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.getChildren().add(table);

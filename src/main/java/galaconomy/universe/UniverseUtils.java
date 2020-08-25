@@ -1,6 +1,7 @@
 package galaconomy.universe;
 
 import galaconomy.universe.map.*;
+import galaconomy.universe.traffic.Ship;
 import java.awt.Color;
 import java.util.*;
 
@@ -225,6 +226,32 @@ public class UniverseUtils {
                 ret = false;
                 break;
             }
+        }
+        
+        return ret;
+    }
+
+    public static int countShipsInSystem(Star system) {
+        int ret = 0;
+        
+        List<Ship> ships = UniverseManager.getInstance().getAllShips();
+        if (system != null) {
+            ret = ships.stream().filter((ship) -> (system.equals(ship.getCurrentSystem()))).map((_item) -> 1).reduce(ret, Integer::sum);
+        } else {
+            ret = ships.stream().filter((ship) -> (ship.getCurrentSystem() == null)).map((_item) -> 1).reduce(ret, Integer::sum);  
+        }
+        
+        return ret;
+    }
+    
+    public static int countShipsInBase(Base base) {
+        int ret = 0;
+        
+        List<Ship> ships = UniverseManager.getInstance().getAllShips();
+        if (base != null) {
+            ret = ships.stream().filter((ship) -> (base.equals(ship.getCurrentBase()))).map((_item) -> 1).reduce(ret, Integer::sum);
+        } else {
+            ret = ships.stream().filter((ship) -> (ship.getCurrentBase() == null)).map((_item) -> 1).reduce(ret, Integer::sum);  
         }
         
         return ret;

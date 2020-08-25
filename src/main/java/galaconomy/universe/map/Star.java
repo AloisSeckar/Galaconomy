@@ -31,11 +31,9 @@ public class Star extends AbstractMapElement {
     
     public List<Base> getBases() {
         List<Base> bases = new ArrayList<>();
-        for (StellarObject stellarObject : stellarObjects) {
-            if (stellarObject instanceof Base) {
-                bases.add((Base) stellarObject);
-            }
-        }
+        stellarObjects.stream().filter((stellarObject) -> (stellarObject instanceof Base)).forEachOrdered((stellarObject) -> {
+            bases.add((Base) stellarObject);
+        });
         return bases;
     }
     

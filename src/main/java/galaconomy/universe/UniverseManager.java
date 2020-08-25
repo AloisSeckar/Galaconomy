@@ -134,6 +134,15 @@ public class UniverseManager implements Serializable {
         return allPlayers;
     }
     
+    public List<Ship> getAllShips() {
+        List<Ship> allShips = new ArrayList<>();
+        List<Player> allPlayers = UniverseManager.getInstance().getAllPlayers();
+        allPlayers.forEach((record) -> {
+            allShips.addAll(record.getShips());
+        });
+        return allShips;
+    }
+    
     public Player findAIPlayer(String playerName) {
         return aiPlayers.get(playerName);
     }
