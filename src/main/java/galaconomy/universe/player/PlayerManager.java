@@ -111,10 +111,12 @@ public class PlayerManager {
                     Base destination = null;
 
                     // TODO apply personality for trading
-                    while (!ship.getCargoList().isEmpty()) {
+                    // TODO fix trading to follow standards
+                    String status = "OK";
+                    while (!ship.getCargoList().isEmpty() && "OK".equals(status)) {
                         Cargo cargo = ship.getCargoList().get(0);
                         Supplies supply = location.findSupplies(cargo.getGoods().displayName());
-                        ship.performSale(ship.getCargoList().get(0), supply.getPriceBuy());
+                        status = ship.performSale(ship.getCargoList().get(0), supply.getPriceBuy());
                     }
 
                     // TODO apply personality for route planning

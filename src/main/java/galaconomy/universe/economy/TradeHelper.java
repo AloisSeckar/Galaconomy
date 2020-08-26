@@ -43,12 +43,12 @@ public class TradeHelper {
         if (ret.isEmpty()) {
             
             Player seller = ship.getCurrentOwner();
-            Star buyer = ship.getCurrentSystem();
+            Base buyer = ship.getCurrentBase();
             
             if (seller == null) {
                 ret = "Unknown seller!"; 
             } else if (buyer == null) {
-                ret = "Impossible to trade while in deep space!";
+                ret = "Impossible to trade while in space!";
             }
         }
         

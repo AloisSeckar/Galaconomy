@@ -57,7 +57,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
         activeConnections.clear();
         
         // first draw rift gates connectors
-        for (Connector gate : gates) {
+        gates.forEach((gate) -> {
             Line riftLine = new Line();
             riftLine.getStyleClass().add("rift-route");
 
@@ -75,10 +75,10 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
 
             this.getChildren().add(riftLine);
             activeConnections.add(riftLine);
-        }
+        });
         
         // then overlay lines with star images
-        for (Star system : stars) {
+        stars.forEach((system) -> {
             Circle star = new Circle(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER);
             star.setCenterX(DisplayUtils.fitCoordIntoDisplay(system.getX()));
             star.setCenterY(DisplayUtils.fitCoordIntoDisplay(system.getY()));
@@ -91,7 +91,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
             
             this.getChildren().add(star);
             activeStars.add(star);
-        }
+        });
     }
     
     public void paintShipTravels(List<Travel> travels) {

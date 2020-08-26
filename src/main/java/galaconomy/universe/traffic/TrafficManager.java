@@ -11,14 +11,14 @@ public class TrafficManager {
     public static List<Travel> recalcTravels(List<Travel> activeTravels) {
         List<Travel> finishedTravels = new ArrayList<>();
         
-        for (Travel travel : activeTravels) {
+        activeTravels.forEach((travel) -> {
             travel.progress();
             if (travel.isFinished()) {
                 finishedTravels.add(travel);
                 travel.getShip().addTravel(travel);
                 LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + travel.getShip().displayName() + " arrived in " + travel.getArrival().displayName() + " system");
             }
-        }
+        });
         
         return finishedTravels;
     }

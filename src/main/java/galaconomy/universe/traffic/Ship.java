@@ -169,6 +169,8 @@ public class Ship implements IDisplayable, ITradable, Serializable {
             cargoList.remove(cargo);
             
             LOG.info(name + " sold " + cargo.displayName() + " at " + currentBase.displayName() + " for " + totalPrice + " credits");
+            
+            ret = "OK";
         }
         
         return ret;

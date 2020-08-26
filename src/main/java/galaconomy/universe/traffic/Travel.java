@@ -1,7 +1,6 @@
 package galaconomy.universe.traffic;
 
 import galaconomy.universe.*;
-import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.map.*;
 import galaconomy.utils.TrafficUtils;
 import java.io.Serializable;
@@ -92,8 +91,8 @@ public class Travel implements IDisplayable, Serializable {
             routeDscr.append("to ").append(arrival.displayName()).append("system\n");
             routeDscr.append("Landed: ").append(finished).append("\n");
         } else {
-            routeDscr.append("Traveling from ").append(departure.displayName());
-            routeDscr.append("to ").append(arrival.displayName()).append("system\n");
+            routeDscr.append("Travelling from ").append(departure.displayName());
+            routeDscr.append("to ").append(arrival.displayName()).append("\n");
             routeDscr.append("Distance: ").append(String.format("%.2f", distanceRiftTotal)).append("\n");
             routeDscr.append("Elapsed: ").append(String.format("%.2f", distanceRiftElapsed)).append("\n");
             routeDscr.append("Speed: ").append(String.format("%.2f", ship.getRiftSpeed())).append("\n");
@@ -101,9 +100,9 @@ public class Travel implements IDisplayable, Serializable {
             
             routeDscr.append("CARGO").append("\n");
             routeDscr.append("----------").append("\n");
-            for (Cargo goods : ship.getCargoList()) {
+            ship.getCargoList().forEach((goods) -> {
                 routeDscr.append(goods.displayName()).append("\n");
-            }
+            });
         }
 
         return routeDscr.toString();
@@ -182,9 +181,6 @@ public class Travel implements IDisplayable, Serializable {
                 this.distancePulseElapsed += elapsed;
                 if (distancePulseElapsed >= distancePulseTotal ) {
                     distancePulseElapsed = distancePulseTotal;
-                }
-                if (activeRoute.isFinished()) {
-                    ship.setCurrentSystem(null);
                 }
             }
         } else {

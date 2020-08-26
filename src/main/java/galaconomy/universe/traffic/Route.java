@@ -51,8 +51,8 @@ public class Route implements IDisplayable, Serializable {
             routeDscr.append("Travelled from ").append(departure.displayName());
             routeDscr.append("to ").append(arrival.displayName()).append("system\n");
         } else {
-            routeDscr.append("Traveling from ").append(departure.displayName());
-            routeDscr.append("to ").append(arrival.displayName()).append("system\n");
+            routeDscr.append("Travelling from ").append(departure.displayName());
+            routeDscr.append("to ").append(arrival.displayName()).append("\n");
             routeDscr.append("Distance: ").append(String.format("%.2f", distanceTotal)).append("\n");
             routeDscr.append("Elapsed: ").append(String.format("%.2f", distanceElapsed)).append("\n");
             routeDscr.append("Speed: ").append(String.format("%.2f", speed)).append("\n\n");

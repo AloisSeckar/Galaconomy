@@ -63,6 +63,8 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
             starSystem.getRiftGates().forEach((riftGate) -> {
                 addObject(riftGate);
             });
+            
+            paintShipTravels(UniverseManager.getInstance().getTravels());
         }
     }
 
@@ -127,13 +129,11 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
                         ship.setFill(Color.DARKMAGENTA);
 
                         ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                            setElementToDisplay(route);
+                            setElementToDisplay(travel);
                         });
 
                         this.getChildren().add(ship);
                         activeShips.add(ship);
-
-                        routeLine.toBack();
                     }
                 }
             });
