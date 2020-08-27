@@ -6,65 +6,54 @@ import java.util.Random;
 
 public class Supplies implements IDisplayable, Serializable {
     
-    private final Goods goods;
+    private final Cargo cargo;
     
-    private int amount;
     private int priceBuy;
     private int priceSell;
 
-    public Supplies(Goods goods, int amount) {
-        this.goods = goods;
-        this.amount = amount;
+    public Supplies(Cargo cargo) {
+        this.cargo = cargo;
         
         Random rand = new Random();
         this.priceBuy = rand.nextInt(900) + 101;
         this.priceSell = this.priceBuy + rand.nextInt(500) + 101;
     }
 
-    public Supplies(Goods goods, int amount, int priceBuy, int priceSell) {
-        this.goods = goods;
-        this.amount = amount;
+    public Supplies(Cargo cargo, int priceBuy, int priceSell) {
+        this.cargo = cargo;
         this.priceBuy = priceBuy;
         this.priceSell = priceSell;
     }
 
-    // TODO rename to make it more obvious...
-    public String getId() {
-        return goods.displayName();
+    public String getIdentity() {
+        return cargo.displayName();
     }
 
     @Override
     public String displayName() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(goods.displayName());
-        sb.append(" (").append(amount).append(")");
-        return sb.toString();
+        return cargo.displayName();
     }
 
     @Override
     public String displayDscr() {
-        return goods.displayDscr();
+        return cargo.displayDscr();
     }
 
     @Override
     public String getImage() {
-        return goods.getImage();
+        return cargo.getImage();
     }
 
-    public Goods getGoods() {
-        return goods;
+    public Cargo getCargo() {
+        return cargo;
     }
 
-    public int getAmount() {
-        return amount;
+    public void increaseSupply(int increase) {
+        cargo.setAmount(cargo.getAmount() + increase);
     }
 
-    public void increaseAmount(int amount) {
-        this.amount += amount;
-    }
-
-    public void decreaseAmount(int amount) {
-        this.amount -= amount;
+    public void decreaseSupply(int decrease) {
+        cargo.setAmount(Math.min(cargo.getAmount() - decrease, 0));
     }
 
     public int getPriceBuy() {

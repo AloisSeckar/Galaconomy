@@ -26,7 +26,7 @@ public class Generator extends Building {
     
     @Override
     public Cargo produce() {
-        return new Cargo(Goods.getGoodsByName(Goods.CELLS), getProductivity(), 100, getParent());
+        return new Cargo(Goods.getGoodsByName(Goods.CELLS), getProductivity(), getCurrentOwner(), getParent());
     }
     
     ////////////////////////////////////////////////////////////////////////////

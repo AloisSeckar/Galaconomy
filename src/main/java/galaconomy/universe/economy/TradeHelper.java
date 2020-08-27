@@ -7,6 +7,7 @@ import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.Ship;
 import galaconomy.utils.InfoUtils;
 import galaconomy.utils.result.ResultBean;
+import java.util.Random;
 import org.slf4j.*;
 
 public class TradeHelper {
@@ -98,11 +99,12 @@ public class TradeHelper {
             String validation = checkInputs(cargo, seller, buyer);
             if (validation.isEmpty()) {
                 int price;
-                Supplies buyerSupply = buyer.findSupplies(cargo.getId());
+                Supplies buyerSupply = buyer.findSupplies(cargo.getIdentity());
                 if (buyerSupply != null) {
                     price = buyerSupply.getPriceBuy();
                 } else {
-                    price = cargo.getPrice();
+                    // TODO how to tell the price?
+                    price = new Random().nextInt(1000) + 25;
                 }
                 int amount = cargo.getAmount();
                 long totalPrice = amount * price;
@@ -185,7 +187,7 @@ public class TradeHelper {
         
         Supplies currentSupply = seller.findSupplies(goods.displayName());
         if (currentSupply != null) {
-            ret = currentSupply.getAmount();
+            ret = currentSupply.getCargo().getAmount();
         }
         
         return ret;

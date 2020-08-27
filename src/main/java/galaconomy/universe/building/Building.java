@@ -8,7 +8,7 @@ import galaconomy.universe.player.Player;
 import java.io.Serializable;
 import java.util.*;
 
-public abstract class Building implements IDisplayable, ITradable, Serializable {
+public abstract class Building implements IDisplayable, ITradable, IStorage, Serializable {
     
     public static final String CITY = "City";
     public static final String FACTORY = "Factory";
@@ -95,6 +95,11 @@ public abstract class Building implements IDisplayable, ITradable, Serializable 
     public void changeOwner(Player newOwner) {
         owners.add(0, newOwner);
         currentOwner = newOwner;
+    }
+    
+    @Override
+    public String getStorageIdentity() {
+        return displayName();
     }
     
     public Base getParent() {

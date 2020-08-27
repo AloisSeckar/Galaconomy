@@ -1,12 +1,10 @@
 package galaconomy.gui.pane;
 
-import galaconomy.gui.*;
 import galaconomy.gui.window.*;
 import galaconomy.universe.*;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
-import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.*;
 import java.util.*;
 import javafx.geometry.Insets;
@@ -120,9 +118,9 @@ public class PlayerPane extends AnchorPane {
         
         // TODO delete
         Base origin = UniverseUtils.getRandomBase();
-        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Metal"), 10, 150, origin, 10000));
-        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Chips"), 10, 200, origin, 10000));
-        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Food"), 10, 101, origin, 10000));
+        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Metal"), 10, player, origin));
+        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Chips"), 10, player, origin));
+        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Food"), 10, player, origin));
         //
         
         Image newShipImage = new Image(getClass().getResourceAsStream(newShip.getImage()));
@@ -164,7 +162,7 @@ public class PlayerPane extends AnchorPane {
             
         Player player = UniverseManager.getInstance().getPlayer();
         
-        for (Ship ship : player.getShips()) {
+        player.getShips().forEach(ship -> {
             Image newShipImage = new Image(getClass().getResourceAsStream(ship.getImage()));
             ImageView newShipImageView = new ImageView(newShipImage);
             newShipImageView.setFitWidth(64);
@@ -182,7 +180,7 @@ public class PlayerPane extends AnchorPane {
             shipDetailButtons.add(newShipButton);
 
             shipBox.getChildren().add(newShipButton);
-        }
+        });
     }
     
     public void updatePlayerCredits() {

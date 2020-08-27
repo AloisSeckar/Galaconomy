@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.*;
 import org.slf4j.*;
 
-public class Ship implements IDisplayable, ITradable, Serializable {
+public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
     
     private static final Logger LOG = LoggerFactory.getLogger(Ship.class);
     
@@ -127,6 +127,11 @@ public class Ship implements IDisplayable, ITradable, Serializable {
         owners.add(0, newOwner);
         currentOwner = newOwner;
     }
+    
+    @Override
+    public String getStorageIdentity() {
+        return displayName();
+    }
 
     public List<Travel> getTravels() {
         return travels;
@@ -145,7 +150,7 @@ public class Ship implements IDisplayable, ITradable, Serializable {
         
         if (ret.isEmpty()) {
             long totalPrice = amount * price;
-            Cargo newCargo  = new Cargo(goods, amount, price, currentBase, UniverseManager.getInstance().getStellarTime());
+            Cargo newCargo  = new Cargo(goods, amount, this.currentOwner, this);
             
             currentBase.performSale(goods, amount);
             currentOwner.spendCredits(totalPrice);

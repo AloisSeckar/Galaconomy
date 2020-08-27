@@ -1,15 +1,16 @@
 package galaconomy.universe.map;
 
 import galaconomy.constants.Constants;
-import galaconomy.universe.UniverseManager;
+import galaconomy.universe.*;
 import galaconomy.universe.building.*;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
 import galaconomy.utils.DisplayUtils;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.*;
 
-public class Base extends StellarObject {
+public class Base extends StellarObject implements IStorage, Serializable {
     
     // TODO different sized bases
     public static final int COLS = Constants.MAX_X / DisplayUtils.BASE_TILE_SIZE;
@@ -60,10 +61,10 @@ public class Base extends StellarObject {
         
         baseDscr.append("SUPPLIES").append("\n");
         baseDscr.append("----------").append("\n");
-        supplies.values().forEach(goods -> {
-            baseDscr.append(goods.displayName());
-            baseDscr.append("\tB: ").append(goods.getPriceBuy());
-            baseDscr.append("\tS: ").append(goods.getPriceSell());
+        supplies.values().forEach(cargo -> {
+            baseDscr.append(cargo.displayName());
+            baseDscr.append("\tB: ").append(cargo.getPriceBuy());
+            baseDscr.append("\tS: ").append(cargo.getPriceSell());
             baseDscr.append("\n");
         });
         baseDscr.append("\n");
@@ -73,6 +74,11 @@ public class Base extends StellarObject {
         baseDscr.append(super.displayDscr());
         
         return baseDscr.toString();
+    }
+    
+    @Override
+    public String getStorageIdentity() {
+        return displayName();
     }
 
     public SurfaceTile[][] getSurface() {
@@ -102,35 +108,32 @@ public class Base extends StellarObject {
     }
     
     public Supplies findSupplies(String key) {
-        Supplies ret = supplies.get(key);
-        if (ret == null) {
-            ret = new Supplies(Goods.getGoodsByName(key), 0);
-        }
-        return ret;
+        return supplies.get(key);
     }
     
     public void updateSupplies(Supplies newSupply) {
-        supplies.put(newSupply.getId(), newSupply);
+        supplies.put(newSupply.getIdentity(), newSupply);
     }
     
     public void performPurchase(Cargo cargo) {
         String goodsName = cargo.getGoods().displayName();
         Supplies currentSupply = findSupplies(goodsName);
         if (currentSupply == null) {
-            currentSupply = new Supplies(cargo.getGoods(), 0);
+            currentSupply = new Supplies(cargo, 0, 0);
             supplies.put(goodsName, currentSupply);
         }
-        currentSupply.increaseAmount(cargo.getAmount());
+        currentSupply.increaseSupply(cargo.getAmount());
     }
     
     public void performSale(Goods goods, int amount) {
         String goodsName = goods.displayName();
         Supplies currentSupply = findSupplies(goodsName);
         if (currentSupply == null) {
-            currentSupply = new Supplies(goods, 0);
+            Cargo newCargo = new Cargo(goods, 0, UniverseManager.getInstance().getGLSPlayer(), this);
+            currentSupply = new Supplies(newCargo, 0, 0);
         }
-        currentSupply.decreaseAmount(amount);
-        if (currentSupply.getAmount() < 1) {
+        currentSupply.decreaseSupply(amount);
+        if (currentSupply.getCargo().getAmount() < 1) {
             supplies.remove(goodsName);
         }
     }    

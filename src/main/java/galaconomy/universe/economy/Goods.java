@@ -56,6 +56,31 @@ public class Goods implements IDisplayable, Serializable {
     public List<String> getInputs() {
         return inputs;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Goods other = (Goods) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
+    }
     
     public static List<Goods> getAvailableGoods() {
         List<Goods> ret = new ArrayList<>();

@@ -28,7 +28,7 @@ public class Mine extends Building {
     
     @Override
     public Cargo produce() {
-        return new Cargo(Goods.getGoodsByName(Goods.ORE), getProductivity(), 100, getParent());
+        return new Cargo(Goods.getGoodsByName(Goods.ORE), getProductivity(), getCurrentOwner(), getParent());
     }
     
     ////////////////////////////////////////////////////////////////////////////

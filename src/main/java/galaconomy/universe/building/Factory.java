@@ -56,7 +56,7 @@ public class Factory extends Building {
     
     @Override
     public Cargo produce() {
-        return new Cargo(output, getProductivity(), 100, getParent());
+        return new Cargo(output, getProductivity(), getCurrentOwner(), getParent());
     }
     
     ////////////////////////////////////////////////////////////////////////////

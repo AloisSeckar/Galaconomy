@@ -122,9 +122,9 @@ public class PlayerManager {
                     // TODO apply personality for route planning
                     Supplies itemToBuy = EconomyHelper.findLowestPrice(location);
                     if (itemToBuy != null) {
-                        Goods goodsToBuy = itemToBuy.getGoods();
+                        Goods goodsToBuy = itemToBuy.getCargo().getGoods();
 
-                        int available = itemToBuy.getAmount();
+                        int available = itemToBuy.getCargo().getAmount();
                         int price = itemToBuy.getPriceSell();
                         int capacity = ship.getCargo();
                         long credits = ship.getCurrentOwner().getCredits();

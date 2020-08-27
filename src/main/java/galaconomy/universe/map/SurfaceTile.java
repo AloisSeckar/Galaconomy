@@ -1,6 +1,6 @@
 package galaconomy.universe.map;
 
-import galaconomy.universe.ITradable;
+import galaconomy.universe.*;
 import galaconomy.universe.building.Building;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
@@ -8,7 +8,7 @@ import galaconomy.utils.DisplayUtils;
 import java.awt.Color;
 import java.util.*;
 
-public class SurfaceTile extends AbstractMapElement implements ITradable {
+public class SurfaceTile extends AbstractMapElement implements ITradable, IStorage {
     
     private final Map<String, Supplies> rawMaterials = new HashMap<>();
     
@@ -82,6 +82,11 @@ public class SurfaceTile extends AbstractMapElement implements ITradable {
         currentOwner = newOwner;
     }
 
+    @Override
+    public String getStorageIdentity() {
+        return displayName();
+    }
+
     public Map<String, Supplies> getRawMaterialsSupply() {
         return rawMaterials;
     }
@@ -89,7 +94,8 @@ public class SurfaceTile extends AbstractMapElement implements ITradable {
     public Supplies findRawMaterial(String key) {
         Supplies ret = rawMaterials.get(key);
         if (ret == null) {
-            ret = new Supplies(Goods.getGoodsByName(key), 0);
+            Cargo newCargo = new Cargo(Goods.getGoodsByName(key), 0, UniverseManager.getInstance().getGLSPlayer(), this);
+            ret = new Supplies(newCargo, 0, 0);
         }
         return ret;
     }
@@ -102,10 +108,11 @@ public class SurfaceTile extends AbstractMapElement implements ITradable {
         String rawMaterialName = rawMaterial.displayName();
         Supplies currentSupply = findRawMaterial(rawMaterialName);
         if (currentSupply == null) {
-            currentSupply = new Supplies(rawMaterial, 0);
+            Cargo newCargo = new Cargo(rawMaterial, 0, UniverseManager.getInstance().getGLSPlayer(), this);
+            currentSupply = new Supplies(newCargo, 0, 0);
         }
-        currentSupply.decreaseAmount(amount);
-        if (currentSupply.getAmount() < 1) {
+        currentSupply.decreaseSupply(amount);
+        if (currentSupply.getCargo().getAmount() < 1) {
             rawMaterials.remove(rawMaterialName);
         }
     }
