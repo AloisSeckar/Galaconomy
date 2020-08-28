@@ -3,9 +3,14 @@ package galaconomy;
 import galaconomy.constants.Constants;
 import galaconomy.gui.*;
 import galaconomy.universe.*;
-import galaconomy.utils.LogUtils;
+import galaconomy.utils.*;
 import javafx.application.Application;
 import javafx.scene.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.slf4j.*;
 
@@ -20,13 +25,31 @@ public class Galaconomy extends Application {
         
         LOG.info(TITLE + " started");
         
+        DisplayUtils.init();
+        
         BasicGameLayout gameLayout = BasicGameLayout.getInstance();
 
-        Scene scene = new Scene(gameLayout, Constants.SCREEN_X + Constants.SIDE_PANEL_X + 20, Constants.SCREEN_Y + 50 + Constants.BOTTOM_PANEL_Y);
+        Scene scene = new Scene(gameLayout, 0, 0);
         scene.getStylesheets().add(getClass().getResource(Constants.FOLDER_CSS + "galaconomy.css").toExternalForm());
         
         primaryStage.setTitle(TITLE);
         primaryStage.setScene(scene);
+        primaryStage.setFullScreenExitHint("");
+        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        primaryStage.setFullScreen(true);
+        primaryStage.setResizable(false);
+        
+        primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+            if (KeyCode.ESCAPE == event.getCode()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Really quit?", ButtonType.YES, ButtonType.NO);
+                alert.initOwner(primaryStage);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.YES) {
+                    primaryStage.close();
+                }
+            }
+        });
+        
         primaryStage.show();
         
         LOG.info(TITLE + " prepared");

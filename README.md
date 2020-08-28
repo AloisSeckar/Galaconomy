@@ -1,5 +1,9 @@
 # Galaconomy
- One day this will be a JavaFX game featuring galaxy-wide trading and economy
+One day this will be a JavaFX game featuring galaxy-wide trading and economy
+
+## Notes
+* Program opens in fullscreen and cannot be minimized
+* Pressing 'ESC' will show the prompt allowing exit
 
 ## Sources
 (Some) images were imported from following sources:

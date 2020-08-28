@@ -1,8 +1,8 @@
 package galaconomy.gui.pane;
 
-import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.map.VoidElement;
+import galaconomy.utils.DisplayUtils;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 public class DisplayPane extends AnchorPane {
     
-    private static final int WIDTH = Constants.SIDE_PANEL_X;
+    private static final int WIDTH = DisplayUtils.SIDE_PANEL_X;
     
     private final Label nameText;
     private final TextArea dscrText;

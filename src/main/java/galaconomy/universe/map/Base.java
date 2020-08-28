@@ -13,8 +13,8 @@ import java.util.*;
 public class Base extends StellarObject implements IStorage, Serializable {
     
     // TODO different sized bases
-    public static final int COLS = Constants.MAX_X / DisplayUtils.BASE_TILE_SIZE;
-    public static final int ROWS = Constants.MAX_Y / DisplayUtils.BASE_TILE_SIZE;
+    public static final int COLS = DisplayUtils.getMAX_X() / DisplayUtils.BASE_TILE_SIZE;
+    public static final int ROWS = DisplayUtils.getMAX_Y() / DisplayUtils.BASE_TILE_SIZE;
     
     private final SurfaceTile[][] surface = new SurfaceTile[COLS][ROWS];
     

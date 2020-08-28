@@ -43,13 +43,13 @@ public abstract class AbstractMapElement implements IDisplayable, Serializable {
             this.color = Color.YELLOW;
         }
         
-        if (xCoord <= Constants.MAX_X) {
+        if (xCoord <= DisplayUtils.getMAX_X()) {
             this.xCoord = xCoord;
         } else {
             throw new IllegalArgumentException("Given xCoord is out of map bounds");
         }
         
-        if (yCoord <= Constants.MAX_Y) {
+        if (yCoord <= DisplayUtils.getMAX_Y()) {
             this.yCoord = yCoord;
         } else {
             throw new IllegalArgumentException("Given yCoord is out of map bounds");

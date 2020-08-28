@@ -33,8 +33,8 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     }
     
     private SystemMapFrame() {
-        super.setMinWidth(Constants.SCREEN_X);
-        super.setMinHeight(Constants.SCREEN_Y);
+        super.setMinWidth(DisplayUtils.getMAIN_PANEL_X());
+        super.setMinHeight(DisplayUtils.getMAIN_PANEL_Y());
         
         // TODO system-specific backgrounds
         Image universe = new Image(getClass().getResourceAsStream(Constants.FOLDER_IMG + "universe.jpg"));
@@ -100,7 +100,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
                         double elapsed = route.getDistanceElapsed();
                         double distance = elapsed / total;
 
-                        int offset = DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 2;
+                        int offset = DisplayUtils.DEFAULT_TILE_SIZE * 2;
                         if (elapsed > 0) {
                             int vectorX = arrival.getX() - departure.getX();
                             int vectorY = arrival.getY() - departure.getY();
@@ -157,13 +157,13 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         object.setImage(objectImg);
 
         if (mapObject instanceof Star) {
-            object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 10);
-            object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 10);
-            object.setX(DisplayUtils.fitCoordIntoDisplay(Constants.MAX_X / 2 + 1) - DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 5);
-            object.setY(DisplayUtils.fitCoordIntoDisplay(Constants.MAX_Y / 2 + 1) - DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 5);
+            object.setFitWidth(DisplayUtils.DEFAULT_TILE_SIZE * 10);
+            object.setFitHeight(DisplayUtils.DEFAULT_TILE_SIZE * 10);
+            object.setX(DisplayUtils.fitCoordIntoDisplay(DisplayUtils.getMAX_X() / 2 + 1) - DisplayUtils.DEFAULT_TILE_SIZE * 5);
+            object.setY(DisplayUtils.fitCoordIntoDisplay(DisplayUtils.getMAX_Y() / 2 + 1) - DisplayUtils.DEFAULT_TILE_SIZE * 5);
         } else { 
-            object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 4);
-            object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * 4);
+            object.setFitWidth(DisplayUtils.DEFAULT_TILE_SIZE * 4);
+            object.setFitHeight(DisplayUtils.DEFAULT_TILE_SIZE * 4);
             object.setX(DisplayUtils.fitCoordIntoDisplay(mapObject.getX()));
             object.setY(DisplayUtils.fitCoordIntoDisplay(mapObject.getY()));
         }

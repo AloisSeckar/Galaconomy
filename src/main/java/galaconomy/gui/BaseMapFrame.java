@@ -29,8 +29,8 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
     }
     
     private BaseMapFrame() {
-        super.setMinWidth(Constants.SCREEN_X);
-        super.setMinHeight(Constants.SCREEN_Y);
+        super.setMinWidth(DisplayUtils.getMAIN_PANEL_X());
+        super.setMinHeight(DisplayUtils.getMAIN_PANEL_Y());
         
         // TODO base-specific backgrounds
         Image universe = new Image(getClass().getResourceAsStream(Constants.FOLDER_IMG + "base.jpg"));
@@ -62,8 +62,8 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
                     Image objectImg = new Image(getClass().getResourceAsStream(tile.getImage()));
                     object.setImage(objectImg);
 
-                    object.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
-                    object.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                    object.setFitWidth(DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
+                    object.setFitHeight(DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
                     object.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
                     object.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
 
@@ -84,8 +84,8 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
                         Image buildingImg = new Image(getClass().getResourceAsStream(building.getImage()));
                         buildingObj.setImage(buildingImg);
 
-                        buildingObj.setFitWidth(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
-                        buildingObj.setFitHeight(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER * DisplayUtils.BASE_TILE_SIZE);
+                        buildingObj.setFitWidth(DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
+                        buildingObj.setFitHeight(DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
                         buildingObj.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
                         buildingObj.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
 

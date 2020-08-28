@@ -1,8 +1,8 @@
 package galaconomy.gui;
 
-import galaconomy.constants.Constants;
 import galaconomy.gui.pane.*;
 import galaconomy.universe.*;
+import galaconomy.utils.DisplayUtils;
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -21,8 +21,8 @@ public class InfoFrame extends AnchorPane implements IEngineSubscriber {
     }
     
     private InfoFrame() {
-        super.setMinWidth(Constants.SIDE_PANEL_X + 20);
-        super.setMaxWidth(Constants.SIDE_PANEL_X + 20);
+        super.setMinWidth(DisplayUtils.SIDE_PANEL_X_WRAP);
+        super.setMaxWidth(DisplayUtils.SIDE_PANEL_X_WRAP);
         super.setBackground(new Background(new BackgroundFill(Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");
         

@@ -8,6 +8,7 @@ import galaconomy.universe.map.*;
 import galaconomy.universe.player.AIFactory;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.traffic.*;
+import galaconomy.utils.DisplayUtils;
 import galaconomy.utils.result.ResultBean;
 import java.awt.Color;
 import java.util.*;
@@ -42,7 +43,7 @@ public class UniverseGenerator {
             
             // GENERATED STARS
             
-            Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "star09.png", Color.ORANGE, Constants.MAX_X / 2, Constants.MAX_Y / 2);
+            Star sicopiaSystem = new Star("Sicopia", "Home world", Constants.STARS_FOLDER + "star09.png", Color.ORANGE, DisplayUtils.getMAX_X() / 2, DisplayUtils.getMAX_Y() / 2);
             
             Base sicopiaPlanet = new Base(sicopiaSystem, "Sicopia Prime", "GLS Capital", Constants.PLANETS_FOLDER + "planet52.png", Color.WHITE, 28, 35);
             sicopiaPlanet.setShipyard(true);
@@ -148,8 +149,8 @@ public class UniverseGenerator {
         int randX;
         int randY;
         do {
-            randX = rand.nextInt(Constants.MAX_X - 1) + 1;
-            randY = rand.nextInt(Constants.MAX_Y - 1) + 1;
+            randX = rand.nextInt(DisplayUtils.getMAX_X() - 1) + 1;
+            randY = rand.nextInt(DisplayUtils.getMAX_Y() - 1) + 1;
         } while (!UniverseUtils.isFreeUniverseSpot(randX, randY));
 
         Star newStar = new Star(starName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta. Seldo súriquessë lalantila nil satto tyelca combë yualë aini telimbectar elda. Celma iltániel fëa laiquë eldanyárë vórëa am.", starImg, UniverseUtils.getStarColor(randStarImg), randX, randY);
@@ -161,8 +162,8 @@ public class UniverseGenerator {
         if (rand.nextInt(10) % 3 == 0) {
             numberOfPlanets += rand.nextInt(5);
         }
-        int centerX = Constants.MAX_X / 2 + 1;
-        int centerY = Constants.MAX_Y / 2 + 1;
+        int centerX = DisplayUtils.getMAX_X() / 2 + 1;
+        int centerY = DisplayUtils.getMAX_Y() / 2 + 1;
         for (int j = 1; j <= numberOfPlanets; j++) {
             String planetName = newStar.getName() + " " + UniverseUtils.getPlanetOrder(j);
 
@@ -176,8 +177,8 @@ public class UniverseGenerator {
                 Double randomX = centerX + (radius * Math.sin(angle)); 
                 Double randomY = centerY + (radius * Math.cos(angle));
 
-                randX = Math.min(randomX.intValue(), Constants.MAX_X);
-                randY = Math.min(randomY.intValue(), Constants.MAX_Y);
+                randX = Math.min(randomX.intValue(), DisplayUtils.getMAX_X());
+                randY = Math.min(randomY.intValue(), DisplayUtils.getMAX_Y());
             } while (!UniverseUtils.isFreeSystemSpot(randX, randY, newStar));
             
             Base newPlanet = new Base(newStar, planetName, "Návëa nyarro findel vénë lenta ango nirwa axa tárië. úrion valmo alcarinqua naina uë mixa. Laurina vasarya yunquenta nícë síma aranya tyasta.", planetImg, Color.WHITE, randX, randY);
@@ -203,7 +204,7 @@ public class UniverseGenerator {
         }
 
         if (rand.nextInt() % 2 == 0) {
-            newStar.setRiftPortal(new RiftPortal("Rift portal", "Can be used to travel to any other system", Constants.MAX_X / 2 + 1, Constants.MAX_Y - 10, newStar));
+            newStar.setRiftPortal(new RiftPortal("Rift portal", "Can be used to travel to any other system", DisplayUtils.getMAX_X() / 2 + 1, DisplayUtils.getMAX_Y() - 10, newStar));
         }
         
         connectSystemToRiftNetwork(newStar);

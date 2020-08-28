@@ -33,8 +33,8 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
     }
     
     private UniverseMapFrame() {
-        super.setMinWidth(Constants.SCREEN_X);
-        super.setMinHeight(Constants.SCREEN_Y);
+        super.setMinWidth(DisplayUtils.getMAIN_PANEL_X());
+        super.setMinHeight(DisplayUtils.getMAIN_PANEL_Y());
         
         Image universe = new Image(getClass().getResourceAsStream(Constants.FOLDER_IMG + "universe.jpg"));
         BackgroundImage bgImage = new BackgroundImage(universe, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
@@ -79,7 +79,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
         
         // then overlay lines with star images
         stars.forEach((system) -> {
-            Circle star = new Circle(DisplayUtils.DEFAULT_ZOOM_MULTIPLIER);
+            Circle star = new Circle(DisplayUtils.DEFAULT_TILE_SIZE);
             star.setCenterX(DisplayUtils.fitCoordIntoDisplay(system.getX()));
             star.setCenterY(DisplayUtils.fitCoordIntoDisplay(system.getY()));
             star.setFill(system.getFXColor());

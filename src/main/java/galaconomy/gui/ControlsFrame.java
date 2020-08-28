@@ -1,17 +1,14 @@
 package galaconomy.gui;
 
-import galaconomy.constants.Constants;
 import galaconomy.gui.pane.*;
 import galaconomy.universe.*;
+import galaconomy.utils.DisplayUtils;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import org.slf4j.*;
 
 public class ControlsFrame extends BorderPane implements IEngineSubscriber {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(ControlsFrame.class);
     
     private final PlayerPane playerPane = PlayerPane.getInstance();
     private final EngineSpeedPane engineSpeedPane = EngineSpeedPane.getInstance();
@@ -28,7 +25,7 @@ public class ControlsFrame extends BorderPane implements IEngineSubscriber {
     }
     
     private ControlsFrame() {
-        super.setMinHeight(Constants.BOTTOM_PANEL_Y);
+        super.setMinHeight(DisplayUtils.BOTTOM_PANEL_Y);
         super.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
         super.getStyleClass().add("pane-info");
         

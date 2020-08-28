@@ -11,14 +11,6 @@ public class Constants {
     public static final int AVAILABLE_SHIPS = 5;
     public static final int AVAILABLE_STARS = 36;
     
-    public static final int MAX_X = 100;
-    public static final int MAX_Y = 80;
-    
-    public static final int SCREEN_X = (Constants.MAX_X + 2) * 8;
-    public static final int SCREEN_Y = (Constants.MAX_Y + 2) * 8;
-    public static final int SIDE_PANEL_X = 275;
-    public static final int BOTTOM_PANEL_Y = 250;
-    
     public static final String DEFAULT_IMAGE = "default";
     
     private static final String SEPARATOR = "/";
