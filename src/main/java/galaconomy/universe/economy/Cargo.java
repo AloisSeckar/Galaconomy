@@ -1,5 +1,6 @@
 package galaconomy.universe.economy;
 
+import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.player.Player;
 import java.io.Serializable;
@@ -39,8 +40,8 @@ public class Cargo implements IDisplayable, Serializable {
     @Override
     public String displayDscr() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Owner: ").append(owner != null ? owner.displayName() : "N/A").append("\n");
-        sb.append("Stored at: ").append(location != null ? location.getStorageIdentity() : "N/A").append("\n");
+        sb.append("Owner: ").append(owner != null ? owner.displayName() : Constants.NONE).append("\n");
+        sb.append("Stored at: ").append(location != null ? location.getStorageIdentity() : Constants.NONE).append("\n");
         return sb.toString();
     }
 

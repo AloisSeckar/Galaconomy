@@ -1,5 +1,6 @@
 package galaconomy.universe.traffic;
 
+import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
@@ -81,11 +82,7 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
         shipDscr.append("----------").append("\n");
         
         shipDscr.append("Owner: ");
-        if (currentOwner != null) {
-            shipDscr.append(currentOwner.displayName());
-        } else {
-            shipDscr.append("N/A");
-        }
+        shipDscr.append(currentOwner != null ? currentOwner.displayName() : Constants.NONE);
         shipDscr.append("\n");
         
         shipDscr.append("Class: ").append(shipClass).append("\n");

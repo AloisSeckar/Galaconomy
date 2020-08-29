@@ -80,10 +80,7 @@ public class Goods implements IDisplayable, Serializable {
             return false;
         }
         final Goods other = (Goods) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.name, other.name);
     }
     
     public static List<Goods> getAvailableGoods() {
@@ -221,6 +218,27 @@ public class Goods implements IDisplayable, Serializable {
                 break;
             default:
                 ret = getGoodsByName(METAL);
+        }
+        
+        return ret;
+    }
+    
+    public static Goods getRandomRawMaterial() {
+        Goods ret;
+        
+        Random rand = new Random();
+        switch (rand.nextInt() % 4) {
+            case 3:
+                ret = getGoodsByName(SILICA);
+                break;
+            case 2:
+                ret = getGoodsByName(GAS);
+                break;
+            case 1:
+                ret = getGoodsByName(ORGANICS);
+                break;
+            default:
+                ret = getGoodsByName(ORE);
         }
         
         return ret;

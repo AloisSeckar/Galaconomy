@@ -1,5 +1,7 @@
 package galaconomy.constants;
 
+import java.io.File;
+
 public class Constants {
     
     public static final String PROGRAM_NAME = "Galaconomy 0.1";
@@ -13,7 +15,8 @@ public class Constants {
     
     public static final String DEFAULT_IMAGE = "default";
     
-    private static final String SEPARATOR = "/";
+    private static final String SEPARATOR = File.separator;
+    
     public static final String FOLDER_RES = SEPARATOR;
     public static final String FOLDER_CSS = FOLDER_RES + "css" + SEPARATOR;
     public static final String FOLDER_IMG = FOLDER_RES + "img" + SEPARATOR;
@@ -27,5 +30,7 @@ public class Constants {
     public static final String TILES_FOLDER = FOLDER_IMG + "tiles" + SEPARATOR;
     
     public static final String SQLITE_DB = "jdbc:sqlite:sample.db";
+    
+    public static final String NONE = "N/A";
 
 }

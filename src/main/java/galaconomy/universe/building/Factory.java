@@ -1,5 +1,6 @@
 package galaconomy.universe.building;
 
+import galaconomy.constants.Constants;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
@@ -14,23 +15,6 @@ public class Factory extends Building {
         super(FACTORY, "Universal building for crafting goods", IMG_FACTORY, 1000, base, owner);
         output = Goods.getRandomFactoryProduct();
         setInputs(output.getInputs());
-    }
-
-    public List<Goods> getInput() {
-        return input;
-    }
-
-    public Goods getOutput() {
-        return output;
-    }
-
-    public void setOutput(Goods newOutput) {
-        this.output = newOutput;
-        if (output != null) {
-            setInputs(output.getInputs());
-        } else {
-            input.clear();
-        }
     }
     
     @Override
@@ -49,9 +33,26 @@ public class Factory extends Building {
         factoryDscr.append("\n");
         
         factoryDscr.append("OUTPUT: ");
-        factoryDscr.append(output.displayName());
+        factoryDscr.append(output != null ? output.displayName() : Constants.NONE);
         
         return factoryDscr.toString();
+    }
+
+    public List<Goods> getInput() {
+        return input;
+    }
+
+    public Goods getOutput() {
+        return output;
+    }
+
+    public void setOutput(Goods newOutput) {
+        this.output = newOutput;
+        if (output != null) {
+            setInputs(output.getInputs());
+        } else {
+            input.clear();
+        }
     }
     
     @Override
