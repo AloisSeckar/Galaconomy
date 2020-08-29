@@ -8,9 +8,7 @@ import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.*;
 import javafx.stage.Stage;
 import org.slf4j.*;
 
@@ -20,10 +18,14 @@ public class Galaconomy extends Application {
     
     private static final String TITLE = Constants.PROGRAM_NAME;
     
+    private static Stage pStage;
+    
     @Override
     public void start(Stage primaryStage) {
         
         LOG.info(TITLE + " started");
+        
+        pStage = primaryStage;
         
         DisplayUtils.init();
         
@@ -55,6 +57,9 @@ public class Galaconomy extends Application {
         LOG.info(TITLE + " prepared");
     }
     
+    public static Stage getPrimaryStage() {
+        return pStage;
+    }
     
     @Override
     public void stop() {
