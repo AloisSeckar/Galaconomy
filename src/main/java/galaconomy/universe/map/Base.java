@@ -29,25 +29,32 @@ public class Base extends StellarObject implements Serializable {
         city = new City(this);
         shipyard = new Shipyard(this);
         
+        int middleRow = ROWS / 2;
+        int middleCol = COLS / 2;
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 Random rand = new Random();
                 switch (rand.nextInt() % 4) {
                     case 3:
-                        surface[col][row] = new SurfaceTile("Mountains", "Brown", Constants.TILES_FOLDER + "04.png", Color.GREEN, col, row, this, glsPlayer);
+                        surface[col][row] = new SurfaceTile("Mountains", "Mountains", Constants.TILES_FOLDER + "04.png", Color.GREEN, col, row, this, glsPlayer);
                         break;
                     case 2:
-                        surface[col][row] = new SurfaceTile("Water", "Blue", Constants.TILES_FOLDER + "03.png", Color.GREEN, col, row, this, glsPlayer);
+                        surface[col][row] = new SurfaceTile("Water", "Water", Constants.TILES_FOLDER + "03.png", Color.GREEN, col, row, this, glsPlayer);
                         break;
                     case 1:
-                        surface[col][row] = new SurfaceTile("Desert", "Yellow", Constants.TILES_FOLDER + "02.png", Color.GREEN, col, row, this, glsPlayer);
+                        surface[col][row] = new SurfaceTile("Desert", "Desert", Constants.TILES_FOLDER + "02.png", Color.GREEN, col, row, this, glsPlayer);
                         break;
                     default:
-                        surface[col][row] = new SurfaceTile("Grass", "Green", Constants.TILES_FOLDER + "01.png", Color.GREEN, col, row, this, glsPlayer);
+                        surface[col][row] = new SurfaceTile("Grass", "Grass", Constants.TILES_FOLDER + "01.png", Color.GREEN, col, row, this, glsPlayer);
                 }
                 
-                if (row == ROWS / 2 && col == COLS / 2) {
-                    surface[col][row].setBuilding(city);
+                
+                if (row < middleRow - 1 || row > middleRow + 1 || col < middleCol - 1 || col > middleCol + 1) {
+                    surface[col][row].randomizeRawMaterials();
+                } else {
+                    if (row == middleRow && col == middleCol) {
+                        surface[col][row].setBuilding(city);
+                    }
                 }
             }
         }
@@ -157,4 +164,5 @@ public class Base extends StellarObject implements Serializable {
     public void recalcSupplies() {
         city.recalcSupplies();
     }
+
 }

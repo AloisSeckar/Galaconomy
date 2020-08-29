@@ -43,9 +43,7 @@ public class SurfaceTile extends AbstractMapElement implements ITradable, IStora
         tileDscr.append("RAW MATERIALS").append("\n");
         tileDscr.append("----------").append("\n");
         rawMaterials.values().forEach((goods) -> {
-            tileDscr.append(goods.displayName());
-            tileDscr.append("\tB: ").append(goods.getAmount());
-            tileDscr.append("\n");
+            tileDscr.append(goods.displayName()).append("\n");
         });
         tileDscr.append("\n");
 
@@ -139,6 +137,16 @@ public class SurfaceTile extends AbstractMapElement implements ITradable, IStora
 
     public void setBuilding(Building building) {
         this.building = building;
+    }
+    
+    public void randomizeRawMaterials() {
+        Random rand = new Random();
+        Goods.getRawMaterials().forEach(goods -> {
+            //if (rand.nextBoolean()) {
+                Cargo rawMaterial = new Cargo(goods, rand.nextInt(9) * rand.nextInt(100000) + rand.nextInt(100000));
+                rawMaterials.put(goods.getIdentity(), rawMaterial);
+            //}
+        });
     }
 
 }
