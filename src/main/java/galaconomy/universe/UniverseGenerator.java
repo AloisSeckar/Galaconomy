@@ -9,6 +9,7 @@ import galaconomy.universe.player.AIFactory;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.DisplayUtils;
+import galaconomy.utils.StorageUtils;
 import galaconomy.utils.result.ResultBean;
 import java.awt.Color;
 import java.util.*;
@@ -48,16 +49,17 @@ public class UniverseGenerator {
             Base sicopiaPlanet = new Base(sicopiaSystem, "Sicopia Prime", "GLS Capital", Constants.PLANETS_FOLDER + "planet52.png", Color.WHITE, 28, 35);
             sicopiaPlanet.setShipyard(true);
             
-            Cargo randomCargo0 = new Cargo(availableGoods.get(0), rand.nextInt(2000) + 1, glsPlayer, sicopiaPlanet);
-            sicopiaPlanet.updateSupplies(new Supplies(randomCargo0, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
-            Cargo randomCargo1 = new Cargo(availableGoods.get(1), rand.nextInt(2000) + 1, glsPlayer, sicopiaPlanet);
-            sicopiaPlanet.updateSupplies(new Supplies(randomCargo1, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
-            Cargo randomCargo2 = new Cargo(availableGoods.get(2), rand.nextInt(2000) + 1, glsPlayer, sicopiaPlanet);
-            sicopiaPlanet.updateSupplies(new Supplies(randomCargo2, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
-            Cargo randomCargo3 = new Cargo(availableGoods.get(3), rand.nextInt(2000) + 1, glsPlayer, sicopiaPlanet);
-            sicopiaPlanet.updateSupplies(new Supplies(randomCargo3, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
-            Cargo randomCargo4 = new Cargo(availableGoods.get(4), rand.nextInt(2000) + 1, glsPlayer, sicopiaPlanet);
-            sicopiaPlanet.updateSupplies(new Supplies(randomCargo4, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
+            IStorage planetaryStorage = sicopiaPlanet.getCity();
+            Cargo randomCargo0 = new Cargo(availableGoods.get(0), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo0, planetaryStorage);
+            Cargo randomCargo1 = new Cargo(availableGoods.get(1), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo1, planetaryStorage);
+            Cargo randomCargo2 = new Cargo(availableGoods.get(2), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo2, planetaryStorage);
+            Cargo randomCargo3 = new Cargo(availableGoods.get(3), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo3, planetaryStorage);
+            Cargo randomCargo4 = new Cargo(availableGoods.get(4), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo4, planetaryStorage);
 
             sicopiaSystem.addStellarObject(sicopiaPlanet);
             
@@ -188,17 +190,17 @@ public class UniverseGenerator {
             }
             
             Player glsPlayer = UniverseManager.getInstance().getGLSPlayer();
-            
-            Cargo randomCargo0 = new Cargo(availableGoods.get(0), rand.nextInt(2000) + 1, glsPlayer, newPlanet);
-            newPlanet.updateSupplies(new Supplies(randomCargo0, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
-            Cargo randomCargo1 = new Cargo(availableGoods.get(1), rand.nextInt(2000) + 1, glsPlayer, newPlanet);
-            newPlanet.updateSupplies(new Supplies(randomCargo1, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
-            Cargo randomCargo2 = new Cargo(availableGoods.get(2), rand.nextInt(2000) + 1, glsPlayer, newPlanet);
-            newPlanet.updateSupplies(new Supplies(randomCargo2, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
-            Cargo randomCargo3 = new Cargo(availableGoods.get(3), rand.nextInt(2000) + 1, glsPlayer, newPlanet);
-            newPlanet.updateSupplies(new Supplies(randomCargo3, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
-            Cargo randomCargo4 = new Cargo(availableGoods.get(4), rand.nextInt(2000) + 1, glsPlayer, newPlanet);
-            newPlanet.updateSupplies(new Supplies(randomCargo4, rand.nextInt(1000) + 500, rand.nextInt(1000) + 500));
+            IStorage planetaryStorage = newPlanet.getCity();
+            Cargo randomCargo0 = new Cargo(availableGoods.get(0), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo0, planetaryStorage);
+            Cargo randomCargo1 = new Cargo(availableGoods.get(1), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo1, planetaryStorage);
+            Cargo randomCargo2 = new Cargo(availableGoods.get(2), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo2, planetaryStorage);
+            Cargo randomCargo3 = new Cargo(availableGoods.get(3), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo3, planetaryStorage);
+            Cargo randomCargo4 = new Cargo(availableGoods.get(4), rand.nextInt(2000) + 1, glsPlayer, null);
+            StorageUtils.storeCargo(randomCargo4, planetaryStorage);
 
             newStar.addStellarObject(newPlanet);
         }

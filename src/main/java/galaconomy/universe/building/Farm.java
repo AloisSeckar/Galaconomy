@@ -26,7 +26,7 @@ public class Farm extends Building {
     
     @Override
     public Cargo produce() {
-        return new Cargo(Goods.getGoodsByName(Goods.FOOD), getProductivity(), getCurrentOwner(), getParent());
+        return new Cargo(Goods.getGoodsByName(Goods.FOOD), getProductivity(), getCurrentOwner(), this);
     }
     
     ////////////////////////////////////////////////////////////////////////////

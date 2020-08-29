@@ -40,4 +40,5 @@ public class Warehouse extends Building {
         return null;
     }
     
+    // TODO must allow different cargos from different owners
 }

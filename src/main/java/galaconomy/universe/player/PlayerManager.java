@@ -111,12 +111,10 @@ public class PlayerManager {
                     Base destination = null;
 
                     // TODO apply personality for trading
-                    // TODO fix trading to follow standards
+                    // TODO fix ship trading to follow standards
                     String status = "OK";
-                    while (!ship.getCargoList().isEmpty() && "OK".equals(status)) {
-                        Cargo cargo = ship.getCargoList().get(0);
-                        Supplies supply = location.findSupplies(cargo.getGoods().displayName());
-                        status = ship.performSale(ship.getCargoList().get(0), supply.getPriceBuy());
+                    while (!ship.getCurrentCargo().isEmpty() && "OK".equals(status)) {
+                        status = ship.performSale(ship.getCurrentCargo().get(0), new Random().nextInt(1000) + 25); // TODO eliminate this random
                     }
 
                     // TODO apply personality for route planning
@@ -126,7 +124,7 @@ public class PlayerManager {
 
                         int available = itemToBuy.getCargo().getAmount();
                         int price = itemToBuy.getPriceSell();
-                        int capacity = ship.getCargo();
+                        int capacity = ship.getCargoCapacity();
                         long credits = ship.getCurrentOwner().getCredits();
 
                         int amount;

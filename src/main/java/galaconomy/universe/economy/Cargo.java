@@ -13,6 +13,10 @@ public class Cargo implements IDisplayable, Serializable {
     private Player owner;
     private IStorage location;
     
+    public Cargo(Goods goods, int amount) {
+        this(goods, amount, null, null);
+    }
+    
     public Cargo(Goods goods, int amount, Player owner, IStorage location) {
         this.goods = goods;
         this.amount = amount;
@@ -35,8 +39,8 @@ public class Cargo implements IDisplayable, Serializable {
     @Override
     public String displayDscr() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Owner: ").append(owner.displayName()).append("\n");
-        sb.append("Stored at: ").append(location.getStorageIdentity()).append("\n");
+        sb.append("Owner: ").append(owner != null ? owner.displayName() : "N/A").append("\n");
+        sb.append("Stored at: ").append(location != null ? location.getStorageIdentity() : "N/A").append("\n");
         return sb.toString();
     }
 
@@ -55,6 +59,14 @@ public class Cargo implements IDisplayable, Serializable {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public void increaseAmount(int increase) {
+        setAmount(getAmount() + increase);
+    }
+
+    public void decreaseAmount(int decrease) {
+        setAmount(Math.min(getAmount() - decrease, 0));
     }
     
     public Player getOwner() {

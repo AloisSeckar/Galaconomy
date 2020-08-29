@@ -34,6 +34,10 @@ public class Goods implements IDisplayable, Serializable {
         this.inputs = inputs;
     }
     
+    public String getIdentity() {
+        return name;
+    }
+    
     @Override
     public String displayName() {
         return name;

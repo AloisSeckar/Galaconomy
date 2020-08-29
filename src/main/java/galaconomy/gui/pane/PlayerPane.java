@@ -6,6 +6,7 @@ import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.traffic.*;
+import galaconomy.utils.StorageUtils;
 import java.util.*;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -117,10 +118,9 @@ public class PlayerPane extends AnchorPane {
         player.addShip(newShip);
         
         // TODO delete
-        Base origin = UniverseUtils.getRandomBase();
-        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Metal"), 10, player, origin));
-        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Chips"), 10, player, origin));
-        newShip.getCargoList().add(new Cargo(Goods.getGoodsByName("Food"), 10, player, origin));
+        StorageUtils.storeCargo(new Cargo(Goods.getGoodsByName("Metal"), 10, player, newShip), newShip);
+        StorageUtils.storeCargo(new Cargo(Goods.getGoodsByName("Chips"), 10, player, newShip), newShip);
+        StorageUtils.storeCargo(new Cargo(Goods.getGoodsByName("Food"), 10, player, newShip), newShip);
         //
         
         Image newShipImage = new Image(getClass().getResourceAsStream(newShip.getImage()));

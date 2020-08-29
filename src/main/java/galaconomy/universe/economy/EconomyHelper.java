@@ -9,7 +9,7 @@ public class EconomyHelper {
         Supplies ret = null;
         
         if (base != null) {
-            for (Supplies current : base.getSupplies().values()) {
+            for (Supplies current : base.getSupplies()) {
                 if (ret == null || current.getPriceSell() < ret.getPriceSell()) {
                     ret = current;
                 }

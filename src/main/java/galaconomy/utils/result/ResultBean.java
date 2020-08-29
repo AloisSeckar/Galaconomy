@@ -4,6 +4,7 @@ public class ResultBean {
     
     private boolean success;
     private String message;
+    private Object returnObject;
 
     public ResultBean() {
     }
@@ -17,8 +18,8 @@ public class ResultBean {
         return success;
     }
     
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public void setSuccess() {
+        this.success = true;
         this.setMessage("Operation performed");
     }
 
@@ -28,6 +29,14 @@ public class ResultBean {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Object getReturnObject() {
+        return returnObject;
+    }
+
+    public void setReturnObject(Object returnObject) {
+        this.returnObject = returnObject;
     }
     
     public static ResultBean createDefaultBean() {

@@ -100,7 +100,7 @@ public class Travel implements IDisplayable, Serializable {
             
             routeDscr.append("CARGO").append("\n");
             routeDscr.append("----------").append("\n");
-            ship.getCargoList().forEach((goods) -> {
+            ship.getCurrentCargo().forEach(goods -> {
                 routeDscr.append(goods.displayName()).append("\n");
             });
         }

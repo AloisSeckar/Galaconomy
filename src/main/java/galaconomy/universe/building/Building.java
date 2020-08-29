@@ -2,9 +2,11 @@ package galaconomy.universe.building;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.*;
-import galaconomy.universe.economy.Cargo;
+import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
+import galaconomy.utils.StorageUtils;
+import galaconomy.utils.result.ResultBean;
 import java.io.Serializable;
 import java.util.*;
 
@@ -40,7 +42,10 @@ public abstract class Building implements IDisplayable, ITradable, IStorage, Ser
     private Base parent;
     
     private byte level;
-
+    
+    private int storageCapacity;
+    private final HashMap<String, Cargo> storage = new HashMap<>();
+            
     public Building(String name, String dscr, String img, int price, Base parent, Player owner) {
         this.name = name;
         this.dscr = dscr;
@@ -101,6 +106,48 @@ public abstract class Building implements IDisplayable, ITradable, IStorage, Ser
     public String getStorageIdentity() {
         return displayName();
     }
+
+    @Override
+    public int getStorageCapacity() {
+        return storageCapacity;
+    }
+    
+    @Override
+    public Player getStorageOwner() {
+        return getCurrentOwner();
+    }
+
+    @Override
+    public List<Cargo> getCurrentCargo() {
+        List<Cargo> ret = new ArrayList<>();
+        ret.addAll(storage.values());
+        return ret;
+    }
+    
+    @Override
+    public ResultBean storeCargo(Cargo cargo) {
+        return StorageUtils.storeCargo(cargo, this);
+    }
+
+    @Override
+    public ResultBean withdrawCargo(Goods goods, int amount) {
+        return StorageUtils.withdrawCargo(goods, amount, this);
+    }
+
+    @Override
+    public Cargo get(String key) {
+         return storage.get(key);
+    }
+
+    @Override
+    public Cargo put(String key, Cargo cargo) {
+         return storage.put(key, cargo);
+    }
+
+    @Override
+    public Cargo remove(String key) {
+         return storage.remove(key);
+    }
     
     public Base getParent() {
         return parent;
@@ -115,7 +162,19 @@ public abstract class Building implements IDisplayable, ITradable, IStorage, Ser
     }
 
     public void levelUp() {
-        this.level++;
+        if (level < 255) {
+            level++;
+        }
+    }
+    
+    public int getFreeStorageCapacity() {
+        int usedSpace = 0;
+        usedSpace = storage.values().stream().map((cargo) -> cargo.getAmount()).reduce(usedSpace, Integer::sum);   
+        return Math.min(storageCapacity - usedSpace, 0);
+    }
+
+    public void increaseStorageCapacity(int increase) {
+        this.storageCapacity += increase;
     }
     
     public abstract Cargo produce();

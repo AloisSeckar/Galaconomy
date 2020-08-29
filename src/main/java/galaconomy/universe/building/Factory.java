@@ -56,7 +56,9 @@ public class Factory extends Building {
     
     @Override
     public Cargo produce() {
-        return new Cargo(output, getProductivity(), getCurrentOwner(), getParent());
+        // TODO check if capacity allows it
+        // TODO dont sell automatically
+        return new Cargo(output, getProductivity(), getCurrentOwner(), this);
     }
     
     ////////////////////////////////////////////////////////////////////////////

@@ -5,6 +5,8 @@ import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.map.*;
 import galaconomy.utils.DisplayUtils;
+import galaconomy.utils.StorageUtils;
+import galaconomy.utils.result.ResultBean;
 import java.io.Serializable;
 import java.util.*;
 import org.slf4j.*;
@@ -24,7 +26,6 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
     
     private int upkeep;
     private int hull;
-    private int cargo;
     private double riftSpeed;
     private double pulseSpeed;
     
@@ -35,7 +36,8 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
     
     private boolean idle = true;
     
-    private final List<Cargo> cargoList = new ArrayList<>();
+    private int cargoCapacity;
+    private final HashMap<String, Cargo> cargoList = new HashMap<>();
     
     private final List<Travel> travels = new ArrayList<>();
 
@@ -49,7 +51,7 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
         this.price = shipClass.getPrice();
         this.upkeep = shipClass.getUpkeep();
         this.hull = shipClass.getHull();
-        this.cargo = shipClass.getCargo();
+        this.cargoCapacity = shipClass.getCargo();
         this.riftSpeed = shipClass.getRiftSpeed();
         this.pulseSpeed = shipClass.getPulseSpeed();
         
@@ -70,8 +72,8 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
         
         shipDscr.append("CARGO").append("\n");
         shipDscr.append("----------").append("\n");
-        cargoList.forEach((goods) -> {
-            shipDscr.append(goods.displayName()).append("\n");
+        cargoList.values().forEach(cargo -> {
+            shipDscr.append(cargo.displayName()).append("\n");
         });
         shipDscr.append("\n");
         
@@ -89,7 +91,7 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
         shipDscr.append("Class: ").append(shipClass).append("\n");
         shipDscr.append("Upkeep: ").append(upkeep).append("\n");
         shipDscr.append("Hull: ").append(hull).append("\n");
-        shipDscr.append("Cargo: ").append(cargo).append("\n");
+        shipDscr.append("Cargo: ").append(cargoCapacity).append("\n");
         shipDscr.append("Speed: ").append(DisplayUtils.formatDouble(riftSpeed)).append("\n\n");
         
         shipDscr.append(dscr);
@@ -133,16 +135,54 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
         return displayName();
     }
 
+    @Override
+    public int getStorageCapacity() {
+        return cargoCapacity;
+    }
+    
+    @Override
+    public Player getStorageOwner() {
+        return getCurrentOwner();
+    }
+
+    @Override
+    public List<Cargo> getCurrentCargo() {
+        List<Cargo> ret = new ArrayList<>();
+        ret.addAll(cargoList.values());
+        return ret;
+    }
+    
+    @Override
+    public ResultBean storeCargo(Cargo cargo) {
+        return StorageUtils.storeCargo(cargo, this);
+    }
+
+    @Override
+    public ResultBean withdrawCargo(Goods goods, int amount) {
+        return StorageUtils.withdrawCargo(goods, amount, this);
+    }
+
+    @Override
+    public Cargo get(String key) {
+         return cargoList.get(key);
+    }
+
+    @Override
+    public Cargo put(String key, Cargo cargo) {
+         return cargoList.put(key, cargo);
+    }
+
+    @Override
+    public Cargo remove(String key) {
+         return cargoList.remove(key);
+    }
+
     public List<Travel> getTravels() {
         return travels;
     }
     
     public void addTravel(Travel newTravel) {
         travels.add(0, newTravel);
-    }
-
-    public List<Cargo> getCargoList() {
-        return cargoList;
     }
     
     public String performPurchase(Goods goods, int amount, int price) {
@@ -154,7 +194,7 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
             
             currentBase.performSale(goods, amount);
             currentOwner.spendCredits(totalPrice);
-            cargoList.add(newCargo);
+            cargoList.put(goods.getIdentity(), newCargo);
             
             LOG.info(name + " purchased " + newCargo.displayName() + " at " + currentBase.displayName() + " for " + totalPrice + " credits");
         }
@@ -171,7 +211,7 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
             
             currentBase.performPurchase(cargo);
             currentOwner.earnCredits(totalPrice);
-            cargoList.remove(cargo);
+            cargoList.remove(cargo.getIdentity());
             
             LOG.info(name + " sold " + cargo.displayName() + " at " + currentBase.displayName() + " for " + totalPrice + " credits");
             
@@ -229,12 +269,12 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
         this.hull = hull;
     }
 
-    public int getCargo() {
-        return cargo;
+    public int getCargoCapacity() {
+        return cargoCapacity;
     }
 
-    public void setCargo(int cargo) {
-        this.cargo = cargo;
+    public void setCargoCapacity(int cargoCapacity) {
+        this.cargoCapacity = cargoCapacity;
     }
 
     public double getRiftSpeed() {
@@ -257,4 +297,6 @@ public class Ship implements IDisplayable, ITradable, IStorage, Serializable {
     public String toString() {
         return displayName();
     }
+    
+    // TODO must allow different cargos from different owners
 }

@@ -70,7 +70,7 @@ public class TradeHelper {
                             newOwner.spendCredits(price);
                             currentOwner.earnCredits(price);
                             logAssetTrade(asset.getIdentity(), currentOwner.displayName(), newOwner.displayName(), price);
-                            ret.setSuccess(true);
+                            ret.setSuccess();
                         } else {
                             ret.setMessage("Insufficient credits");
                         }
@@ -114,7 +114,7 @@ public class TradeHelper {
 
                 logCargoTrade(cargo.displayName(), seller.displayName(), buyer.displayName(), totalPrice);
 
-                ret.setSuccess(true);
+                ret.setSuccess();
             } else {
                 ret.setMessage(validation);
             }
@@ -194,9 +194,9 @@ public class TradeHelper {
     }
 
     private static int getAvailableCargoSpace(Ship ship) {
-        int ret = ship.getCargo();
+        int ret = ship.getCargoCapacity();
         
-        for (Cargo cargoItem : ship.getCargoList()) {
+        for (Cargo cargoItem : ship.getCurrentCargo()) {
             ret -= cargoItem.getAmount();
         }
         

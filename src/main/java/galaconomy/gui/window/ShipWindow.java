@@ -42,7 +42,7 @@ public class ShipWindow extends Stage {
         GridPane cargoPane = new GridPane();
         cargoPane.add(new Label("Cargo list:"), 0, 0);
         int col = 0;
-        for (Cargo cargo : ship.getCargoList()) {
+        for (Cargo cargo : ship.getCurrentCargo()) {
             Image cargoImage = new Image(getClass().getResourceAsStream(cargo.getImage()));
             ImageView cargoImageView = new ImageView(cargoImage);
             cargoImageView.setFitWidth(64);

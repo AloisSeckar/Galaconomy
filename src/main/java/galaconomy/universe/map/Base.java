@@ -6,11 +6,12 @@ import galaconomy.universe.building.*;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.player.Player;
 import galaconomy.utils.DisplayUtils;
+import galaconomy.utils.StorageUtils;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.*;
 
-public class Base extends StellarObject implements IStorage, Serializable {
+public class Base extends StellarObject implements Serializable {
     
     // TODO different sized bases
     public static final int COLS = DisplayUtils.getMAX_X() / DisplayUtils.BASE_TILE_SIZE;
@@ -18,14 +19,15 @@ public class Base extends StellarObject implements IStorage, Serializable {
     
     private final SurfaceTile[][] surface = new SurfaceTile[COLS][ROWS];
     
-    private final Map<String, Supplies> supplies = new HashMap<>();
-    
-    private boolean shipyard = false;
+    private final City city;
+    private Shipyard shipyard;
 
     public Base(Star system, String name, String dscr, String img, Color color, int xCoord, int yCoord) throws Exception {
         super(name, dscr, img, color, xCoord, yCoord, system);
         
         Player glsPlayer = UniverseManager.getInstance().getGLSPlayer();
+        city = new City(this);
+        shipyard = new Shipyard(this);
         
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -45,8 +47,7 @@ public class Base extends StellarObject implements IStorage, Serializable {
                 }
                 
                 if (row == ROWS / 2 && col == COLS / 2) {
-                    Building building = new City(this);
-                    surface[col][row].setBuilding(building);
+                    surface[col][row].setBuilding(city);
                 }
             }
         }
@@ -56,16 +57,13 @@ public class Base extends StellarObject implements IStorage, Serializable {
     public String displayDscr() {
         StringBuilder baseDscr = new StringBuilder();
         
-        baseDscr.append("Shipyard: ").append(shipyard);
+        baseDscr.append("Shipyard: ").append(shipyard != null);
         baseDscr.append("\n\n");
         
         baseDscr.append("SUPPLIES").append("\n");
         baseDscr.append("----------").append("\n");
-        supplies.values().forEach(cargo -> {
-            baseDscr.append(cargo.displayName());
-            baseDscr.append("\tB: ").append(cargo.getPriceBuy());
-            baseDscr.append("\tS: ").append(cargo.getPriceSell());
-            baseDscr.append("\n");
+        city.getCurrentCargo().forEach(cargo -> {
+            baseDscr.append(cargo.displayName()).append("\n");
         });
         baseDscr.append("\n");
         
@@ -74,11 +72,6 @@ public class Base extends StellarObject implements IStorage, Serializable {
         baseDscr.append(super.displayDscr());
         
         return baseDscr.toString();
-    }
-    
-    @Override
-    public String getStorageIdentity() {
-        return displayName();
     }
 
     public SurfaceTile[][] getSurface() {
@@ -89,53 +82,29 @@ public class Base extends StellarObject implements IStorage, Serializable {
         return surface[xCoord][yCoord];
     }
 
+    public City getCity() {
+        return city;
+    }
+    
     public boolean isShipyard() {
-        return shipyard;
+        return shipyard != null;
     }
 
     public void setShipyard(boolean shipyard) {
-        this.shipyard = shipyard;
-        
         if (shipyard) {
-            surface[COLS / 2][ROWS / 2 + 1].setBuilding(new Shipyard(this));
+            this.shipyard = new Shipyard(this);
         } else {
-            surface[COLS / 2][ROWS / 2 + 1].setBuilding(null);
+            this.shipyard = null;
         }
-    }
-
-    public Map<String, Supplies> getSupplies() {
-        return supplies;
-    }
-    
-    public Supplies findSupplies(String key) {
-        return supplies.get(key);
-    }
-    
-    public void updateSupplies(Supplies newSupply) {
-        supplies.put(newSupply.getIdentity(), newSupply);
+        surface[COLS / 2][ROWS / 2 + 1].setBuilding(this.shipyard);
     }
     
     public void performPurchase(Cargo cargo) {
-        String goodsName = cargo.getGoods().displayName();
-        Supplies currentSupply = findSupplies(goodsName);
-        if (currentSupply == null) {
-            currentSupply = new Supplies(cargo, 0, 0);
-            supplies.put(goodsName, currentSupply);
-        }
-        currentSupply.increaseSupply(cargo.getAmount());
+        StorageUtils.storeCargo(cargo, shipyard); // TODO return and handle ResultBean
     }
     
     public void performSale(Goods goods, int amount) {
-        String goodsName = goods.displayName();
-        Supplies currentSupply = findSupplies(goodsName);
-        if (currentSupply == null) {
-            Cargo newCargo = new Cargo(goods, 0, UniverseManager.getInstance().getGLSPlayer(), this);
-            currentSupply = new Supplies(newCargo, 0, 0);
-        }
-        currentSupply.decreaseSupply(amount);
-        if (currentSupply.getCargo().getAmount() < 1) {
-            supplies.remove(goodsName);
-        }
+        StorageUtils.withdrawCargo(goods, amount, shipyard);
     }    
 
     public int countLands() {
@@ -159,5 +128,33 @@ public class Base extends StellarObject implements IStorage, Serializable {
 
     public int countFreeLands() {
         return countLands() - countBuildings();
+    }
+
+    // TODO implement real supply/demand logic (inside "City" class)
+    public Supplies findSupplies(String displayName) {
+        Supplies ret = null;
+        
+        Cargo cargo = city.get(displayName);
+        if (cargo != null) {
+            Random rand = new Random();
+            ret = new Supplies(cargo, rand.nextInt(1500) + 25, rand.nextInt(1500) + 25); // TODO remove "random" logic
+        }
+        
+        return ret;
+    }
+    
+    public List<Supplies> getSupplies() {
+        List<Supplies> ret = new ArrayList();
+        
+        Random rand = new Random();
+        city.getCurrentCargo().forEach(cargo -> {
+            ret.add(new Supplies(cargo, rand.nextInt(1500) + 25, rand.nextInt(1500) + 25)); // TODO remove "random" logic
+        });
+        
+        return ret;
+    }
+
+    public void recalcSupplies() {
+        city.recalcSupplies();
     }
 }
