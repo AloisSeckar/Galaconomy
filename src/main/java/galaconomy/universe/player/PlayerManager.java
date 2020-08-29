@@ -66,7 +66,7 @@ public class PlayerManager {
                                 if (building.getPrice() <= player.getCredits()) {
                                     ResultBean tradeResult = TradeHelper.tradeAsset(building, player);
                                     if (tradeResult.isSuccess()) {
-                                        building.setParent((Base) land.getParent());
+                                        building.setParent(land);
                                         land.setBuilding(building);
                                         player.addBuilding(building);
                                     } else {

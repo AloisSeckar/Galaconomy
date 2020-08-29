@@ -118,7 +118,7 @@ public class UniverseGenerator {
                     Building factory = GLSFactory.deliverBuilding(Building.FACTORY);
                     ResultBean tradeBuildingResult = TradeHelper.tradeAsset(factory, builder);
                     if (tradeBuildingResult.isSuccess()) {
-                        factory.setParent((Base) land.getParent());
+                        factory.setParent(land);
                         land.setBuilding(factory);
                         builder.addBuilding(factory);
                         LOG.info("Builder: New factory purchased");

@@ -2,7 +2,7 @@ package galaconomy.universe.building;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.economy.*;
-import galaconomy.universe.map.Base;
+import galaconomy.universe.map.SurfaceTile;
 import galaconomy.universe.player.Player;
 import java.util.*;
 
@@ -11,8 +11,8 @@ public class Factory extends Building {
     private final List<Goods> input = new ArrayList<>();
     private Goods output;
     
-    public Factory(Base base, Player owner) {
-        super(FACTORY, "Universal building for crafting goods", IMG_FACTORY, 1000, base, owner);
+    public Factory(SurfaceTile parent, Player owner) {
+        super(FACTORY, "Universal building for crafting goods", IMG_FACTORY, 1000, parent, owner);
         output = Goods.getRandomFactoryProduct();
         setInputs(output.getInputs());
     }

@@ -26,8 +26,6 @@ public class Base extends StellarObject implements Serializable {
         super(name, dscr, img, color, xCoord, yCoord, system);
         
         Player glsPlayer = UniverseManager.getInstance().getGLSPlayer();
-        city = new City(this);
-        shipyard = new Shipyard(this);
         
         int middleRow = ROWS / 2;
         int middleCol = COLS / 2;
@@ -51,13 +49,13 @@ public class Base extends StellarObject implements Serializable {
                 
                 if (row < middleRow - 1 || row > middleRow + 1 || col < middleCol - 1 || col > middleCol + 1) {
                     surface[col][row].randomizeRawMaterials();
-                } else {
-                    if (row == middleRow && col == middleCol) {
-                        surface[col][row].setBuilding(city);
-                    }
                 }
             }
         }
+        
+        SurfaceTile cityTile = surface[middleCol][middleRow];
+        city = new City(cityTile);
+        cityTile.setBuilding(city);
     }
     
     @Override
@@ -98,12 +96,13 @@ public class Base extends StellarObject implements Serializable {
     }
 
     public void setShipyard(boolean shipyard) {
+        SurfaceTile shipyardTile = surface[COLS / 2][ROWS / 2 + 1];
         if (shipyard) {
-            this.shipyard = new Shipyard(this);
+            this.shipyard = new Shipyard(shipyardTile);
         } else {
             this.shipyard = null;
         }
-        surface[COLS / 2][ROWS / 2 + 1].setBuilding(this.shipyard);
+        shipyardTile.setBuilding(this.shipyard);
     }
     
     public void performPurchase(Cargo cargo) {

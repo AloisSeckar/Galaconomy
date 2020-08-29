@@ -30,7 +30,7 @@ public class EconomyManager {
                 player.getBuildings().forEach((building) -> {
                     Cargo harvest = building.produce();
                     if (harvest != null) {
-                        TradeHelper.sellCargo(harvest, player, building.getParent());
+                        TradeHelper.sellCargo(harvest, player, building.getParentBase());
                     }
                 });
             } catch (Exception ex) {

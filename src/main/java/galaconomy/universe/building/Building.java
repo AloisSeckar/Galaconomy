@@ -4,6 +4,7 @@ import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
+import galaconomy.universe.map.SurfaceTile;
 import galaconomy.universe.player.Player;
 import galaconomy.utils.StorageUtils;
 import galaconomy.utils.result.ResultBean;
@@ -39,14 +40,14 @@ public abstract class Building implements IDisplayable, ITradable, IStorage, Ser
     private Player currentOwner;
     private final List<Player> owners = new ArrayList<>();
     
-    private Base parent;
+    private SurfaceTile parent;
     
     private byte level;
     
     private int storageCapacity;
     private final HashMap<String, Cargo> storage = new HashMap<>();
             
-    public Building(String name, String dscr, String img, int price, Base parent, Player owner) {
+    public Building(String name, String dscr, String img, int price, SurfaceTile parent, Player owner) {
         this.name = name;
         this.dscr = dscr;
         this.img = img;
@@ -149,11 +150,11 @@ public abstract class Building implements IDisplayable, ITradable, IStorage, Ser
          return storage.remove(key);
     }
     
-    public Base getParent() {
-        return parent;
+    public Base getParentBase() {
+        return parent != null ? (Base) parent.getParent() : null;
     }
 
-    public void setParent(Base parent) {
+    public void setParent(SurfaceTile parent) {
         this.parent = parent;
     }
 

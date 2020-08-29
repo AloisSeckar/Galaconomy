@@ -2,15 +2,15 @@ package galaconomy.universe.building;
 
 import galaconomy.constants.Constants;
 import galaconomy.universe.economy.*;
-import galaconomy.universe.map.Base;
+import galaconomy.universe.map.SurfaceTile;
 import galaconomy.universe.player.Player;
 
 public class Mine extends Building {
     
     private Goods output;
     
-    public Mine(Base base, Player owner) {
-        super(MINE, "Universal platform for harvesting resources", IMG_MINE, 850, base, owner);
+    public Mine(SurfaceTile parent, Player owner) {
+        super(MINE, "Universal platform for harvesting resources", IMG_MINE, 850, parent, owner);
         output = Goods.getRandomFactoryProduct();
     }
     
@@ -33,6 +33,7 @@ public class Mine extends Building {
     }
 
     public void setOutput(Goods output) {
+        // TODO dont allow anything but raw material
         this.output = output;
     }
     

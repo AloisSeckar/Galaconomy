@@ -15,7 +15,7 @@ public class Constants {
     
     public static final String DEFAULT_IMAGE = "default";
     
-    private static final String SEPARATOR = File.separator;
+    private static final String SEPARATOR = "/";
     
     public static final String FOLDER_RES = SEPARATOR;
     public static final String FOLDER_CSS = FOLDER_RES + "css" + SEPARATOR;

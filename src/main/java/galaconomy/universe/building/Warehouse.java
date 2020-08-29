@@ -1,7 +1,7 @@
 package galaconomy.universe.building;
 
 import galaconomy.universe.economy.Cargo;
-import galaconomy.universe.map.Base;
+import galaconomy.universe.map.SurfaceTile;
 import galaconomy.universe.player.Player;
 import java.util.*;
 
@@ -10,8 +10,8 @@ public class Warehouse extends Building {
     private int capacity = 100;
     private final List<Cargo> storage = new ArrayList<>();
     
-    public Warehouse(Base base, Player owner) {
-        super("Warehouse", "Place for storing excessive goods", IMG_WAREHOUSE, 750, base, owner);
+    public Warehouse(SurfaceTile parent, Player owner) {
+        super(WAREHOUSE, "Place for storing excessive goods", IMG_WAREHOUSE, 750, parent, owner);
     }
     
     public void increaseCapacity(int increase) {

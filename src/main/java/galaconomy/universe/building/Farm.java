@@ -1,13 +1,13 @@
 package galaconomy.universe.building;
 
 import galaconomy.universe.economy.*;
-import galaconomy.universe.map.Base;
+import galaconomy.universe.map.SurfaceTile;
 import galaconomy.universe.player.Player;
 
 public class Farm extends Building {
     
-    public Farm(Base base, Player owner) {
-        super(FARM, "Food is being produced here", IMG_FARM, 600, base, owner);
+    public Farm(SurfaceTile parent, Player owner) {
+        super(FARM, "Food is being produced here", IMG_FARM, 600, parent, owner);
     }
     
     @Override

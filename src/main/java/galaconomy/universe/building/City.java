@@ -2,17 +2,17 @@ package galaconomy.universe.building;
 
 import galaconomy.universe.UniverseManager;
 import galaconomy.universe.economy.Cargo;
-import galaconomy.universe.map.Base;
+import galaconomy.universe.map.SurfaceTile;
 
 public class City extends Building {
 
-    public City(Base base) {
-        super(base.displayName(), "", IMG_CITY, 0, base, UniverseManager.getInstance().getGLSPlayer());
+    public City(SurfaceTile parent) {
+        super(parent.getParent().displayName(), "", IMG_CITY, 0, parent, UniverseManager.getInstance().getGLSPlayer());
     }
     
     @Override
     public String displayDscr() {
-        return getParent().displayDscr();
+        return getParentBase().displayDscr();
     }
 
     @Override

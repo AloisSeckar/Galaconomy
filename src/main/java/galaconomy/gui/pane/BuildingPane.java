@@ -132,7 +132,7 @@ public class BuildingPane extends AnchorPane {
                     Building newBuilding = GLSFactory.deliverBuilding(buildingType);
                     ResultBean tradeResult = TradeHelper.tradeAsset(newBuilding, player);
                     if (tradeResult.isSuccess()) {
-                        newBuilding.setParent((Base) land.getParent());
+                        newBuilding.setParent(land);
                         land.setBuilding(newBuilding);
                         player.addBuilding(newBuilding);
                         BaseMapFrame.getInstance().paintBaseMap();
