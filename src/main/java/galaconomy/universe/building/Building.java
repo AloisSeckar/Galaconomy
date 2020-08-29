@@ -154,6 +154,10 @@ public abstract class Building implements IDisplayable, ITradable, IStorage, Ser
         return parent != null ? (Base) parent.getParent() : null;
     }
 
+    public SurfaceTile getParent() {
+        return parent;
+    }
+
     public void setParent(SurfaceTile parent) {
         this.parent = parent;
     }

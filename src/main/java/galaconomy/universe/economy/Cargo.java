@@ -4,8 +4,12 @@ import galaconomy.constants.Constants;
 import galaconomy.universe.*;
 import galaconomy.universe.player.Player;
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.UUID;
 
 public class Cargo implements IDisplayable, Serializable {
+    
+    private final UUID cargoID = UUID.randomUUID();
     
     private final Goods goods;
     
@@ -67,7 +71,7 @@ public class Cargo implements IDisplayable, Serializable {
     }
 
     public void decreaseAmount(int decrease) {
-        setAmount(Math.min(getAmount() - decrease, 0));
+        setAmount(Math.max(getAmount() - decrease, 0));
     }
     
     public Player getOwner() {
@@ -85,4 +89,27 @@ public class Cargo implements IDisplayable, Serializable {
     public void setLocation(IStorage location) {
         this.location = location;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.cargoID);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cargo other = (Cargo) obj;
+        return Objects.equals(this.cargoID, other.cargoID);
+    }
+    
 }

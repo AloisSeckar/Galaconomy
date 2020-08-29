@@ -142,10 +142,10 @@ public class SurfaceTile extends AbstractMapElement implements ITradable, IStora
     public void randomizeRawMaterials() {
         Random rand = new Random();
         Goods.getRawMaterials().forEach(goods -> {
-            //if (rand.nextBoolean()) {
+            if (rand.nextBoolean()) {
                 Cargo rawMaterial = new Cargo(goods, rand.nextInt(9) * rand.nextInt(100000) + rand.nextInt(100000));
                 rawMaterials.put(goods.getIdentity(), rawMaterial);
-            //}
+            }
         });
     }
 

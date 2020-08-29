@@ -4,14 +4,19 @@ import galaconomy.constants.Constants;
 import galaconomy.universe.economy.*;
 import galaconomy.universe.map.SurfaceTile;
 import galaconomy.universe.player.Player;
+import galaconomy.universe.player.PlayerManager;
+import galaconomy.utils.result.ResultBean;
+import org.slf4j.*;
 
 public class Mine extends Building {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(PlayerManager.class);
     
     private Goods output;
     
     public Mine(SurfaceTile parent, Player owner) {
         super(MINE, "Universal platform for harvesting resources", IMG_MINE, 850, parent, owner);
-        output = Goods.getRandomFactoryProduct();
+        output = Goods.getRandomRawMaterial();
     }
     
     @Override
@@ -39,7 +44,26 @@ public class Mine extends Building {
     
     @Override
     public Cargo produce() {
-        return new Cargo(output, getProductivity(), getCurrentOwner(), this);
+        Cargo production = null;
+        
+        if (output != null) {
+            SurfaceTile parent = getParent();
+            if ( parent != null) {
+                ResultBean withdrawal = parent.withdrawCargo(output, getProductivity());
+                if (withdrawal.isSuccess()) {
+                    production = (Cargo) withdrawal.getReturnObject();
+                    if (production.getAmount() < 1) {
+                        this.output = null;
+                        LOG.info(getIdentity() + " - mine production halted: " + production.getIdentity() + " resource depleated");
+                    }
+                } else {
+                    this.output = null;
+                    LOG.info(getIdentity() + " - mine production halted: " + withdrawal.getMessage());
+                }
+            }
+        }
+        
+        return production;
     }
     
     ////////////////////////////////////////////////////////////////////////////
