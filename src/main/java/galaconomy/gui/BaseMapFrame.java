@@ -53,17 +53,7 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
         if (base != null) {
             for (SurfaceTile[] tileRow : base.getSurface()) {
                 for (SurfaceTile tile : tileRow) {
-                    // TODO universal method for creating imageviews
-                    ImageView object = new ImageView();
-                    object.setPreserveRatio(false);
-                    object.setSmooth(true);
-                    object.setCache(true);
-
-                    Image objectImg = new Image(getClass().getResourceAsStream(tile.getImage()));
-                    object.setImage(objectImg);
-
-                    object.setFitWidth(DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
-                    object.setFitHeight(DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
+                    ImageView object = DisplayUtils.getImageView(tile.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
                     object.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
                     object.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
 
@@ -76,16 +66,7 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
 
                     Building building = tile.getBuilding();
                     if (building != null) {
-                        ImageView buildingObj = new ImageView();
-                        buildingObj.setPreserveRatio(false);
-                        buildingObj.setSmooth(true);
-                        buildingObj.setCache(true);
-
-                        Image buildingImg = new Image(getClass().getResourceAsStream(building.getImage()));
-                        buildingObj.setImage(buildingImg);
-
-                        buildingObj.setFitWidth(DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
-                        buildingObj.setFitHeight(DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
+                        ImageView buildingObj = DisplayUtils.getImageView(building.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);                   
                         buildingObj.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
                         buildingObj.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
 

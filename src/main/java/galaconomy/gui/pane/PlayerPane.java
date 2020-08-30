@@ -6,6 +6,7 @@ import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.traffic.*;
+import galaconomy.utils.DisplayUtils;
 import galaconomy.utils.StorageUtils;
 import java.util.*;
 import javafx.geometry.Insets;
@@ -123,22 +124,8 @@ public class PlayerPane extends AnchorPane {
         StorageUtils.storeCargo(new Cargo(Goods.getGoodsByName("Food"), 10, player, newShip), newShip);
         //
         
-        Image newShipImage = new Image(getClass().getResourceAsStream(newShip.getImage()));
-        ImageView newShipImageView = new ImageView(newShipImage);
-        newShipImageView.setFitWidth(64);
-        newShipImageView.setFitHeight(64);
-
-        Button newShipButton = new Button();
-        newShipButton.setGraphic(newShipImageView);
-        newShipButton.setTooltip(new Tooltip(newShip.displayName()));
-        newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-            DisplayPane.getInstance().setElementToDisplay(newShip);
-            
-            ShipWindow window = new ShipWindow(this, newShip);
-            window.show();
-        });
+        Button newShipButton = getShipButton(newShip);
         shipDetailButtons.add(newShipButton);
-
         shipBox.getChildren().add(newShipButton);
 
         player.spendCredits(shipClass.getPrice());
@@ -163,22 +150,8 @@ public class PlayerPane extends AnchorPane {
         Player player = UniverseManager.getInstance().getPlayer();
         
         player.getShips().forEach(ship -> {
-            Image newShipImage = new Image(getClass().getResourceAsStream(ship.getImage()));
-            ImageView newShipImageView = new ImageView(newShipImage);
-            newShipImageView.setFitWidth(64);
-            newShipImageView.setFitHeight(64);
-            
-            Button newShipButton = new Button();
-            newShipButton.setGraphic(newShipImageView);
-            newShipButton.setTooltip(new Tooltip(ship.displayName()));
-            newShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
-                DisplayPane.getInstance().setElementToDisplay(ship);
-
-                ShipWindow window = new ShipWindow(this, ship);
-                window.show();
-            });
+            Button newShipButton = getShipButton(ship);
             shipDetailButtons.add(newShipButton);
-
             shipBox.getChildren().add(newShipButton);
         });
     }
@@ -186,5 +159,20 @@ public class PlayerPane extends AnchorPane {
     public void updatePlayerCredits() {
         Player player = UniverseManager.getInstance().getPlayer();
         playerCredits.setText("Credits: " + String.valueOf(player.getCredits()));  
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    private Button getShipButton(Ship ship) {
+        Button shipButton = new Button();
+        shipButton.setGraphic(DisplayUtils.getImageView(ship.getImage(), 64));
+        shipButton.setTooltip(new Tooltip(ship.displayName()));
+        shipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
+            DisplayPane.getInstance().setElementToDisplay(ship);
+            
+            ShipWindow window = new ShipWindow(this, ship);
+            window.show();
+        });
+        return shipButton;
     }
 }

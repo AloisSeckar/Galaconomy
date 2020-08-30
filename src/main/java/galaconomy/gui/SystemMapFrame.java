@@ -148,32 +148,25 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     ////////////////////////////////////////////////////////////////////////////
     
     private void addObject(AbstractMapElement mapObject) {
-        ImageView object = new ImageView();
-        object.setPreserveRatio(false);
-        object.setSmooth(true);
-        object.setCache(true);
+        if (mapObject != null) {
+            ImageView object;
+            if (mapObject instanceof Star) {
+                object = DisplayUtils.getImageView(mapObject.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * 10);
+                object.setX(DisplayUtils.fitCoordIntoDisplay(DisplayUtils.getMAX_X() / 2 + 1) - DisplayUtils.DEFAULT_TILE_SIZE * 5);
+                object.setY(DisplayUtils.fitCoordIntoDisplay(DisplayUtils.getMAX_Y() / 2 + 1) - DisplayUtils.DEFAULT_TILE_SIZE * 5);
+            } else {
+                object = DisplayUtils.getImageView(mapObject.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * 4);
+                object.setX(DisplayUtils.fitCoordIntoDisplay(mapObject.getX()));
+                object.setY(DisplayUtils.fitCoordIntoDisplay(mapObject.getY()));
+            }
 
-        Image objectImg = new Image(getClass().getResourceAsStream(mapObject.getImage()));
-        object.setImage(objectImg);
+            object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+                setElementToDisplay(mapObject);
+            });
 
-        if (mapObject instanceof Star) {
-            object.setFitWidth(DisplayUtils.DEFAULT_TILE_SIZE * 10);
-            object.setFitHeight(DisplayUtils.DEFAULT_TILE_SIZE * 10);
-            object.setX(DisplayUtils.fitCoordIntoDisplay(DisplayUtils.getMAX_X() / 2 + 1) - DisplayUtils.DEFAULT_TILE_SIZE * 5);
-            object.setY(DisplayUtils.fitCoordIntoDisplay(DisplayUtils.getMAX_Y() / 2 + 1) - DisplayUtils.DEFAULT_TILE_SIZE * 5);
-        } else { 
-            object.setFitWidth(DisplayUtils.DEFAULT_TILE_SIZE * 4);
-            object.setFitHeight(DisplayUtils.DEFAULT_TILE_SIZE * 4);
-            object.setX(DisplayUtils.fitCoordIntoDisplay(mapObject.getX()));
-            object.setY(DisplayUtils.fitCoordIntoDisplay(mapObject.getY()));
+            this.getChildren().add(object);
+            systemObjects.add(object);
         }
-
-        object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            setElementToDisplay(mapObject);
-        });
-
-        this.getChildren().add(object);
-        systemObjects.add(object);
     }
     
     ////////////////////////////////////////////////////////////////////////////

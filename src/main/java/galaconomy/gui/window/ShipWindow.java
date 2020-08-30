@@ -4,9 +4,8 @@ import galaconomy.gui.window.pane.ShipDispatchPane;
 import galaconomy.gui.pane.*;
 import galaconomy.universe.economy.Cargo;
 import galaconomy.universe.map.Base;
-import galaconomy.universe.map.Star;
 import galaconomy.universe.traffic.Ship;
-import galaconomy.utils.InfoUtils;
+import galaconomy.utils.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -43,13 +42,8 @@ public class ShipWindow extends Stage {
         cargoPane.add(new Label("Cargo list:"), 0, 0);
         int col = 0;
         for (Cargo cargo : ship.getCurrentCargo()) {
-            Image cargoImage = new Image(getClass().getResourceAsStream(cargo.getImage()));
-            ImageView cargoImageView = new ImageView(cargoImage);
-            cargoImageView.setFitWidth(64);
-            cargoImageView.setFitHeight(64);
-            
             Button cargoButton = new Button();
-            cargoButton.setGraphic(cargoImageView);
+            cargoButton.setGraphic(DisplayUtils.getImageView(cargo.getImage(), 64));
             cargoButton.setTooltip(new Tooltip(cargo.displayName()));
             cargoPane.add(cargoButton, col++, 1);
         }

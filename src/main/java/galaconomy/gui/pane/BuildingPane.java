@@ -8,6 +8,7 @@ import static galaconomy.universe.building.Building.*;
 import galaconomy.universe.economy.TradeHelper;
 import galaconomy.universe.map.*;
 import galaconomy.universe.player.Player;
+import galaconomy.utils.DisplayUtils;
 import galaconomy.utils.InfoUtils;
 import galaconomy.utils.result.ResultBean;
 import javafx.scene.control.*;
@@ -108,17 +109,7 @@ public class BuildingPane extends AnchorPane {
     ////////////////////////////////////////////////////////////////////////////
     
     private ImageView getButtonImage(String imgSrc) {
-        Image generatorImage = new Image(getClass().getResourceAsStream(imgSrc));
-        ImageView imageView = new ImageView(generatorImage);
-        
-        imageView.setPreserveRatio(false);
-        imageView.setSmooth(true);
-        imageView.setCache(true);
-        
-        imageView.setFitWidth(SIZE);
-        imageView.setFitHeight(SIZE);
-        
-        return imageView;
+        return DisplayUtils.getImageView(imgSrc, SIZE);
     }
     
     private void build(String buildingType) {
