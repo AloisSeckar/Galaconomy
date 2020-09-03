@@ -1,10 +1,11 @@
 package galaconomy.constants;
 
-import java.io.File;
-
 public class Constants {
     
     public static final String PROGRAM_NAME = "Galaconomy 0.1";
+    
+    public static final String VALUE_YES = "yes";
+    public static final String VALUE_NO = "no";
     
     public static final long PLAYER_MONEY = 10000;
     
