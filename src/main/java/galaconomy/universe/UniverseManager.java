@@ -1,7 +1,6 @@
 package galaconomy.universe;
 
-import galaconomy.universe.map.Connector;
-import galaconomy.universe.map.Star;
+import galaconomy.universe.map.*;
 import galaconomy.universe.economy.EconomyManager;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.*;
@@ -315,20 +314,20 @@ public class UniverseManager implements Serializable {
     }
     
     private void harvestProduction() {
-        getAllPlayers().forEach(player -> {
+        getAllPlayers().parallelStream().forEach(player -> {
             EconomyManager.harvestProduction(player);
         });
     }
 
     private void recalcSupplies() {
-        bases.forEach(base -> {
+        bases.parallelStream().forEach(base -> {
             base.recalcSupplies();
         });
     }
     
     private void recalcTravels() {
         List<Travel> finishedTravels = new ArrayList<>();
-        travels.forEach(travel -> {
+        travels.parallelStream().forEach(travel -> {
             boolean isFinished = TrafficManager.recalcTravel(travel);
             if (isFinished) {
                 finishedTravels.add(travel);
@@ -340,14 +339,14 @@ public class UniverseManager implements Serializable {
     }
     
     private void rethinkTravels() {
-        aiPlayers.values().forEach(player -> {
+        aiPlayers.values().parallelStream().forEach(player -> {
             List<Travel> newTravels = PlayerManager.rethinkTravels(player);
             travels.addAll(newTravels);
         });
     }
     
     private void rethinkPurchases() {
-        aiPlayers.values().forEach(player -> {
+        aiPlayers.values().parallelStream().forEach(player -> {
             PlayerManager.rethinkPurchases(player);
         });
     }
