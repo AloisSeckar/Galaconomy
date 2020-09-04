@@ -26,3 +26,5 @@
     -fx-stroke-dash-array: 2 12 12 2;
     -fx-stroke-width: 1px;
 }
+
+.glyph-icon{ -fx-font-family: "FontAwesome"; }
