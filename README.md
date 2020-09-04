@@ -5,6 +5,14 @@ One day this will be a JavaFX game featuring galaxy-wide trading and economy
 * Program opens in fullscreen and cannot be minimized
 * Pressing 'ESC' will show the prompt allowing exit
 
+## Technologies
+* Java + JavaFX 8 (Basic runtime + GUI) - https://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm
+* BootstrapFX (GUI enhancement) - https://github.com/kordamp/bootstrapfx
+* fontawesomefx (GUI enhancement) - https://bitbucket.org/Jerady/fontawesomefx/src/master/fontawesomefx/
+* slf4j (Logging) - http://www.slf4j.org/
+* sqlite-jdbc (Database) - https://github.com/xerial/sqlite-jdbc
+* JGraphT (Graph representation of the galaxy) - https://jgrapht.org/
+
 ## Sources
 (Some) images were imported from following sources:
 * https://opengameart.org
