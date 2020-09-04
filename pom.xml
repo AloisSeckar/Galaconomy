@@ -35,6 +35,12 @@
             <artifactId>jgrapht-core</artifactId>
             <version>1.4.0</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.kordamp.bootstrapfx</groupId>
+            <artifactId>bootstrapfx-core</artifactId>
+            <version>0.2.4</version>
+        </dependency>
 
     </dependencies>
     

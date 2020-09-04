@@ -32,6 +32,7 @@ public class SwitchDisplayPane extends AnchorPane {
     private SwitchDisplayPane() {
         switchToGalaxyButton = new Button("Universe");
         switchToGalaxyButton.setMinWidth(BUTTON_WIDTH);
+        switchToGalaxyButton.getStyleClass().setAll("btn","btn-danger");
         switchToGalaxyButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
             currentBase = null;
             currentStar = null;
@@ -43,6 +44,7 @@ public class SwitchDisplayPane extends AnchorPane {
         
         switchToSystemButton = new Button("System");
         switchToSystemButton.setMinWidth(BUTTON_WIDTH);
+        switchToSystemButton.getStyleClass().setAll("btn","btn-warning");
         switchToSystemButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
             currentBase = null;
             BasicGameLayout.getInstance().switchToSystem(currentStar);
@@ -53,6 +55,7 @@ public class SwitchDisplayPane extends AnchorPane {
         
         switchToBaseButton = new Button("Base");
         switchToBaseButton.setMinWidth(BUTTON_WIDTH);
+        switchToBaseButton.getStyleClass().setAll("btn","btn-success");
         switchToBaseButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
             BasicGameLayout.getInstance().switchToBase(currentBase);
         });

@@ -59,6 +59,7 @@ public class Galaconomy extends Application {
 
         Scene scene = new Scene(gameLayout, 0, 0);
         scene.getStylesheets().add(getClass().getResource(Constants.FOLDER_CSS + "galaconomy.css").toExternalForm());
+        scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
 
         primaryStage.setTitle(TITLE);
         primaryStage.setScene(scene);
