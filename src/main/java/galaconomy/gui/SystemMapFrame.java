@@ -21,7 +21,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
     public List<Circle> activeShips = new ArrayList<>();
     
     public Star currentSystem = null;
-    public boolean active = true;
+    public boolean active = false;
     
     private static SystemMapFrame INSTANCE;
     

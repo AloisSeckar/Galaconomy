@@ -17,7 +17,7 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
     public List<ImageView> baseBuildings = new ArrayList<>();
     
     public Base currentBase = null;
-    public boolean active = true;
+    public boolean active = false;
     
     private static BaseMapFrame INSTANCE;
     
