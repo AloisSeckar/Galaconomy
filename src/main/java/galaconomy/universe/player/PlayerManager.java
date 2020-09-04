@@ -18,93 +18,91 @@ public class PlayerManager {
     private PlayerManager() {
     }
     
-    public static void rethinkPurchases(Map<String, Player> players) {
-        players.values().forEach((player) -> {
-            try {
-                AIPersonality personality = player.getAiPersonality();
+    public static void rethinkPurchases(Player player) {
+        try {
+            AIPersonality personality = player.getAiPersonality();
 
-                // TODO include priorities
+            // TODO include priorities
 
-                AIStrategySet landsStrategy = personality.getLandsStrategy();
-                if (landsStrategy.isFocus()) {
-                    switch (landsStrategy.getBuyStrategy()) {
-                        case RANDOM:
-                        case IF_AFFORDABLE:
-                            SurfaceTile land;
-                            switch (landsStrategy.getLocationStrategy()) {
-                                case FOCUS_ON_BASE:
-                                    land = UniverseUtils.getRandomFreeTileIfPossible(player.getHomeBase());
-                                    break;
-                                case RANDOM:
-                                    land = UniverseUtils.getRandomFreeTileIfPossible(null);
-                                    break;
-                                default:
-                                    land = null;
-                            }
-                            if (land != null && land.getPrice() <= player.getCredits()) {
-                                TradeHelper.tradeAsset(land, player);
-                                player.addLand(land);
-                            }
-                            break;
-                    }
+            AIStrategySet landsStrategy = personality.getLandsStrategy();
+            if (landsStrategy.isFocus()) {
+                switch (landsStrategy.getBuyStrategy()) {
+                    case RANDOM:
+                    case IF_AFFORDABLE:
+                        SurfaceTile land;
+                        switch (landsStrategy.getLocationStrategy()) {
+                            case FOCUS_ON_BASE:
+                                land = UniverseUtils.getRandomFreeTileIfPossible(player.getHomeBase());
+                                break;
+                            case RANDOM:
+                                land = UniverseUtils.getRandomFreeTileIfPossible(null);
+                                break;
+                            default:
+                                land = null;
+                        }
+                        if (land != null && land.getPrice() <= player.getCredits()) {
+                            TradeHelper.tradeAsset(land, player);
+                            player.addLand(land);
+                        }
+                        break;
                 }
-
-                AIStrategySet buildingsStrategy = personality.getBuildingsStrategy();
-                if (buildingsStrategy.isFocus()) {
-                    switch (buildingsStrategy.getBuyStrategy()) {
-                        case RANDOM:
-                        case IF_AFFORDABLE:
-                            List<SurfaceTile> playerLands;
-                            if (buildingsStrategy.getLocationStrategy() == AIStrategy.FOCUS_ON_BASE) {
-                                playerLands = player.getLands(player.getHomeBase());
-                            } else {
-                                playerLands = player.getLands();
-                            }
-                            SurfaceTile land = UniverseUtils.getFreeTileIfExists(playerLands);
-                            if (land != null) {
-                                Building building = GLSFactory.deliverBuilding(Building.FACTORY);
-                                if (building.getPrice() <= player.getCredits()) {
-                                    ResultBean tradeResult = TradeHelper.tradeAsset(building, player);
-                                    if (tradeResult.isSuccess()) {
-                                        building.setParent(land);
-                                        land.setBuilding(building);
-                                        player.addBuilding(building);
-                                    } else {
-                                        LOG.debug("PlayerManager:rethinkPurchases - purchase failed: " + tradeResult.getMessage());
-                                    }
-                                }
-                            }
-                                   
-                            break;
-                    }
-                }
-
-                AIStrategySet shipsStrategy = personality.getShipsStrategy();
-                if (shipsStrategy.isFocus()) {
-                    switch (shipsStrategy.getBuyStrategy()) {
-                        case RANDOM:
-                        case IF_AFFORDABLE:
-                            ShipClass randomShipClass = ShipGenerator.getRandomShipClass(rand);
-                            if (randomShipClass.getPrice() <= player.getCredits()) {
-                                if (shipsStrategy.getLocationStrategy() == AIStrategy.FOCUS_ON_BASE) {
-                                    player.addShip(new Ship("GLS " + Math.abs(rand.nextInt()), randomShipClass, player.getHomeBase()));
-                                } else {
-                                    player.addShip(new Ship("GLS " + Math.abs(rand.nextInt()), randomShipClass, UniverseUtils.getRandomBase()));
-                                }
-                            }
-                            break;
-                    }
-                }
-            } catch (Exception ex) {
-                LOG.error("PlayerManager:rethinkPurchases", ex);
             }
-        });
+
+            AIStrategySet buildingsStrategy = personality.getBuildingsStrategy();
+            if (buildingsStrategy.isFocus()) {
+                switch (buildingsStrategy.getBuyStrategy()) {
+                    case RANDOM:
+                    case IF_AFFORDABLE:
+                        List<SurfaceTile> playerLands;
+                        if (buildingsStrategy.getLocationStrategy() == AIStrategy.FOCUS_ON_BASE) {
+                            playerLands = player.getLands(player.getHomeBase());
+                        } else {
+                            playerLands = player.getLands();
+                        }
+                        SurfaceTile land = UniverseUtils.getFreeTileIfExists(playerLands);
+                        if (land != null) {
+                            Building building = GLSFactory.deliverBuilding(Building.FACTORY);
+                            if (building.getPrice() <= player.getCredits()) {
+                                ResultBean tradeResult = TradeHelper.tradeAsset(building, player);
+                                if (tradeResult.isSuccess()) {
+                                    building.setParent(land);
+                                    land.setBuilding(building);
+                                    player.addBuilding(building);
+                                } else {
+                                    LOG.debug("PlayerManager:rethinkPurchases - purchase failed: " + tradeResult.getMessage());
+                                }
+                            }
+                        }
+
+                        break;
+                }
+            }
+
+            AIStrategySet shipsStrategy = personality.getShipsStrategy();
+            if (shipsStrategy.isFocus()) {
+                switch (shipsStrategy.getBuyStrategy()) {
+                    case RANDOM:
+                    case IF_AFFORDABLE:
+                        ShipClass randomShipClass = ShipGenerator.getRandomShipClass(rand);
+                        if (randomShipClass.getPrice() <= player.getCredits()) {
+                            if (shipsStrategy.getLocationStrategy() == AIStrategy.FOCUS_ON_BASE) {
+                                player.addShip(new Ship("GLS " + Math.abs(rand.nextInt()), randomShipClass, player.getHomeBase()));
+                            } else {
+                                player.addShip(new Ship("GLS " + Math.abs(rand.nextInt()), randomShipClass, UniverseUtils.getRandomBase()));
+                            }
+                        }
+                        break;
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error("PlayerManager:rethinkPurchases", ex);
+        }
     }
     
-    public static List<Travel> rethinkTravels(Map<String, Player> players) {
+    public static List<Travel> rethinkTravels(Player player) {
         List<Travel> newTravels = new ArrayList<>();
         
-        players.values().stream().filter((player) -> player.getAiPersonality().getShipsStrategy().isFocus()).forEach((player) -> {
+        if (player.getAiPersonality().getShipsStrategy().isFocus()) {
             player.getShips().stream().filter((ship) -> ship.isIdle()).forEach((ship) -> {
                 try {
                     Base location = ship.getCurrentBase();
@@ -154,7 +152,7 @@ public class PlayerManager {
                     LOG.error("PlayerManager:rethinkTravels", ex);
                 }
             });
-        });
+        }
         
         return newTravels;
     }

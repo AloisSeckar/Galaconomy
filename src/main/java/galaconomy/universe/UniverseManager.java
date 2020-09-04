@@ -6,6 +6,7 @@ import galaconomy.universe.economy.EconomyManager;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.*;
 import galaconomy.universe.traffic.*;
+import galaconomy.utils.ConfigUtils;
 import java.io.*;
 import java.util.*;
 import javafx.animation.*;
@@ -16,15 +17,17 @@ public class UniverseManager implements Serializable {
     
     private static final Logger LOG = LoggerFactory.getLogger(UniverseManager.class);
     
+    
     private static UniverseManager INSTANCE;
     private final List<IEngineSubscriber> subscribers = new ArrayList<>();
     
     private Timeline universeEngine;
+    private boolean enhancedLogging;
     
     private long stellarTime = 100000;
     private double enginePeriod = 1;
     
-    private Player player;
+    private Player humanPlayer;
     private Player glsPlayer;
     private final Map<String, Player> aiPlayers = new HashMap<>();
     
@@ -105,12 +108,12 @@ public class UniverseManager implements Serializable {
         LOG.info("Star added: " + newStar.displayName());
     }
 
-    public Player getPlayer() {
-        return player;
+    public Player getHumanPlayer() {
+        return humanPlayer;
     }
 
     public void updatePlayer(Player player) {
-        this.player = player;
+        this.humanPlayer = player;
         LOG.info("Player updated: " + player.displayName());
     }
 
@@ -129,7 +132,7 @@ public class UniverseManager implements Serializable {
     
     public List<Player> getAllPlayers() {
         List<Player> allPlayers = new ArrayList<>();
-        allPlayers.add(player);
+        allPlayers.add(humanPlayer);
         allPlayers.addAll(aiPlayers.values());
         return allPlayers;
     }
@@ -173,7 +176,7 @@ public class UniverseManager implements Serializable {
     public void resetUniverse() {
         stopEngine();
         
-        player = null;
+        humanPlayer = null;
         glsPlayer = null;
         aiPlayers.clear();
         
@@ -269,10 +272,16 @@ public class UniverseManager implements Serializable {
     }
     
     private void initEngineInstance() {
+        enhancedLogging = ConfigUtils.isEnhancedLogging();
         universeEngine = new Timeline(
             new KeyFrame(Duration.seconds(enginePeriod), e -> {
                 try {
                     stellarTime++;
+                    
+                    long start = System.currentTimeMillis();
+                    if (enhancedLogging) {
+                        LOG.info("ENGINE TICK " + stellarTime + " STARTED");
+                    }
 
                     harvestProduction();
                     recalcSupplies();
@@ -283,6 +292,12 @@ public class UniverseManager implements Serializable {
                     subscribers.stream().filter((subscriber) -> (subscriber.isActive())).forEachOrdered((subscriber) -> {
                         subscriber.engineTaskFinished(stellarTime);
                     });
+                    
+                    long end = System.currentTimeMillis();
+                    if (enhancedLogging) {
+                        LOG.info("DURATION: " + (end - start) + "ms");
+                        LOG.info("ENGINE TICK " + stellarTime + " FINISHED");
+                    }
                 } catch (Exception ex) {
                     LOG.error("UniverseManager.universeEngine", ex);
                 }
@@ -300,28 +315,40 @@ public class UniverseManager implements Serializable {
     }
     
     private void harvestProduction() {
-        EconomyManager.harvestProduction(getAllPlayers());
+        getAllPlayers().forEach(player -> {
+            EconomyManager.harvestProduction(player);
+        });
     }
 
     private void recalcSupplies() {
-        EconomyManager.recalcSupplies(bases);
+        bases.forEach(base -> {
+            base.recalcSupplies();
+        });
     }
     
     private void recalcTravels() {
-        List<Travel> finishedTravels = TrafficManager.recalcTravels(travels);
+        List<Travel> finishedTravels = new ArrayList<>();
+        travels.forEach(travel -> {
+            boolean isFinished = TrafficManager.recalcTravel(travel);
+            if (isFinished) {
+                finishedTravels.add(travel);
+            }
+        });
         finishedTravels.forEach((finishedTravel) -> {
             travels.remove(finishedTravel);
         });
     }
     
     private void rethinkTravels() {
-        List<Travel> newTravels = PlayerManager.rethinkTravels(aiPlayers);
-        newTravels.forEach((newTravel) -> {
-            travels.add(newTravel);
+        aiPlayers.values().forEach(player -> {
+            List<Travel> newTravels = PlayerManager.rethinkTravels(player);
+            travels.addAll(newTravels);
         });
     }
     
     private void rethinkPurchases() {
-        PlayerManager.rethinkPurchases(aiPlayers);
+        aiPlayers.values().forEach(player -> {
+            PlayerManager.rethinkPurchases(player);
+        });
     }
 }

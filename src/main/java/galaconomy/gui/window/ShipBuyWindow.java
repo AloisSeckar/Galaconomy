@@ -70,7 +70,7 @@ public class ShipBuyWindow extends Stage {
             Base location = (Base) locationCB.getValue();
             
             if (shipName != null && shipClass != null && location != null) {
-                if (UniverseManager.getInstance().getPlayer().getCredits() >= shipClass.getPrice()) {
+                if (UniverseManager.getInstance().getHumanPlayer().getCredits() >= shipClass.getPrice()) {
                     parent.buyShip(shipName, shipClass, location);
                     close();
                 } else {

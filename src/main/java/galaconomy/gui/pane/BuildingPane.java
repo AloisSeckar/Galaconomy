@@ -116,7 +116,7 @@ public class BuildingPane extends AnchorPane {
         IDisplayable selectedItem = DisplayPane.getInstance().getElementToDisplay();
         if (selectedItem instanceof SurfaceTile) {
             SurfaceTile land = (SurfaceTile) selectedItem;
-            Player player = UniverseManager.getInstance().getPlayer();
+            Player player = UniverseManager.getInstance().getHumanPlayer();
             Player owner = land.getCurrentOwner();
             if (player.equals(owner)) {
                 if (land.isEmpty()) {
@@ -148,7 +148,7 @@ public class BuildingPane extends AnchorPane {
         IDisplayable selectedItem = DisplayPane.getInstance().getElementToDisplay();
         if (selectedItem instanceof SurfaceTile) {
             SurfaceTile land = (SurfaceTile) selectedItem;
-            Player player = UniverseManager.getInstance().getPlayer();
+            Player player = UniverseManager.getInstance().getHumanPlayer();
             Player owner = land.getCurrentOwner();
             if (!player.equals(owner)) {
                 if (owner.equals(UniverseManager.getInstance().getGLSPlayer())) {

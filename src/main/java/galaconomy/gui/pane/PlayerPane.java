@@ -97,7 +97,7 @@ public class PlayerPane extends AnchorPane {
     }
 
     public void displayPlayer() {
-        Player player = UniverseManager.getInstance().getPlayer();
+        Player player = UniverseManager.getInstance().getHumanPlayer();
         
         playerName.setText(player.displayName());
         playerCredits.setText("Credits: " + String.valueOf(player.getCredits()));
@@ -112,7 +112,7 @@ public class PlayerPane extends AnchorPane {
     }
     
     public void buyShip(String shipName, ShipClass shipClass, Base location) {
-        Player player = UniverseManager.getInstance().getPlayer();
+        Player player = UniverseManager.getInstance().getHumanPlayer();
         
         Ship newShip = new Ship(shipName, shipClass, location);
         newShip.changeOwner(player);
@@ -147,7 +147,7 @@ public class PlayerPane extends AnchorPane {
         shipBox.getChildren().removeAll(shipDetailButtons);
         shipDetailButtons.clear();
             
-        Player player = UniverseManager.getInstance().getPlayer();
+        Player player = UniverseManager.getInstance().getHumanPlayer();
         
         player.getShips().forEach(ship -> {
             Button newShipButton = getShipButton(ship);
@@ -157,7 +157,7 @@ public class PlayerPane extends AnchorPane {
     }
     
     public void updatePlayerCredits() {
-        Player player = UniverseManager.getInstance().getPlayer();
+        Player player = UniverseManager.getInstance().getHumanPlayer();
         playerCredits.setText("Credits: " + String.valueOf(player.getCredits()));  
     }
     

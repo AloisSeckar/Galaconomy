@@ -1,26 +1,27 @@
 package galaconomy.universe.traffic;
 
 import galaconomy.universe.UniverseManager;
-import java.util.*;
 import org.slf4j.*;
 
 public class TrafficManager {
     
     private static final Logger LOG = LoggerFactory.getLogger(TrafficManager.class);
     
-    public static List<Travel> recalcTravels(List<Travel> activeTravels) {
-        List<Travel> finishedTravels = new ArrayList<>();
+    public static boolean recalcTravel(Travel travel) {
+        boolean ret = false;
         
-        activeTravels.forEach((travel) -> {
+        try {
             travel.progress();
             if (travel.isFinished()) {
-                finishedTravels.add(travel);
+                ret = true;
                 travel.getShip().addTravel(travel);
                 LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + travel.getShip().displayName() + " arrived in " + travel.getArrival().displayName() + " system");
             }
-        });
+        } catch (Exception ex) {
+            LOG.error("TrafficManager.recalcTravel", ex);
+        }
         
-        return finishedTravels;
+        return ret;
     }
 
 }
