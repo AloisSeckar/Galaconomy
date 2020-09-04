@@ -6,12 +6,12 @@ One day this will be a JavaFX game featuring galaxy-wide trading and economy
 * Pressing 'ESC' will show the prompt allowing exit
 
 ## Technologies
-* Java + JavaFX 8 (Basic runtime + GUI) - https://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm
-* BootstrapFX (GUI enhancement) - https://github.com/kordamp/bootstrapfx
-* fontawesomefx (GUI enhancement) - https://bitbucket.org/Jerady/fontawesomefx/src/master/fontawesomefx/
-* slf4j (Logging) - http://www.slf4j.org/
-* sqlite-jdbc (Database) - https://github.com/xerial/sqlite-jdbc
-* JGraphT (Graph representation of the galaxy) - https://jgrapht.org/
+* [Java + JavaFX 8](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm) - Basic runtime & GUI
+* [BootstrapFX](https://github.com/kordamp/bootstrapfx) - GUI enhancement
+* [fontawesomefx](https://bitbucket.org/Jerady/fontawesomefx/src/master/fontawesomefx/) - GUI enhancement
+* [slf4j](http://www.slf4j.org/) - logging
+* [sqlite-jdbc](https://github.com/xerial/sqlite-jdbc) - database
+* [JGraphT](https://jgrapht.org/) - graph representation of the galaxy
 
 ## Sources
 (Some) images were imported from following sources:
