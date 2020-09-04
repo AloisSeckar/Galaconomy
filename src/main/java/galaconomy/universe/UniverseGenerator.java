@@ -83,8 +83,20 @@ public class UniverseGenerator {
             Player trader = new Player("Tom the Trader", "Demo player who focuses on ships", Constants.PLAYERS_FOLDER + "player02.png", Color.YELLOW, sicopiaPlanet, true, AIFactory.AI_STAR_TRADER);
             universeManager.addAIPlayer(trader);
             
+            Player trader2 = new Player("Tanya the Trader", "Demo player who focuses on ships", Constants.PLAYERS_FOLDER + "player02.png", Color.YELLOW, sicopiaPlanet, true, AIFactory.AI_STAR_TRADER);
+            universeManager.addAIPlayer(trader2);
+            
+            Player trader3 = new Player("Trevor the Trader", "Demo player who focuses on ships", Constants.PLAYERS_FOLDER + "player02.png", Color.YELLOW, sicopiaPlanet, true, AIFactory.AI_STAR_TRADER);
+            universeManager.addAIPlayer(trader3);
+            
             Player builder = new Player("Bob the Builder", "Demo player who focuses on buildings", Constants.PLAYERS_FOLDER + "player03.png", Color.ORANGE, sicopiaPlanet, true, AIFactory.AI_BUILDER);
             universeManager.addAIPlayer(builder);
+            
+            Player builder2 = new Player("Barbara the Builder", "Demo player who focuses on buildings", Constants.PLAYERS_FOLDER + "player03.png", Color.ORANGE, sicopiaPlanet, true, AIFactory.AI_BUILDER);
+            universeManager.addAIPlayer(builder2);
+            
+            Player builder3 = new Player("Bruno the Builder", "Demo player who focuses on buildings", Constants.PLAYERS_FOLDER + "player03.png", Color.ORANGE, sicopiaPlanet, true, AIFactory.AI_BUILDER);
+            universeManager.addAIPlayer(builder3);
             
             Player landlord = new Player("Luke the Landlord", "Demo player who focuses on lands", Constants.PLAYERS_FOLDER + "player04.png", Color.MAGENTA, sicopiaPlanet, true, AIFactory.AI_LANDLORD);
             universeManager.addAIPlayer(landlord);
@@ -92,7 +104,9 @@ public class UniverseGenerator {
             // SHIPS
             // TODO demo only
             
-            trader.earnCredits(10000);
+            trader.earnCredits(1000000);
+            trader2.earnCredits(1000000);
+            trader3.earnCredits(1000000);
             
             trader.addShip(new Ship("GLS Alpha", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
             trader.addShip(new Ship("GLS Beta", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
@@ -105,11 +119,26 @@ public class UniverseGenerator {
             trader.addShip(new Ship("GLS Iota", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
             trader.addShip(new Ship("GLS Kappa", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
             trader.addShip(new Ship("GLS Lambda", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Mu", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Nu", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Xi", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Omicron", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Pi", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Rho", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Sigma", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Tau", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Upsilon", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Phi", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Chi", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Psi", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
+            trader.addShip(new Ship("GLS Omega", ShipGenerator.getRandomShipClass(rand), UniverseUtils.getRandomBase()));
             
             // BUILDINGS
             // TODO demo only
             
             builder.earnCredits(10000);
+            builder2.earnCredits(10000);
+            builder3.earnCredits(10000);
             
             for (int i = 5; i < 15; i++) {
                 SurfaceTile land = sicopiaPlanet.getSurfaceTile(i, 3);
