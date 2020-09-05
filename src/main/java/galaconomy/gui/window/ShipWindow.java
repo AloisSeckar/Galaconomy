@@ -1,5 +1,6 @@
 package galaconomy.gui.window;
 
+import galaconomy.Galaconomy;
 import galaconomy.gui.window.pane.ShipDispatchPane;
 import galaconomy.gui.pane.*;
 import galaconomy.universe.economy.Cargo;
@@ -20,10 +21,10 @@ public class ShipWindow extends Stage {
     
     private final ShipDispatchPane shipDispatchPane;
     
-    public ShipWindow(PlayerPane parent, Ship ship) {
+    public ShipWindow(Ship ship) {
         super.setTitle(ship.displayName());
         super.initModality(Modality.APPLICATION_MODAL);
-        super.initOwner((Stage) parent.getScene().getWindow());
+        super.initOwner(Galaconomy.getPrimaryStage());
         
         AnchorPane windowLayout = new AnchorPane();
         
@@ -66,7 +67,7 @@ public class ShipWindow extends Stage {
             
             if (destination != null) {
                 if (true /*TODO route plaing restrictions*/) {
-                    parent.planTravel(ship, destination);
+                    PlayerPane.getInstance().planTravel(ship, destination);
                     close();
                 } else {
                     InfoUtils.showMessage("Cannot depart! TODO why");

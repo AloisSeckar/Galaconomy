@@ -1,7 +1,9 @@
 package galaconomy.gui.pane;
 
+import galaconomy.gui.pane.action.*;
 import galaconomy.universe.*;
-import galaconomy.universe.map.VoidElement;
+import galaconomy.universe.map.*;
+import galaconomy.universe.traffic.Ship;
 import galaconomy.utils.DisplayUtils;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -16,6 +18,7 @@ public class DisplayPane extends AnchorPane {
     private final Label nameText;
     private final TextArea dscrText;
     private final ImageView imgView;
+    private ActionButtonsPane actionButtons;
     
     private IDisplayable elementToDisplay;
     
@@ -64,6 +67,7 @@ public class DisplayPane extends AnchorPane {
     public final void setElementToDisplay(IDisplayable elementToDisplay) {
         this.elementToDisplay = elementToDisplay;
         reloadInfoPanel();
+        reloadActionButtons();
     }
     
     public final void reloadInfoPanel() {
@@ -76,6 +80,29 @@ public class DisplayPane extends AnchorPane {
         } else {
             setElementToDisplay(new VoidElement());
         }
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+
+    private void reloadActionButtons() {
+        if (actionButtons != null) {
+            this.getChildren().remove(actionButtons);
+        }
+        
+        if (elementToDisplay instanceof Star) {
+            actionButtons = new StarActionButtonsPane();
+        } else if (elementToDisplay instanceof Base) {
+            actionButtons = new BaseActionButtonsPane();
+        } else if (elementToDisplay instanceof Ship) {
+            actionButtons = new ShipActionButtonsPane();
+        } else {
+            actionButtons = new PlainActionButtonsPane();
+        }
+        
+        actionButtons.setDisplayedItem(elementToDisplay);
+        
+        this.getChildren().add(actionButtons);
+        AnchorPane.setTopAnchor(actionButtons, WIDTH + 360d);
     }
     
 }

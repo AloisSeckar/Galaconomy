@@ -1,5 +1,6 @@
 package galaconomy.gui.window;
 
+import galaconomy.Galaconomy;
 import galaconomy.gui.pane.PlayerPane;
 import galaconomy.universe.UniverseManager;
 import galaconomy.universe.map.Base;
@@ -19,10 +20,11 @@ public class ShipBuyWindow extends Stage {
     private final ComboBox<ObservableList<ShipClass>> shipClassCB;
     private final ComboBox<ObservableList<Base>> locationCB;
     
-    public ShipBuyWindow(PlayerPane parent) {
+    // TODO allow to buy only if shipyard available on base - give base as parameter
+    public ShipBuyWindow() { 
         super.setTitle("Select ship to buy");
         super.initModality(Modality.APPLICATION_MODAL);
-        super.initOwner((Stage) parent.getScene().getWindow());
+        super.initOwner(Galaconomy.getPrimaryStage());
         
         GridPane inputsGrid = new GridPane();
         inputsGrid.setAlignment(Pos.CENTER);
@@ -71,7 +73,7 @@ public class ShipBuyWindow extends Stage {
             
             if (shipName != null && shipClass != null && location != null) {
                 if (UniverseManager.getInstance().getHumanPlayer().getCredits() >= shipClass.getPrice()) {
-                    parent.buyShip(shipName, shipClass, location);
+                    PlayerPane.getInstance().buyShip(shipName, shipClass, location);
                     close();
                 } else {
                     InfoUtils.showMessage("Insufficent credits!");

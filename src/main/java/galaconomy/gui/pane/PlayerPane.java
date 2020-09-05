@@ -72,7 +72,7 @@ public class PlayerPane extends AnchorPane {
         AnchorPane.setTopAnchor(shipBox, 5d);
         
         getShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            ShipBuyWindow window = new ShipBuyWindow(this);
+            ShipBuyWindow window = new ShipBuyWindow();
             window.show();
         });
         getShipButton.setVisible(false);
@@ -111,6 +111,7 @@ public class PlayerPane extends AnchorPane {
         buildingPane.setVisible(true);
     }
     
+    // TODO shouldnt be here...
     public void buyShip(String shipName, ShipClass shipClass, Base location) {
         Player player = UniverseManager.getInstance().getHumanPlayer();
         
@@ -134,6 +135,7 @@ public class PlayerPane extends AnchorPane {
         LOG.info(UniverseManager.getInstance().getStellarTime() + ": " + player.displayName() + " bought new " + shipClass.displayName() + " called " + shipName);            
     }
 
+    // TODO shouldnt be here...
     public void planTravel(Ship ship, Base arrival) {
         Base departure = ship.getCurrentBase();
 
@@ -170,7 +172,7 @@ public class PlayerPane extends AnchorPane {
         shipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
             DisplayPane.getInstance().setElementToDisplay(ship);
             
-            ShipWindow window = new ShipWindow(this, ship);
+            ShipWindow window = new ShipWindow(ship);
             window.show();
         });
         return shipButton;
