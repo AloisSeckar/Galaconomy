@@ -6,6 +6,7 @@ import galaconomy.universe.UniverseManager;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.traffic.*;
 import galaconomy.utils.*;
+import java.util.stream.Collectors;
 import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -20,8 +21,7 @@ public class ShipBuyWindow extends Stage {
     private final ComboBox<ObservableList<ShipClass>> shipClassCB;
     private final ComboBox<ObservableList<Base>> locationCB;
     
-    // TODO allow to buy only if shipyard available on base - give base as parameter
-    public ShipBuyWindow() { 
+    public ShipBuyWindow(Base placeOfPurchase) { 
         super.setTitle("Select ship to buy");
         super.initModality(Modality.APPLICATION_MODAL);
         super.initOwner(Galaconomy.getPrimaryStage());
@@ -55,11 +55,19 @@ public class ShipBuyWindow extends Stage {
         Label locationLabel = new Label("Select init. location:");
         inputsGrid.add(locationLabel, 0, 2);
         
-        ObservableList<Base> availableBases = 
-            FXCollections.observableArrayList(
-                    UniverseManager.getInstance().getAvailableBases()
+        ObservableList<Base> basesWithShipyard;
+        if (placeOfPurchase != null) {
+            basesWithShipyard = FXCollections.observableArrayList(placeOfPurchase);
+        } else {
+            basesWithShipyard = FXCollections.observableArrayList(
+                    UniverseManager.getInstance().getAvailableBases().stream().filter(base -> base.isShipyard()).collect(Collectors.toList())
             );
-        locationCB = new ComboBox(availableBases);
+        }
+        locationCB = new ComboBox(basesWithShipyard);
+        if (placeOfPurchase != null) {
+            locationCB.getSelectionModel().selectFirst();
+            locationCB.setDisable(true);
+        }
         inputsGrid.add(locationCB, 1, 2);
         
         HBox menuBox = new HBox(20);
@@ -95,9 +103,10 @@ public class ShipBuyWindow extends Stage {
         mainLayout.getChildren().add(inputsGrid);
         mainLayout.getChildren().add(menuBox);
         
-        Scene dialogScene = new Scene(mainLayout, 350, 200);
+        Scene dialogScene = new Scene(mainLayout, 400, 200);
         
         super.setScene(dialogScene);
+        super.centerOnScreen();
     }
 
 }

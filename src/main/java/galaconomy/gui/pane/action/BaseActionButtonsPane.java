@@ -44,8 +44,8 @@ public class BaseActionButtonsPane extends ActionButtonsPane {
     ////////////////////////////////////////////////////////////////////////////
 
     private void buyShip() {
-        //Base base = (Base) getDisplayedItem();
-        ShipBuyWindow window = new ShipBuyWindow();
+        Base base = (Base) getDisplayedItem();
+        ShipBuyWindow window = new ShipBuyWindow(base);
         window.show();
     }
     

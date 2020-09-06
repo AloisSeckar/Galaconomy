@@ -6,8 +6,7 @@ import galaconomy.universe.economy.*;
 import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
 import galaconomy.universe.traffic.*;
-import galaconomy.utils.DisplayUtils;
-import galaconomy.utils.StorageUtils;
+import galaconomy.utils.*;
 import java.util.*;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -72,7 +71,7 @@ public class PlayerPane extends AnchorPane {
         AnchorPane.setTopAnchor(shipBox, 5d);
         
         getShipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-            ShipBuyWindow window = new ShipBuyWindow();
+            ShipBuyWindow window = new ShipBuyWindow(null);
             window.show();
         });
         getShipButton.setVisible(false);
