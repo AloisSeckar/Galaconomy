@@ -139,7 +139,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
                 ship.setFill(Color.DARKMAGENTA);
                 
                 ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                    setElementToDisplay(travel);
+                    setElementToDisplay(travel.getShip());
                 });
                 
                 this.getChildren().add(ship);

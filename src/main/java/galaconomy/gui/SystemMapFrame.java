@@ -116,7 +116,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
                         routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()) + offset);
 
                         routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                            setElementToDisplay(route);
+                            setElementToDisplay(travel);
                         });
 
                         this.getChildren().add(routeLine);
@@ -128,7 +128,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
                         ship.setFill(Color.DARKMAGENTA);
 
                         ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                            setElementToDisplay(travel);
+                            setElementToDisplay(travel.getShip());
                         });
 
                         this.getChildren().add(ship);

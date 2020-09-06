@@ -71,7 +71,7 @@ public class Travel implements IDisplayable, Serializable {
         this.started = UniverseManager.getInstance().getStellarTime();
         this.finished = -1;
         
-        this.eta = started + new Double(Math.ceil(distanceRiftTotal / ship.getRiftSpeed())).intValue();
+        this.eta = started + new Double(Math.ceil(distanceRiftTotal / ship.getRiftSpeed()) + Math.ceil(distancePulseTotal / ship.getPulseSpeed())).intValue();
         
         this.ship.setIdle(false);
         this.ship.setCurrentBase(null);
