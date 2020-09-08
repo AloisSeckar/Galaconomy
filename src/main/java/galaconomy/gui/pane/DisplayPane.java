@@ -68,6 +68,8 @@ public class DisplayPane extends AnchorPane {
         this.elementToDisplay = elementToDisplay;
         reloadInfoPanel();
         reloadActionButtons();
+        
+        SwitchDisplayPane.getInstance().setElementToDisplay(elementToDisplay);
     }
     
     public final void reloadInfoPanel() {

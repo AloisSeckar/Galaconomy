@@ -1,16 +1,15 @@
 package galaconomy.gui;
 
 import galaconomy.constants.Constants;
-import galaconomy.gui.pane.*;
+import galaconomy.gui.pane.DisplayPane;
 import galaconomy.universe.*;
 import galaconomy.universe.map.*;
 import galaconomy.universe.traffic.*;
-import galaconomy.utils.DisplayUtils;
+import galaconomy.utils.*;
 import java.util.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
 public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
@@ -69,7 +68,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
             riftLine.setEndY(DisplayUtils.fitCoordIntoDisplay(point2.getY()));
 
             riftLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                setElementToDisplay(gate);
+                DisplayPane.getInstance().setElementToDisplay(gate);
             });
 
             this.getChildren().add(riftLine);
@@ -83,7 +82,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
             star.setFill(system.getFXColor());
             
             star.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                setElementToDisplay(system);
+                DisplayPane.getInstance().setElementToDisplay(system);
                 
             });
             
@@ -99,49 +98,13 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
         activeShips.clear();
         
         travels.forEach((travel) -> {
-            travel.getRoutes().stream().filter(route -> isActiveRiftRoute(route)).map((route) -> {
-                Line routeLine = new Line();
-                Star departure = (Star) route.getDeparture();
-                Star arrival = (Star) route.getArrival();
-                double total = route.getDistanceTotal();
-                double elapsed = route.getDistanceElapsed();
-                double distance = elapsed / total;
-                routeLine.getStyleClass().add("ship-route");
-                if (elapsed > 0) {
-                    int vectorX = arrival.getX() - departure.getX();
-                    int vectorY = arrival.getY() - departure.getY();
-                    double newX = departure.getX() +  distance * vectorX;
-                    routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX));
-                    double newY = departure.getY() +  distance * vectorY;
-                    routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY));
-                } else {
-                    routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()));
-                    routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()));
-                }
-                routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()));
-                routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()));
-                return routeLine;
-            }).map((routeLine) -> {
-                routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                    setElementToDisplay(travel);
-                });
-                return routeLine;
-            }).map((routeLine) -> {
+            travel.getRoutes().stream().filter(route -> isActiveRiftRoute(route)).forEach((route) -> {
+                
+                Line routeLine = GraphicUtils.getRouteLine(travel, route, false);
                 this.getChildren().add(routeLine);
-                return routeLine;
-            }).map((routeLine) -> {
                 activeTravels.add(routeLine);
-                return routeLine;
-            }).forEachOrdered((routeLine) -> {
-                Circle ship = new Circle(5);
-                ship.setCenterX(routeLine.getStartX());
-                ship.setCenterY(routeLine.getStartY());
-                ship.setFill(Color.DARKMAGENTA);
-                
-                ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                    setElementToDisplay(travel.getShip());
-                });
-                
+
+                Circle ship = GraphicUtils.getShipCircle(travel, routeLine, false);
                 this.getChildren().add(ship);
                 activeShips.add(ship);
                 
@@ -156,12 +119,6 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
     }
     
     ////////////////////////////////////////////////////////////////////////////
-
-    private void setElementToDisplay(IDisplayable object) {
-        DisplayPane.getInstance().setElementToDisplay(object);
-        SwitchDisplayPane.getInstance().setElementToDisplay(object);
-    }
-    
     private boolean isActiveRiftRoute(Route route) {
         return route.isRiftDrive() && route.getStatus() == TravelStatus.ONGOING;
     }

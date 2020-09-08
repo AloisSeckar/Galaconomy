@@ -1,17 +1,15 @@
 package galaconomy.gui;
 
 import galaconomy.constants.Constants;
-import galaconomy.gui.pane.*;
+import galaconomy.gui.pane.DisplayPane;
 import galaconomy.universe.*;
 import galaconomy.universe.map.*;
-import galaconomy.universe.traffic.Route;
-import galaconomy.universe.traffic.Travel;
-import galaconomy.utils.DisplayUtils;
+import galaconomy.universe.traffic.*;
+import galaconomy.utils.*;
 import java.util.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
 public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
@@ -89,48 +87,11 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
                     Star system = route.getSystem();
                     if (system != null && system.equals(currentSystem)) {
 
-                        Line routeLine = new Line();
-                        routeLine.getStyleClass().add("ship-route");
-
-                        AbstractMapElement departure = (AbstractMapElement) route.getDeparture();
-                        AbstractMapElement arrival = (AbstractMapElement) route.getArrival();
-
-                        double total = route.getDistanceTotal();
-                        double elapsed = route.getDistanceElapsed();
-                        double distance = elapsed / total;
-
-                        int offset = DisplayUtils.DEFAULT_TILE_SIZE * 2;
-                        if (elapsed > 0) {
-                            int vectorX = arrival.getX() - departure.getX();
-                            int vectorY = arrival.getY() - departure.getY();
-                            double newX = departure.getX() +  distance * vectorX;
-                            routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(newX) + offset);
-                            double newY = departure.getY() +  distance * vectorY;
-                            routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(newY) + offset);
-                        } else {
-                            routeLine.setStartX(DisplayUtils.fitCoordIntoDisplay(departure.getX()) + offset);
-                            routeLine.setStartY(DisplayUtils.fitCoordIntoDisplay(departure.getY()) +offset);
-                        }
-
-                        routeLine.setEndX(DisplayUtils.fitCoordIntoDisplay(arrival.getX()) + offset);
-                        routeLine.setEndY(DisplayUtils.fitCoordIntoDisplay(arrival.getY()) + offset);
-
-                        routeLine.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                            setElementToDisplay(travel);
-                        });
-
+                        Line routeLine = GraphicUtils.getRouteLine(travel, route, true);
                         this.getChildren().add(routeLine);
                         activeRoutes.add(routeLine);
 
-                        Circle ship = new Circle(5);
-                        ship.setCenterX(routeLine.getStartX());
-                        ship.setCenterY(routeLine.getStartY());
-                        ship.setFill(Color.DARKMAGENTA);
-
-                        ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                            setElementToDisplay(travel.getShip());
-                        });
-
+                        Circle ship = GraphicUtils.getShipCircle(travel, routeLine, false);
                         this.getChildren().add(ship);
                         activeShips.add(ship);
                     }
@@ -150,52 +111,21 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         if (mapObject != null) {
             ImageView object;
             if (mapObject instanceof Star) {
-                object = DisplayUtils.getImageView(mapObject.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * 10);
+                object = GraphicUtils.getImageView(mapObject.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * 10);
                 object.setX(DisplayUtils.fitCoordIntoDisplay(DisplayUtils.getMAX_X() / 2 + 1) - DisplayUtils.DEFAULT_TILE_SIZE * 5);
                 object.setY(DisplayUtils.fitCoordIntoDisplay(DisplayUtils.getMAX_Y() / 2 + 1) - DisplayUtils.DEFAULT_TILE_SIZE * 5);
             } else {
-                object = DisplayUtils.getImageView(mapObject.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * 4);
+                object = GraphicUtils.getImageView(mapObject.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * 4);
                 object.setX(DisplayUtils.fitCoordIntoDisplay(mapObject.getX()));
                 object.setY(DisplayUtils.fitCoordIntoDisplay(mapObject.getY()));
             }
 
             object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                setElementToDisplay(mapObject);
+                DisplayPane.getInstance().setElementToDisplay(mapObject);
             });
 
             this.getChildren().add(object);
             systemObjects.add(object);
         }
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////
-
-    private void setElementToDisplay(IDisplayable object) {
-        DisplayPane.getInstance().setElementToDisplay(object);
-        SwitchDisplayPane.getInstance().setElementToDisplay(object);
-    }
-    
-    private boolean isElementPresent(AbstractMapElement element) {
-        boolean ret = false;
-        
-        if (currentSystem != null && element != null) {
-            if (element instanceof RiftGate) {
-                for (RiftGate gate : currentSystem.getRiftGates()) {
-                    if (element.equals(gate)) {
-                        ret = true;
-                        break;
-                    }
-                }
-            } else {
-                for (StellarObject object : currentSystem.getStellarObjects()) {
-                    if (element.equals(object)) {
-                        ret = true;
-                        break;
-                    }
-                }
-            }
-        }
-        
-        return ret;
     }
 }

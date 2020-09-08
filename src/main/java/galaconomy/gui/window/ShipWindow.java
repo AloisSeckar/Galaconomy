@@ -44,7 +44,7 @@ public class ShipWindow extends Stage {
         int col = 0;
         for (Cargo cargo : ship.getCurrentCargo()) {
             Button cargoButton = new Button();
-            cargoButton.setGraphic(DisplayUtils.getImageView(cargo.getImage(), 64));
+            cargoButton.setGraphic(GraphicUtils.getImageView(cargo.getImage(), 64));
             cargoButton.setTooltip(new Tooltip(cargo.displayName()));
             cargoPane.add(cargoButton, col++, 1);
         }

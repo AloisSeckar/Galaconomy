@@ -1,11 +1,11 @@
 package galaconomy.gui;
 
 import galaconomy.constants.Constants;
-import galaconomy.gui.pane.*;
+import galaconomy.gui.pane.DisplayPane;
 import galaconomy.universe.*;
 import galaconomy.universe.building.Building;
 import galaconomy.universe.map.*;
-import galaconomy.utils.DisplayUtils;
+import galaconomy.utils.*;
 import java.util.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
@@ -53,12 +53,12 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
         if (base != null) {
             for (SurfaceTile[] tileRow : base.getSurface()) {
                 for (SurfaceTile tile : tileRow) {
-                    ImageView object = DisplayUtils.getImageView(tile.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
+                    ImageView object = GraphicUtils.getImageView(tile.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);
                     object.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
                     object.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
 
                     object.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                        setElementToDisplay(tile);
+                        DisplayPane.getInstance().setElementToDisplay(tile);
                     });
 
                     baseTiles.add(object);
@@ -66,12 +66,12 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
 
                     Building building = tile.getBuilding();
                     if (building != null) {
-                        ImageView buildingObj = DisplayUtils.getImageView(building.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);                   
+                        ImageView buildingObj = GraphicUtils.getImageView(building.getImage(), DisplayUtils.DEFAULT_TILE_SIZE * DisplayUtils.BASE_TILE_SIZE);                   
                         buildingObj.setX(DisplayUtils.fitCoordIntoDisplay(tile.getX() * DisplayUtils.BASE_TILE_SIZE));
                         buildingObj.setY(DisplayUtils.fitCoordIntoDisplay(tile.getY() * DisplayUtils.BASE_TILE_SIZE));
 
                         buildingObj.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
-                            setElementToDisplay(building);
+                            DisplayPane.getInstance().setElementToDisplay(building);
                         });
 
                         buildingObj.toFront();
@@ -96,13 +96,5 @@ public class BaseMapFrame extends AnchorPane implements IEngineSubscriber {
     @Override
     public void engineTaskFinished(long stellarTime) {
         // TODO update base map
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////
-    
-    // TODO make universal for all map frames
-    private void setElementToDisplay(IDisplayable object) {
-        DisplayPane.getInstance().setElementToDisplay(object);
-        SwitchDisplayPane.getInstance().setElementToDisplay(object);
     }
 }

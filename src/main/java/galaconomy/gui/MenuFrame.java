@@ -2,7 +2,7 @@ package galaconomy.gui;
 
 import galaconomy.constants.Constants;
 import galaconomy.gui.view.*;
-import galaconomy.utils.DisplayUtils;
+import galaconomy.utils.GraphicUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -73,7 +73,7 @@ public class MenuFrame extends MenuBar {
     
     private ImageView getIcon(String icon) {
         String source = Constants.ICONS_FOLDER + icon + ".png";
-        return DisplayUtils.getImageView(source, 24);
+        return GraphicUtils.getImageView(source, 24);
     }
     
 }

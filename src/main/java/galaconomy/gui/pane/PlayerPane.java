@@ -166,7 +166,7 @@ public class PlayerPane extends AnchorPane {
     
     private Button getShipButton(Ship ship) {
         Button shipButton = new Button();
-        shipButton.setGraphic(DisplayUtils.getImageView(ship.getImage(), 64));
+        shipButton.setGraphic(GraphicUtils.getImageView(ship.getImage(), 64));
         shipButton.setTooltip(new Tooltip(ship.displayName()));
         shipButton.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent ime) -> {
             DisplayPane.getInstance().setElementToDisplay(ship);

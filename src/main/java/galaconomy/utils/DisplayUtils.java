@@ -1,13 +1,9 @@
 package galaconomy.utils;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.*;
 import javafx.stage.Screen;
-import org.slf4j.*;
 
 public class DisplayUtils {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(DisplayUtils.class);
     
     public static final int SIDE_PANEL_X = 280;
     public static final int SIDE_PANEL_X_WRAP = 300;
@@ -91,26 +87,4 @@ public class DisplayUtils {
         return (coord + 1) * DEFAULT_TILE_SIZE; // +1 as border offset
     }
     
-    public static ImageView getImageView(String source, int dimension) {
-        return getImageView(source, dimension, dimension);
-    }
-    
-    public static ImageView getImageView(String source, int width, int height) {
-        ImageView object = new ImageView();
-        object.setPreserveRatio(false);
-        object.setSmooth(true);
-        object.setCache(true);
-        
-        try {
-            Image objectImg = new Image(DisplayUtils.class.getClass().getResourceAsStream(source));
-            object.setImage(objectImg);
-        } catch(Exception ex) {
-            LOG.error("DisplayUtils.getImageView", ex);
-        }
-        
-        object.setFitWidth(width);
-        object.setFitHeight(height);
-        
-        return object;
-    }
 }
