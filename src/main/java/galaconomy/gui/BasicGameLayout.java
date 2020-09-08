@@ -11,7 +11,7 @@ import javafx.scene.layout.*;
 public class BasicGameLayout extends BorderPane {
     
     private final InfoFrame info;
-    private final UniverseMapFrame universeMap;
+    private final GalaxyMapFrame universeMap;
     private final SystemMapFrame systemMap;
     private final BaseMapFrame baseMap;
     private final ControlsFrame controls;
@@ -27,7 +27,7 @@ public class BasicGameLayout extends BorderPane {
     
     private BasicGameLayout() {
         info = InfoFrame.getInstance();
-        universeMap = UniverseMapFrame.getInstance();
+        universeMap = GalaxyMapFrame.getInstance();
         systemMap = SystemMapFrame.getInstance();
         baseMap = BaseMapFrame.getInstance();
         controls = ControlsFrame.getInstance();
@@ -46,7 +46,7 @@ public class BasicGameLayout extends BorderPane {
 
         List<Star> stars = new ArrayList<>(universe.getStars().values());
         List<Connector> gates = universe.getGates();
-        universeMap.paintUniverseMap(stars, gates);
+        universeMap.paintGalaxyMap(stars, gates);
         universeMap.paintShipTravels(universe.getTravels());
 
         PlayerPane player = PlayerPane.getInstance();
@@ -81,7 +81,7 @@ public class BasicGameLayout extends BorderPane {
 
             List<Star> stars = new ArrayList<>(universe.getStars().values());
             List<Connector> gates = universe.getGates();
-            universeMap.paintUniverseMap(stars, gates);
+            universeMap.paintGalaxyMap(stars, gates);
             universeMap.paintShipTravels(universe.getTravels());
 
             PlayerPane player = PlayerPane.getInstance();

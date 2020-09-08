@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.*;
 
-public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
+public class GalaxyMapFrame extends AnchorPane implements IEngineSubscriber {
     
     public List<Circle> activeStars = new ArrayList<>();
     public List<Line> activeConnections = new ArrayList<>();
@@ -22,16 +22,16 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
     
     public boolean active = true;
     
-    private static UniverseMapFrame INSTANCE;
+    private static GalaxyMapFrame INSTANCE;
     
-    public static UniverseMapFrame getInstance() {
+    public static GalaxyMapFrame getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new UniverseMapFrame();
+            INSTANCE = new GalaxyMapFrame();
         }
         return INSTANCE;
     }
     
-    private UniverseMapFrame() {
+    private GalaxyMapFrame() {
         super.setMinWidth(DisplayUtils.getMAIN_PANEL_X());
         super.setMinHeight(DisplayUtils.getMAIN_PANEL_Y());
         
@@ -49,7 +49,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
         this.active = active;
     }
     
-    public void paintUniverseMap(List<Star> stars, List<Connector> gates) {
+    public void paintGalaxyMap(List<Star> stars, List<Connector> gates) {
         this.getChildren().removeAll(activeStars);
         activeStars.clear();
         this.getChildren().removeAll(activeConnections);
