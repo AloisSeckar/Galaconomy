@@ -1,6 +1,7 @@
 package galaconomy.utils;
 
 import galaconomy.gui.pane.DisplayPane;
+import galaconomy.universe.IDisplayable;
 import galaconomy.universe.map.AbstractMapElement;
 import galaconomy.universe.traffic.*;
 import javafx.scene.image.*;
@@ -74,19 +75,22 @@ public class GraphicUtils {
         return routeLine;
     }
     
-    public static Circle getShipCircle(Travel travel, Line routeLine, boolean active) {
-        Circle ship = new Circle();
+    public static Circle getShipCircle(Travel travel, Line routeLine, IDisplayable selectedItem) {
+        Circle shipCircle = new Circle();
         
-        ship.setRadius(active ? 10 : 5);
-        ship.setCenterX(routeLine.getStartX());
-        ship.setCenterY(routeLine.getStartY());
-        ship.setFill(active ? Color.MAGENTA : Color.DARKMAGENTA);
+        Ship ship = travel.getShip();
+        boolean active = ship != null && ship.equals(selectedItem);
+        
+        shipCircle.setRadius(active ? 10 : 5);
+        shipCircle.setCenterX(routeLine.getStartX());
+        shipCircle.setCenterY(routeLine.getStartY());
+        shipCircle.setFill(active ? Color.MAGENTA : Color.DARKMAGENTA);
 
-        ship.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
+        shipCircle.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent me) -> {
             DisplayPane.getInstance().setElementToDisplay(travel.getShip());
         });
         
-        return ship;
+        return shipCircle;
     }
     
 }

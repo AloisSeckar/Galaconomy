@@ -80,6 +80,8 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
         this.getChildren().removeAll(activeShips);
         activeShips.clear();
         
+        IDisplayable selectedItem = DisplayPane.getInstance().getElementToDisplay();
+        
         if (travels != null) {
             travels.forEach((travel) -> {
                 Route route = travel.getActiveRoute();
@@ -91,7 +93,7 @@ public class SystemMapFrame extends AnchorPane implements IEngineSubscriber {
                         this.getChildren().add(routeLine);
                         activeRoutes.add(routeLine);
 
-                        Circle ship = GraphicUtils.getShipCircle(travel, routeLine, false);
+                        Circle ship = GraphicUtils.getShipCircle(travel, routeLine, selectedItem);
                         this.getChildren().add(ship);
                         activeShips.add(ship);
                     }

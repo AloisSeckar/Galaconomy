@@ -97,6 +97,8 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
         this.getChildren().removeAll(activeShips);
         activeShips.clear();
         
+        IDisplayable selectedItem = DisplayPane.getInstance().getElementToDisplay();
+        
         travels.forEach((travel) -> {
             travel.getRoutes().stream().filter(route -> isActiveRiftRoute(route)).forEach((route) -> {
                 
@@ -104,7 +106,7 @@ public class UniverseMapFrame extends AnchorPane implements IEngineSubscriber {
                 this.getChildren().add(routeLine);
                 activeTravels.add(routeLine);
 
-                Circle ship = GraphicUtils.getShipCircle(travel, routeLine, false);
+                Circle ship = GraphicUtils.getShipCircle(travel, routeLine, selectedItem);
                 this.getChildren().add(ship);
                 activeShips.add(ship);
                 
