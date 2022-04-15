@@ -1,8 +1,6 @@
 package galaconomy.universe.economy;
 
-import galaconomy.universe.map.Base;
 import galaconomy.universe.player.Player;
-import java.util.*;
 import org.slf4j.*;
 
 public class EconomyManager {
