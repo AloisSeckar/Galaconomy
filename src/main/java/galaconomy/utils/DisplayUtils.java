@@ -28,12 +28,12 @@ public class DisplayUtils {
     private DisplayUtils() {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         
-        SCREEN_X = new Double(screenBounds.getWidth()).intValue();
-        MAX_X = new Double((SCREEN_X - SIDE_PANEL_X_WRAP) / DEFAULT_TILE_SIZE).intValue();
+        SCREEN_X = Double.valueOf(screenBounds.getWidth()).intValue();
+        MAX_X = Double.valueOf((SCREEN_X - SIDE_PANEL_X_WRAP) / DEFAULT_TILE_SIZE).intValue();
         MAIN_PANEL_X = (MAX_X + 2) * DEFAULT_TILE_SIZE;
         
-        SCREEN_Y = new Double(screenBounds.getHeight()).intValue();
-        MAX_Y = new Double((SCREEN_Y - BOTTOM_PANEL_Y_WRAP) / DEFAULT_TILE_SIZE).intValue();
+        SCREEN_Y = Double.valueOf(screenBounds.getHeight()).intValue();
+        MAX_Y = Double.valueOf((SCREEN_Y - BOTTOM_PANEL_Y_WRAP) / DEFAULT_TILE_SIZE).intValue();
         MAIN_PANEL_Y = (MAX_Y + 2) * DEFAULT_TILE_SIZE;
     }
     
