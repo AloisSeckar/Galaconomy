@@ -2,7 +2,6 @@ package galaconomy.gui.pane;
 
 import galaconomy.gui.BasicGameLayout;
 import galaconomy.universe.IDisplayable;
-import galaconomy.universe.building.Building;
 import galaconomy.universe.map.*;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
