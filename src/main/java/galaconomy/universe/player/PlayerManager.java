@@ -129,7 +129,7 @@ public class PlayerManager {
                         if (price * capacity <= credits) {
                             amount = Math.min(capacity, available);
                         } else {
-                            amount = Math.min(new Long(credits / price).intValue(), available);
+                            amount = Math.min(Long.valueOf(credits / price).intValue(), available);
                         }
 
                         ship.performPurchase(goodsToBuy, amount, price);
