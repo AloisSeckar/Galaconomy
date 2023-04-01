@@ -11,7 +11,7 @@ public class Constants {
     
     public static final int AVAILABLE_PLANETS = 68;
     public static final int AVAILABLE_PLAYERS = 13;
-    public static final int AVAILABLE_SHIPS = 5;
+    public static final int AVAILABLE_SHIPS = 6;
     public static final int AVAILABLE_STARS = 36;
     
     public static final String DEFAULT_IMAGE = "default";
